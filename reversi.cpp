@@ -1,11 +1,16 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <vector>
 
 using namespace std;
 int j = 0;
+vector<int> pos_to_eat;
 
 void print_board(int board[64]){
+/*
+ * Imprime le plateau et son contenu 
+ */
 	cout << "  a b c d e f g h  " << endl;
     for(int i=0; i<8; i++){
         cout << i + 1;
@@ -13,9 +18,9 @@ void print_board(int board[64]){
 	    for(int j=0; j<8; j++){
 		    if(board[(8*i)+j]==0)
 		    	cout << ". ";
-		    else if(board[(8*i)+j]==1)
+		    else if(board[(8*i)+j]==1)	//Le joueur noir est caractérisé par l'entier 1 et les "X"
 		    	cout << "X ";
-		    else if(board[(8*i)+j]==2)
+		    else if(board[(8*i)+j]==2)	//Le joueur blanc est caractérisé par l'entier 2 et les "O"
 		    	cout << "O ";
 	    }
         cout << i+1 << endl;
@@ -24,7 +29,7 @@ void print_board(int board[64]){
 }
 
 void init_board(int* board){
-    
+	
 	for(int i = 0; i<64; i++){
 		if( i == 27 || i == 36)
 			*(board + i) = 2;
@@ -50,13 +55,18 @@ bool check_input(int* board, int x, int y){
 
 }
 
+void eat(int* board, int turn){
+    for(int i =0; i<pos_to_eat.size();i++)
+        *(board + pos_to_eat[i]) = turn;
+}
+
 bool check_direction(int position, int* board, int direction, int turn,int* pos_eat){
 
     if(position + direction >= 0 && position + direction < 63){
         if(*(board + position + direction) == turn){
             *(pos_eat + j) = position;
-            for(int i =0; i<=j;i++)
-                *(board + *(pos_eat + i)) = turn;
+            for(int i = 0; i <= j;i++)
+                pos_to_eat.push_back (*(pos_eat +i));
             return true;
         }
         else if (*(board + position + direction) == 0)
@@ -85,11 +95,31 @@ bool check_eat(int position, int* board, int turn){
     return eat;
 }
 
+bool check_notplay(int* board, int turn){
+/*
+ * Vérifie si le joueur peut en effet passer son tour
+ */
+	bool r = true;
+	for(int i=0; i<64; i++){
+		if(*(board+i) == 0){
+			if(check_eat(i, board, turn)){
+				cout << "Un mouvement est possible" << endl;
+				r = false;
+				break;
+			}
+			else
+				r = true;
+		}
+	}
+	return r;
+}
+
 void player_turn(int* turn, int* board){
     
     string input = "";
     int x =0;
     int y =0;
+    pos_to_eat.clear();
     if(*turn == 2){
         cout << "White player turn" << endl;
         *turn = 1;        
@@ -101,26 +131,34 @@ void player_turn(int* turn, int* board){
     while(true){
 		cout << "enter a position :";
 		getline(cin, input);
-		if(input.length() == 2){               
+		if(input.length() == 2){ 
                 y = input[0] - 'a';
                 x = input[1] - '1';
-                if(check_input(board,x,y))
-                    if(check_eat(((8*(x))+(y)),board, *turn))
+                if((x+'1')=='0' && (y+'a')=='0'){
+					if(check_notplay(board, *turn)){
+						cout << "Le joueur passe son tour" << endl;
+						break;
+					}
+				}
+                else if(check_input(board,x,y)){
+                    if(check_eat(((8*(x))+(y)),board, *turn)){
+                        *(board + ((8*(x))+(y))) = *turn;
+                        eat( board, *turn);
                         break;
+					}
                     else
-                        cout << "mouvement impossible" << endl;
+                        cout << "mouvement impossible" << endl;	// ne doit pas s'imprimer lorsque le joueur tente, et échoue, de passer son tour
+				}
 		}          
         else
-            cout << "invalid position" << endl;
+            cout << "Entrée invalide" << endl;
 	}
-    *(board + ((8*(x))+(y))) = *turn;
 }
 
 
 int main(int argc, char *argv[]){	
 
     int board[64] = {0};
-
     int turn = 2;
     init_board(&board[0]);
 	print_board(board);

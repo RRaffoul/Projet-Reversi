@@ -1,2 +1,2 @@
-all : Case.cpp
-	g++ Case.cpp -o Case
+all : reversi.cpp
+	g++ reversi.cpp -o reversi
