@@ -10,6 +10,5 @@ A FAIRE :
 - Type de structure de données (Farkas)
 
 Problèmes à régler :
-- conditions sur les diagonales avec bords du tableau (2 cases dans les coins opposées peuvent être considérés cote à cote) (JAVIER)
-- implémenter une classe board (ROMAIN)
-- Condition de fin (LOUIS)
+- Impression d'un msg d'erreur "Entrée invalide", "Position invalide" et "Mouvement impossible" dans les cas concernés
+- Enlever les impressions de "denied" et autres repères pour nous
