@@ -87,10 +87,16 @@ bool check_eat(int position, int* board, int turn){
         int pos_eat[6] = {0};
         j = 0;
         if(position + direction[i] >= 0 && position + direction[i] < 63){
+            if((direction[i] == 7 || direction[i] == -9 || direction[i] == -1) && (position) % 8 == 0){	// ne sert à rien dans la matrice
+                break;
+            }
+            if((direction[i] == -7 || direction[i] == 9 || direction[i] == 1) && (position + 8) % 8 == 0){
+                break;
+            }
             if(*(board + position + direction[i]) != turn && *(board + position + direction[i]) != 0){
                 if(check_direction(position + direction[i], board, direction[i],turn, &pos_eat[0]))
                     eat = true;     
-             }
+            }
         }
     }
     return eat;
