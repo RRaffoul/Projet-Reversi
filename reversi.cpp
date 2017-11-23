@@ -6,6 +6,7 @@
 using namespace std;
 int j = 0;
 vector<int> pos_to_eat;
+int end = 0; 
 
 void print_board(int board[64]){
 /*
@@ -114,6 +115,15 @@ bool check_notplay(int* board, int turn){
 	return r;
 }
 
+void count(int *board,int* total){
+    for (int i = 0; i <64; i++){
+        if(*(board + i) == 1)
+            *(total) = *(total) + 1;
+        else if(*(board + i) == 2)
+            *(total+1) = *(total+1) + 1;
+    }
+}
+
 void player_turn(int* turn, int* board){
     
     string input = "";
@@ -127,7 +137,7 @@ void player_turn(int* turn, int* board){
 	    cout << "Black player turn" << endl;
         *turn = 2;        
     }
-    while(true){
+    while(end != 2){
 		cout << "enter a position :";
 		getline(cin, input);
 		if(input.length() == 2){ 
@@ -136,6 +146,7 @@ void player_turn(int* turn, int* board){
                 if((x+'1')=='0' && (y+'a')=='0'){
 					if(check_notplay(board, *turn)){
 						cout << "Le joueur passe son tour" << endl;
+                        end++;
 						break;
 					}
 				}
@@ -144,6 +155,7 @@ void player_turn(int* turn, int* board){
                     if(check_eat(((8*(x))+(y)),board, *turn)){
                         *(board + ((8*(x))+(y))) = *turn;
                         eat( board, *turn);
+                        end = 0;
                         break;
 					}
                     else
@@ -153,6 +165,14 @@ void player_turn(int* turn, int* board){
         else
             cout << "Entrée invalide" << endl;
 	}
+    int total[2] = {0};
+    count(board,&total[0]);
+    if (total[0] >> total[1] )
+        cout << "white player wins" << endl;
+    else if (total[0] << total[1])
+        cout << "black player wins" << endl;
+    else
+        cout << "draw" << endl;
 }
 
 
