@@ -29,12 +29,6 @@ void Plateau::print_board(){
         cout << i+1 << endl;
     }
 	cout << "  a b c d e f g h  " << endl;
-	if(plateau [5][4] == 0)
-		    	cout << ". ";
-	else if(plateau[5][4] == 1)
-	   	cout << "X ";
-	else if(plateau[5][4] == 2)
-		cout << "O ";
 }
 /*construceur du plateau, le 1 c'est les blancs (X) et le 2 c'est les noirs (O)*/
 
@@ -70,6 +64,7 @@ bool Plateau::check_direction(int x, int y, int direction[2]){
 				pos_to_eat.push_back (x + i*dx);
 				pos_to_eat.push_back (y + i*dy);
 			}
+			passe = 0;
 			return true;
 		}
 	} 
@@ -129,10 +124,17 @@ bool Plateau::check_notplay(){
 			}
 		}
 	}
+	passe ++;
 	return r;
 }
+
+/*bool Plateau::end_of_game(){
+	if (passe == 2)
+		return true; //Aurait pu servir comme fonction de fin mais no need
+	return false;
+}*/
  
-void Plateau::player_turn(){
+bool Plateau::player_turn(){
     turn++;
     string input = "";
     color = (turn + 1)%2 + 1;
@@ -155,15 +157,21 @@ void Plateau::player_turn(){
                 x = input[1] - '1';
                 if((x +'1')=='0' && (y +'a')=='0'){ //Pq pas mettre input [0] et [1] au lieu des x + 'l' etc ?
 					if(check_notplay()){
-						cout << "Le joueur passe son tour" << endl;
-						break;
+						if (passe == 2){
+							cout << "Le joueur passe son tour et la partie est finie" << endl;
+							return true;
+						}
+						else {
+							cout << "Le joueur passe son tour" << endl;
+						return false;
+						}
 					}
 				}
                 else if(check_input(x,y)){
 					pos_to_eat.clear();					
                     if(check_eat(x,y)){
                         eat();
-                        break;
+                        return false;
 					}
                     else
                         cout << "mouvement impossible" << endl;	// ne doit pas s'imprimer lorsque le joueur tente, et échoue, de passer son tour
@@ -176,12 +184,13 @@ void Plateau::player_turn(){
 
 
 int main(int argc, char *argv[]){	
-
+	
+	bool over = false;
     Plateau* Plate = new Plateau();
-	Plate->print_board();
-    while(true){
-        Plate->player_turn();
+	//Plate->print_board();
+    while(!over){
         Plate->print_board();
+        over = Plate->player_turn();
     }
 	return 0;
 

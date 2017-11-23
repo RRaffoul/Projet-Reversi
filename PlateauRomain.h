@@ -11,6 +11,7 @@ class Plateau {
 	vector<int> pos_to_eat;
 	int turn = 0;
 	int color;
+	int passe = 0;
  public :
 	Plateau ();
 	void print_board();
@@ -19,6 +20,6 @@ class Plateau {
 	bool check_eat(int x, int y);
 	void eat();
 	bool check_notplay();
-	void player_turn();
+	bool player_turn();
 };
 
