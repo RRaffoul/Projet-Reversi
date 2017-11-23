@@ -130,6 +130,17 @@ void count(int *board,int* total){
     }
 }
 
+void end_game(int *board){
+	int total[2] = {0};
+    count(board,&total[0]);
+    if (total[0] >> total[1] )
+        cout << "white player wins" << endl;
+    else if (total[0] << total[1])
+        cout << "black player wins" << endl;
+    else
+        cout << "draw" << endl;
+}
+
 void player_turn(int* turn, int* board){
     
     string input = "";
@@ -143,7 +154,7 @@ void player_turn(int* turn, int* board){
 	    cout << "Black player turn" << endl;
         *turn = 2;        
     }
-    while(end != 2){
+    while(true){
 		cout << "enter a position :";
 		getline(cin, input);
 		if(input.length() == 2){ 
@@ -171,14 +182,6 @@ void player_turn(int* turn, int* board){
         else
             cout << "Entrée invalide" << endl;
 	}
-    int total[2] = {0};
-    count(board,&total[0]);
-    if (total[0] >> total[1] )
-        cout << "white player wins" << endl;
-    else if (total[0] << total[1])
-        cout << "black player wins" << endl;
-    else
-        cout << "draw" << endl;
 }
 
 
@@ -188,10 +191,11 @@ int main(int argc, char *argv[]){
     int turn = 2;
     init_board(&board[0]);
 	print_board(board);
-    while(true){
+    while(end != 2){
         player_turn(&turn, &board[0]);
         print_board(board);
     }
+    end_game(&board[0]);
 	return 0;
 
 }
