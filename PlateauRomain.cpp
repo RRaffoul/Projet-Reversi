@@ -49,7 +49,7 @@ bool Plateau::check_input(int x, int y){
 
 /*check si il y a un pion de la meme couleur plus loin dans cette direction, le 2e check pour manger quoi*/
 
-bool check_direction(int x, int y, int direction[2]){
+bool Plateau::check_direction(int x, int y, int direction[2]){
 	
 	//int dist = 2; //distance entre les 2 pions enserrant les autres
     int dx = direction[0];
@@ -103,14 +103,14 @@ bool Plateau::check_eat(int x, int y){
 }/*maintenant encore faire une fonction qui goupille celle ci et check_direction en utilisant cette derniere 
  que si la rangée de la matrice direction est != {0,0}*/
  
-void eat(){
+void Plateau::eat(){
 	color = (turn + 1)%2 + 1;
     for(int i =0; i<(pos_to_eat.size()/2);i += 2){
         plateau[pos_to_eat[i]][pos_to_eat[i + 1]] = color;
     }
 }
 
-bool check_notplay(int* board, int turn){
+bool Plateau::check_notplay(int* board, int turn){
 /*
  * Vérifie si le joueur peut en effet passer son tour
  */
@@ -129,7 +129,7 @@ bool check_notplay(int* board, int turn){
 	return r;
 }
  
-void player_turn(){
+void Plateau::player_turn(){
     turn++;
     string input = "";
     color = (turn + 1)%2 + 1;
