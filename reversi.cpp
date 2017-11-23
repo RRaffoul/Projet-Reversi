@@ -78,27 +78,29 @@ bool check_direction(int position, int* board, int direction, int turn,int* pos_
             return check_direction(position + direction, board, direction,turn, pos_eat);  
         }
     }
-    return false;
 }
 
 bool check_eat(int position, int* board, int turn){
     int direction[8] = {1,-1,7,-7,8,-8,9,-9};
+    bool eat = false;
     for(int i = 0; i<8; i++){
         int pos_eat[64] = {0};
         j = 0;
         if(position + direction[i] >= 0 && position + direction[i] < 63){
-            if((direction[i] == 7 || direction[i] == -9 || direction[i] == -1) && (position) % 8 == 0){	// ne sert à rien dans la matrice
+            if((direction[i] == 7 || direction[i] == -9 || direction[i] == -1) && (position % 8 == 0)){	// ne sert à rien dans la matrice
+                cout << "denied" << endl;
             }
-            else if((direction[i] == -7 || direction[i] == 9 || direction[i] == 1) && (position + 8) % 8 == 0){
+            else if((direction[i] == -7 || direction[i] == 9 || direction[i] == 1) && ((position + 1) % 8 == 0)){
+                cout << "nope" << endl;
             }
             else if(*(board + position + direction[i]) != turn && *(board + position + direction[i]) != 0){
                 if(check_direction(position + direction[i], board, direction[i],turn, &pos_eat[0]))
-                    return true;     
+                    eat = true;     
                 
             }
         }
     }
-    return false;
+    return eat;
 }
 
 bool check_notplay(int* board, int turn){
