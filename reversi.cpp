@@ -19,9 +19,9 @@ void print_board(int board[64]){
 	    for(int j=0; j<8; j++){
 		    if(board[(8*i)+j]==0)
 		    	cout << ". ";
-		    else if(board[(8*i)+j]==1)	//Le joueur noir est caractérisé par l'entier 2 et les "X"
+		    else if(board[(8*i)+j]==1)	//Le joueur blanc est caractérisé par l'entier 1 et les "X"
 		    	cout << "X ";
-		    else if(board[(8*i)+j]==2)	//Le joueur blanc est caractérisé par l'entier 1 et les "O"
+		    else if(board[(8*i)+j]==2)	//Le joueur noir est caractérisé par l'entier 2 et les "O"
 		    	cout << "O ";
 	    }
         cout << i+1 << endl;
@@ -31,13 +31,16 @@ void print_board(int board[64]){
 
 void init_board(int* board){
 	
-	for(int i = 0; i<64; i++){
+	/*for(int i = 0; i<64; i++){
 		if( i == 27 || i == 36)
 			*(board + i) = 2;
 		else if (i == 28 || i == 35)
 			*(board + i) = 1;
 		else
 			*(board + i) = 0;
+	}*/
+	for(int i = 0; i<63; i++){
+		*(board + i) = 2;
 	}
 }
 
@@ -133,9 +136,9 @@ void count(int *board,int* total){
 void end_game(int *board){
 	int total[2] = {0};
     count(board,&total[0]);
-    if (total[0] >> total[1] )
+    if (total[0] > total[1] )
         cout << "white player wins" << endl;
-    else if (total[0] << total[1])
+    else if (total[0] < total[1])
         cout << "black player wins" << endl;
     else
         cout << "draw" << endl;
