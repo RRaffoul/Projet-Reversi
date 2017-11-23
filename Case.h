@@ -1,4 +1,3 @@
-
 class Case {
  private:
 	int pion; /*pourquoi rajouter un attribut position si liste de pointeurs dans le tableau ? */
