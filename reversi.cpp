@@ -65,7 +65,6 @@ void eat(int* board, int turn){
 }
 
 bool check_direction(int position, int* board, int direction, int turn,int* pos_eat){
-
     if(position + direction >= 0 && position + direction < 63){
         if(*(board + position + direction) == turn){
             *(pos_eat + j) = position;
@@ -73,55 +72,51 @@ bool check_direction(int position, int* board, int direction, int turn,int* pos_
                 pos_to_eat.push_back (*(pos_eat +i));
             return true;
         }
-        else if (*(board + position + direction) == 0)
+        else if (*(board + position + direction) == 0){
             return false;
+        }
         else{ 
             *(pos_eat + j) = position;
             j++;
             return check_direction(position + direction, board, direction,turn, pos_eat);  
         }
     }
+    return false;
 }
 
 bool check_eat(int position, int* board, int turn){
     int direction[8] = {1,-1,7,-7,8,-8,9,-9};
-    bool eat = false;
     for(int i = 0; i<8; i++){
-        int pos_eat[6] = {0};
+        int pos_eat[64] = {0};
         j = 0;
         if(position + direction[i] >= 0 && position + direction[i] < 63){
             if((direction[i] == 7 || direction[i] == -9 || direction[i] == -1) && (position) % 8 == 0){	// ne sert à rien dans la matrice
-                break;
             }
-            if((direction[i] == -7 || direction[i] == 9 || direction[i] == 1) && (position + 8) % 8 == 0){
-                break;
+            else if((direction[i] == -7 || direction[i] == 9 || direction[i] == 1) && (position + 8) % 8 == 0){
             }
-            if(*(board + position + direction[i]) != turn && *(board + position + direction[i]) != 0){
+            else if(*(board + position + direction[i]) != turn && *(board + position + direction[i]) != 0){
                 if(check_direction(position + direction[i], board, direction[i],turn, &pos_eat[0]))
-                    eat = true;     
+                    return true;     
+                
             }
         }
     }
-    return eat;
+    return false;
 }
 
 bool check_notplay(int* board, int turn){
 /*
  * Vérifie si le joueur peut en effet passer son tour
  */
-	bool r = true;
 	for(int i=0; i<63; i++){
 		if(*(board+i) == 0){
 			if(check_eat(i, board, turn)){
 				cout << "Un mouvement est possible" << endl;
-				r = false;
-				break;
+				return false;
 			}
-			else
-				r = true;
 		}
 	}
-	return r;
+	return true;
 }
 
 void count(int *board,int* total){
@@ -178,8 +173,6 @@ void player_turn(int* turn, int* board){
                         end = 0;
                         break;
 					}
-                    else
-                        cout << "mouvement impossible" << endl;	// ne doit pas s'imprimer lorsque le joueur tente, et échoue, de passer son tour
 				}
 		}          
         else
