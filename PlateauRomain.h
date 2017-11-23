@@ -12,6 +12,8 @@ class Plateau {
 	int turn = 0;
 	int color;
 	int passe = 0;
+	int noirs;
+	int blancs;
  public :
 	Plateau ();
 	void print_board();

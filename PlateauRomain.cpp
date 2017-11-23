@@ -14,6 +14,8 @@ Plateau::Plateau(){
 }
 
 void Plateau::print_board(){
+	noirs = 0; 
+	blancs = 0;
 	cout << "  a b c d e f g h  " << endl;
     for(int i = 0; i < 8; i++){
         cout << i + 1;
@@ -21,10 +23,14 @@ void Plateau::print_board(){
 	    for(int j = 0; j < 8; j++){
 		    if(plateau [i][j] == 0)
 		    	cout << ". ";
-		    else if(plateau[i][j] == 1)
+		    else if(plateau[i][j] == 1){
 		    	cout << "X ";
-		    else if(plateau[i][j] == 2)
+		    	blancs++; // compte chaque fois le nombre de pions, mais en soit on pourrait compter le nombre pions pris a chaque tour au lieu de compter 64 fois chaque fois
+		    }
+		    else if(plateau[i][j] == 2){
 		    	cout << "O ";
+		    	noirs++;
+		    }
 	    }
         cout << i+1 << endl;
     }
@@ -34,11 +40,11 @@ void Plateau::print_board(){
 
 bool Plateau::check_input(int x, int y){
     if(x > 8 || x < 0 || y > 8 || y < 0){
-        cout << "invalid entry" <<endl;
+        cout << "Invalid entry" <<endl;
         return false;
     }
     else if(plateau[x][y] != 0){
-        cout << "invalid entry" <<endl;
+        cout << "Invalid entry" <<endl;
         return false;
     }
     else
@@ -78,18 +84,22 @@ bool Plateau::check_eat(int x, int y){//coriger cette fct sinon il y aura une er
 	bool eat = false;
 	//int direction[8][2]={0};    Devenu useless si on combien les fcts check_eat et check_direction
 	for (int i = -1; i <=1; i++){
-		for (int j = -1; j <= 1; j++){//je sais que ca checke aussi la position meme du pion mais bon ca evite qlq lignes de codes pour une bete test
-			if (plateau[x + i][y + j] != 0 && plateau[x + i][y + j] != color){
-				/* alors la soit on bosse avec des vectors --> taille dimensionnable, comme pour checker qu'une direction apres
-				 * soit on bosse en tableau toujours avec d'office une taille de 8 fois 2 element pour avoir les 8 directions
-				 * avec des 0 quand il ne faut pas checker par la */
-				direction [0]= i;
-				direction [1]= j; //trouver un moyen d ecrire " direction = {i, j}; "
-				if (check_direction (x, y, direction)){
-					eat = true; //le if c'est pour que si une fois true reste true tout en continuant de cheker les autres directions
+		if(x != 0 || i !=-1){ //Pour eviter qu'on ne sorte du plateau en regardant ce qu il y a derriere
+			for (int j = -1; j <= 1; j++){//je sais que ca checke aussi la position meme du pion mais bon ca evite qlq lignes de codes pour une bete test
+				if(y != 0 || j !=-1){
+					if (plateau[x + i][y + j] != 0 && plateau[x + i][y + j] != color){
+						/* alors la soit on bosse avec des vectors --> taille dimensionnable, comme pour checker qu'une direction apres
+						* soit on bosse en tableau toujours avec d'office une taille de 8 fois 2 element pour avoir les 8 directions
+						* avec des 0 quand il ne faut pas checker par la */
+						direction [0]= i;
+						direction [1]= j; //trouver un moyen d ecrire " direction = {i, j}; "
+						if (check_direction (x, y, direction)){
+							eat = true; //le if c'est pour que si une fois true reste true tout en continuant de cheker les autres directions
+						}
+						/*direction[count][0] = i;
+						direction[count][1] = j;  //Devenu useless */
+					}
 				}
-				 /*direction[count][0] = i;
-				 direction[count][1] = j;  //Devenu useless */
 			}
 		}
 	}
@@ -117,7 +127,7 @@ bool Plateau::check_notplay(){
 		for (int j = 0; j< 8; j++){
 			if(plateau[i][j] == 0){
 				if(check_eat(i, j)){
-					cout << "Un mouvement est possible" << endl;
+					cout << "A move is possible" << endl;
 					r = false;
 					return r;
 				}
@@ -142,14 +152,17 @@ bool Plateau::player_turn(){
     int y;
     
     if(color == 1){
-        cout << "White player turn" << endl;       
+        cout << "White player turn (X)" << endl;       
     }    
     
     else{
-	    cout << "Black player turn" << endl;       
+	    cout << "Black player turn (O)" << endl;       
     }
     
     while(true){
+		cout << "Turn " << turn << endl;
+		cout << "Number of black pawns (O) : " << noirs << endl;
+		cout << "Number of white pawns (X) : " << blancs << endl;
 		cout << "enter a position :";
 		getline(cin, input);
 		if(input.length() == 2){               
@@ -158,11 +171,11 @@ bool Plateau::player_turn(){
                 if((x +'1')=='0' && (y +'a')=='0'){ //Pq pas mettre input [0] et [1] au lieu des x + 'l' etc ?
 					if(check_notplay()){
 						if (passe == 2){
-							cout << "Le joueur passe son tour et la partie est finie" << endl;
+							cout << "The player passes he's turn and the game is over" << endl;
 							return true;
 						}
 						else {
-							cout << "Le joueur passe son tour" << endl;
+							cout << "The player passes he's turn" << endl;
 						return false;
 						}
 					}
@@ -174,11 +187,11 @@ bool Plateau::player_turn(){
                         return false;
 					}
                     else
-                        cout << "mouvement impossible" << endl;	// ne doit pas s'imprimer lorsque le joueur tente, et échoue, de passer son tour
+                        cout << "Impossible move" << endl;	// ne doit pas s'imprimer lorsque le joueur tente, et échoue, de passer son tour
 				}
 		}          
         else
-            cout << "Entrée invalide" << endl;
+            cout << "Invalid entry" << endl;
 	}
 }
 
@@ -193,5 +206,4 @@ int main(int argc, char *argv[]){
         over = Plate->player_turn();
     }
 	return 0;
-
 }
