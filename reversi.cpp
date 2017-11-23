@@ -31,16 +31,13 @@ void print_board(int board[64]){
 
 void init_board(int* board){
 	
-	/*for(int i = 0; i<64; i++){
+	for(int i = 0; i<64; i++){
 		if( i == 27 || i == 36)
 			*(board + i) = 2;
 		else if (i == 28 || i == 35)
 			*(board + i) = 1;
 		else
 			*(board + i) = 0;
-	}*/
-	for(int i = 0; i<63; i++){
-		*(board + i) = 2;
 	}
 }
 
@@ -132,9 +129,9 @@ void end_game(int *board){
 	int total[2] = {0};
     count(board,&total[0]);
     if (total[0] > total[1] )
-        cout << "white player wins" << endl;
+        cout << "white player wins (X)" << endl;
     else if (total[0] < total[1])
-        cout << "black player wins" << endl;
+        cout << "black player wins (O)" << endl;
     else
         cout << "draw" << endl;
 }
