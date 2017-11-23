@@ -107,7 +107,7 @@ bool check_notplay(int* board, int turn){
  * Vérifie si le joueur peut en effet passer son tour
  */
 	bool r = true;
-	for(int i=0; i<64; i++){
+	for(int i=0; i<63; i++){
 		if(*(board+i) == 0){
 			if(check_eat(i, board, turn)){
 				cout << "Un mouvement est possible" << endl;
