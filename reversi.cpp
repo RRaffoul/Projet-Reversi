@@ -119,7 +119,6 @@ void player_turn(int* turn, int* board){
     string input = "";
     int x =0;
     int y =0;
-    pos_to_eat.clear();
     if(*turn == 2){
         cout << "White player turn" << endl;
         *turn = 1;        
@@ -141,6 +140,7 @@ void player_turn(int* turn, int* board){
 					}
 				}
                 else if(check_input(board,x,y)){
+					pos_to_eat.clear();
                     if(check_eat(((8*(x))+(y)),board, *turn)){
                         *(board + ((8*(x))+(y))) = *turn;
                         eat( board, *turn);

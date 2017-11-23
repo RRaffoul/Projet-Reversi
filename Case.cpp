@@ -20,4 +20,3 @@ void Case::setPion(int val){
 	Case case2 = Case();
 	return 1;
 }*/
-
