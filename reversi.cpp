@@ -129,9 +129,9 @@ void end_game(int *board){
 	int total[2] = {0};
     count(board,&total[0]);
     if (total[0] > total[1] )
-        cout << "white player wins (X)" << endl;
+        cout << "white player wins" << endl;
     else if (total[0] < total[1])
-        cout << "black player wins (O)" << endl;
+        cout << "black player wins" << endl;
     else
         cout << "draw" << endl;
 }
@@ -142,11 +142,11 @@ void player_turn(int* turn, int* board){
     int x =0;
     int y =0;
     if(*turn == 2){
-        cout << "White player turn" << endl;
+        cout << "White player turn (X)" << endl;
         *turn = 1;        
     }    
     else{
-	    cout << "Black player turn" << endl;
+	    cout << "Black player turn (O)" << endl;
         *turn = 2;        
     }
     while(true){
