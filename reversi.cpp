@@ -6,6 +6,7 @@
 using namespace std;
 int j = 0;
 vector<int> pos_to_eat;
+int end = 0; 
 
 void print_board(int board[64]){
 /*
@@ -18,9 +19,9 @@ void print_board(int board[64]){
 	    for(int j=0; j<8; j++){
 		    if(board[(8*i)+j]==0)
 		    	cout << ". ";
-		    else if(board[(8*i)+j]==1)	//Le joueur noir est caractérisé par l'entier 1 et les "X"
+		    else if(board[(8*i)+j]==1)	//Le joueur noir est caractérisé par l'entier 2 et les "X"
 		    	cout << "X ";
-		    else if(board[(8*i)+j]==2)	//Le joueur blanc est caractérisé par l'entier 2 et les "O"
+		    else if(board[(8*i)+j]==2)	//Le joueur blanc est caractérisé par l'entier 1 et les "O"
 		    	cout << "O ";
 	    }
         cout << i+1 << endl;
@@ -86,10 +87,16 @@ bool check_eat(int position, int* board, int turn){
         int pos_eat[6] = {0};
         j = 0;
         if(position + direction[i] >= 0 && position + direction[i] < 63){
+            if((direction[i] == 7 || direction[i] == -9 || direction[i] == -1) && (position) % 8 == 0){	// ne sert à rien dans la matrice
+                break;
+            }
+            if((direction[i] == -7 || direction[i] == 9 || direction[i] == 1) && (position + 8) % 8 == 0){
+                break;
+            }
             if(*(board + position + direction[i]) != turn && *(board + position + direction[i]) != 0){
                 if(check_direction(position + direction[i], board, direction[i],turn, &pos_eat[0]))
                     eat = true;     
-             }
+            }
         }
     }
     return eat;
@@ -114,6 +121,15 @@ bool check_notplay(int* board, int turn){
 	return r;
 }
 
+void count(int *board,int* total){
+    for (int i = 0; i <64; i++){
+        if(*(board + i) == 1)
+            *(total) = *(total) + 1;
+        else if(*(board + i) == 2)
+            *(total+1) = *(total+1) + 1;
+    }
+}
+
 void player_turn(int* turn, int* board){
     
     string input = "";
@@ -127,7 +143,7 @@ void player_turn(int* turn, int* board){
 	    cout << "Black player turn" << endl;
         *turn = 2;        
     }
-    while(true){
+    while(end != 2){
 		cout << "enter a position :";
 		getline(cin, input);
 		if(input.length() == 2){ 
@@ -136,6 +152,7 @@ void player_turn(int* turn, int* board){
                 if((x+'1')=='0' && (y+'a')=='0'){
 					if(check_notplay(board, *turn)){
 						cout << "Le joueur passe son tour" << endl;
+                        end++;
 						break;
 					}
 				}
@@ -144,6 +161,7 @@ void player_turn(int* turn, int* board){
                     if(check_eat(((8*(x))+(y)),board, *turn)){
                         *(board + ((8*(x))+(y))) = *turn;
                         eat( board, *turn);
+                        end = 0;
                         break;
 					}
                     else
@@ -153,6 +171,14 @@ void player_turn(int* turn, int* board){
         else
             cout << "Entrée invalide" << endl;
 	}
+    int total[2] = {0};
+    count(board,&total[0]);
+    if (total[0] >> total[1] )
+        cout << "white player wins" << endl;
+    else if (total[0] << total[1])
+        cout << "black player wins" << endl;
+    else
+        cout << "draw" << endl;
 }
 
 
