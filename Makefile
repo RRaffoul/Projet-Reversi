@@ -1,2 +1,2 @@
-all : reversi.cpp
-	g++ reversi.cpp -o reversi
+all : PlateauRomain.cpp
+	g++ PlateauRomain.cpp -o PlateauRomain
