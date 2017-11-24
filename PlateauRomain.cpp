@@ -187,7 +187,7 @@ bool Plateau::player_turn(){
                         return false;
 					}
                     else
-                        cout << "Impossible move" << endl;	// ne doit pas s'imprimer lorsque le joueur tente, et échoue, de passer son tour
+                        cout << "Impossible move" << endl;
 				}
 		}          
         else
