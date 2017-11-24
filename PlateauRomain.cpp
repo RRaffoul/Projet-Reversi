@@ -217,9 +217,10 @@ int main(int argc, char *argv[]){
 	bool over = false;
     Plateau* Plate = new Plateau();
 	//Plate->print_board();
-    while(!over && (Plate->get_noirs() + Plate->get_noirs()) != 64){
+    while(!over){
         Plate->print_board();
-        over = Plate->player_turn();
+        if( Plate->player_turn() || ((Plate->get_noirs() + Plate->get_noirs()) != 64))
+			over = true;
     }
     Plate->print_winner();
 	return 0;
