@@ -31,6 +31,8 @@ int Plateau::get_blancs(){
 
 void Plateau::print_board(){
 	cout << "  a b c d e f g h  " << endl;
+    blancs = 0;
+    noirs = 0;
     for(int i = 0; i < 8; i++){
         cout << i + 1;
         cout << " ";
