@@ -9,6 +9,6 @@ A FAIRE :
 - lecture des commandes et mise à jour du plateau (Javier)
 - Type de structure de données (Farkas)
 
-Problèmes à régler :
-- Impression d'un msg d'erreur "Entrée invalide", "Position invalide" et "Mouvement impossible" dans les cas concernés
-- Enlever les impressions de "denied" et autres repères pour nous
+A détruire (à vérifier) :
+- 1 vecteur pos_to_eat
+- LE PLATEAU
