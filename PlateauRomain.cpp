@@ -152,6 +152,9 @@ bool Plateau::check_notplay(){
 	return false;
 }*/
 void Plateau::print_winner(){
+	cout << "\n \n" << endl;
+	cout << "Number of black pawns (O) : " << noirs << endl;
+	cout << "Number of white pawns (X) : " << blancs << endl;
 	if(noirs < blancs)
 		cout << "White player wins !" << endl;
 	else if(blancs < noirs)
@@ -219,7 +222,7 @@ int main(int argc, char *argv[]){
 	//Plate->print_board();
     while(!over){
         Plate->print_board();
-        if( Plate->player_turn() || ((Plate->get_noirs() + Plate->get_noirs()) != 64))
+        if(((Plate->get_noirs() + Plate->get_blancs()) == 64) || Plate->player_turn())
 			over = true;
     }
     Plate->print_winner();
