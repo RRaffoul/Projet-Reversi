@@ -6,7 +6,7 @@ Plateau::Plateau(){
     turn = 0;
     passe = 0;
 	for(int i = 0; i<8; i++){
-		for (int j = 0; j < 8; j++){		
+		for (int j = 0; j < 8; j++){	
 			if((i == 3 && j == 3) ||(i == 4 && j == 4)){
 				plateau[i][j] = 2;
 				noirs++;
@@ -30,8 +30,6 @@ int Plateau::get_blancs(){
 }
 
 void Plateau::print_board(){
-	noirs = 0; 
-	blancs = 0;
 	cout << "  a b c d e f g h  " << endl;
     for(int i = 0; i < 8; i++){
         cout << i + 1;
@@ -69,8 +67,6 @@ bool Plateau::check_input(int x, int y){
 /*check si il y a un pion de la meme couleur plus loin dans cette direction, le 2e check pour manger quoi*/
 
 bool Plateau::check_direction(int x, int y, int direction[2]){
-	
-	//int dist = 2; //distance entre les 2 pions enserrant les autres
     int dx = direction[0];
     int dy = direction[1]; //donne la direction en X et en Y dans laquelle on cherche
     color = (turn + 1)%2 + 1; //pour savoir si on est au tour du joueur 1 ou 2 sans avoir modulo d'un nombre paire = 0 mais = 2
@@ -82,7 +78,7 @@ bool Plateau::check_direction(int x, int y, int direction[2]){
 		}
 		else if (plateau[x + dist*dx][y + dist*dy] == color){ /*si effectivement il y a des pions a manger,
 																on vient les mettre tous dans le vector d un coup */
-			for (int i = 0; i < dist; i ++){
+			for (int i = 1; i < dist; i ++){
 				pos_to_eat.push_back (x + i*dx);
 				pos_to_eat.push_back (y + i*dy);
 			}
@@ -118,6 +114,10 @@ bool Plateau::check_eat(int x, int y){//coriger cette fct sinon il y aura une er
 			}
 		}
 	}
+	if (eat){
+		pos_to_eat.push_back (x);
+		pos_to_eat.push_back (y);
+	}
 	/*
 	if (count == 0){
 		direction[0][0] = 5; /*le marqueur en question, on pourrait eventuellement commencer a le deplacer pour faire lire des moities de tableau etc
@@ -130,10 +130,18 @@ void Plateau::eat(){
 	color = (turn + 1)%2 + 1;
     for(int i =0; i < pos_to_eat.size() - 1;i += 2){
         plateau[pos_to_eat[i]][pos_to_eat[i + 1]] = color;
-        if (color == 1)
+        if (color == 1){
 			blancs++;
-		else if (color == 2)
+			if (i!=0){ //sinon va compter qu on mange un de trop chaque fois vu qu'ajoute aussi le pion qu'on a ajouté
+				noirs--;
+			}
+		}
+		else if (color == 2){
 			noirs++;
+			if (i!=0){
+				blancs--;
+			}
+		}
     }
 }
 
