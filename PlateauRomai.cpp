@@ -152,12 +152,11 @@ bool Plateau::check_notplay(){
 	return r;
 }
 
-/*bool Plateau::end_of_game(){
-	if (passe == 2)
-		return true; //Aurait pu servir comme fonction de fin mais no need
-	return false;
-}*/
 void Plateau::print_winner(){
+	print_board();
+	cout << "\n \n" << endl;
+	cout << "Number of black pawns (O) : " << noirs << endl;
+	cout << "Number of white pawns (X) : " << blancs << endl;
 	if(noirs < blancs)
 		cout << "White player wins !" << endl;
 	else if(blancs < noirs)
