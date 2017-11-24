@@ -16,12 +16,15 @@ class Plateau {
 	int blancs;
  public :
 	Plateau ();
+	int get_noirs();
+	int get_blancs();
 	void print_board();
 	bool check_input(int x, int y);
 	bool check_direction(int x, int y, int direction[2]);
 	bool check_eat(int x, int y);
 	void eat();
 	bool check_notplay();
+	void print_winner();
 	bool player_turn();
 };
 

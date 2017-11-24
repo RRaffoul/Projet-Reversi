@@ -13,6 +13,14 @@ Plateau::Plateau(){
 	}
 }
 
+int Plateau::get_noirs(){
+	return noirs;
+}
+
+int Plateau::get_blancs(){
+	return blancs;
+}
+
 void Plateau::print_board(){
 	noirs = 0; 
 	blancs = 0;
@@ -143,6 +151,14 @@ bool Plateau::check_notplay(){
 		return true; //Aurait pu servir comme fonction de fin mais no need
 	return false;
 }*/
+void Plateau::print_winner(){
+	if(noirs < blancs)
+		cout << "White player wins !" << endl;
+	else if(blancs < noirs)
+		cout << "Black player wins !" << endl;
+	else
+		cout << "It's a draw." << endl;
+}
  
 bool Plateau::player_turn(){
     turn++;
@@ -168,7 +184,7 @@ bool Plateau::player_turn(){
 		if(input.length() == 2){               
                 y = input[0] - 'a';
                 x = input[1] - '1';
-                if((x +'1')=='0' && (y +'a')=='0'){ //Pq pas mettre input [0] et [1] au lieu des x + 'l' etc ?
+                if(input[0]=='0' && input[1]=='0'){
 					if(check_notplay()){
 						if (passe == 2){
 							cout << "The player passes he's turn and the game is over" << endl;
@@ -176,7 +192,7 @@ bool Plateau::player_turn(){
 						}
 						else {
 							cout << "The player passes he's turn" << endl;
-						return false;
+							return false;
 						}
 					}
 				}
@@ -201,9 +217,10 @@ int main(int argc, char *argv[]){
 	bool over = false;
     Plateau* Plate = new Plateau();
 	//Plate->print_board();
-    while(!over){
+    while(!over && (Plate->get_noirs() + Plate->get_noirs()) != 64){
         Plate->print_board();
         over = Plate->player_turn();
     }
+    Plate->print_winner();
 	return 0;
 }
