@@ -4,15 +4,15 @@ Plateau::Plateau(){
 	noirs = 0;
 	blancs = 0;
 	for(int i = 0; i<8; i++){
-		for (int j = 0; j < 8; j++){/*			
-			if((i == 3 && j == 3) ||(i == 4 && j == 4))*/
-				plateau[i][j] = 2;/*
+		for (int j = 0; j < 8; j++){		
+			if((i == 3 && j == 3) ||(i == 4 && j == 4))
+				plateau[i][j] = 2;
 				noirs++;
 			else if ((i == 4 && j == 3) || (i == 3 && j == 4))
 				plateau[i][j] = 1;
 				blancs++;
 			else
-				plateau[i][j] = 0;*/
+				plateau[i][j] = 0;
 		}
 	}
 }
