@@ -9,9 +9,9 @@ class Plateau {
  private :
 	int plateau [8][8]; 
 	vector<int> pos_to_eat;
-	int turn = 0;
+	int turn;
 	int color;
-	int passe = 0;
+	int passe;
 	int noirs;
 	int blancs;
 	bool over;

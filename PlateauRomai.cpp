@@ -3,6 +3,8 @@
 Plateau::Plateau(){
 	noirs = 0;
 	blancs = 0;
+    turn = 0;
+    passe = 0;
 	for(int i = 0; i<8; i++){
 		for (int j = 0; j < 8; j++){		
 			if((i == 3 && j == 3) ||(i == 4 && j == 4)){
@@ -39,9 +41,11 @@ void Plateau::print_board(){
 		    	cout << ". ";
 		    else if(plateau[i][j] == 1){
 		    	cout << "X ";
+                blancs++;
 		    }
 		    else if(plateau[i][j] == 2){
 		    	cout << "O ";
+                noirs++;
 		    }
 	    }
         cout << i+1 << endl;
@@ -137,19 +141,17 @@ bool Plateau::check_notplay(){
 /*
  * Vérifie si le joueur peut en effet passer son tour
  */
-	bool r = true;
 	for(int i=0; i<8; i++){
 		for (int j = 0; j< 8; j++){
 			if(plateau[i][j] == 0){
 				if(check_eat(i, j)){
 					cout << "A move is possible" << endl;
-					r = false;
-					return r;
+					return false;
 				}
 			}
 		}
 	}
-	return r;
+	return true;
 }
 
 void Plateau::print_winner(){
