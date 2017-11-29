@@ -1,2 +1,2 @@
-all : PlateauRomai.cpp
-	g++ PlateauRomai.cpp -o PlateauRomai
+all : Plateau.cpp
+	g++ Plateau.cpp -o Plateau
