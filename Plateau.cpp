@@ -1,4 +1,4 @@
-#include "Projet.h"
+#include "Plateau.h"
 
 Plateau::Plateau(){
 	int turn = 0;
@@ -186,7 +186,6 @@ bool Plateau::game_over(){
 
 
 void Plateau::game(){
-	over = false;
 	while(!game_over()){
         print_board();
         player_turn();
