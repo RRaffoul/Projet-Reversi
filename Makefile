@@ -1,2 +1,4 @@
-all : Plateau.cpp
-	g++ Plateau.cpp -o Plateau
+all : Plateau.o
+	g++ Plateau.o projet.cpp -o projet
+Plateau.o : Plateau.cpp
+	g++ -c Plateau.cpp

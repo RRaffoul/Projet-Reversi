@@ -239,11 +239,3 @@ bool Plateau::player_turn(){
             cout << "Invalid entry" << endl;
 	}
 }
-
-
-int main(int argc, char *argv[]){	
-	
-    Plateau* Plate = new Plateau();
-    Plate->game();
-	return 0;
-}
