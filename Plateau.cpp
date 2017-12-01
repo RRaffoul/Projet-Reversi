@@ -37,12 +37,10 @@ void Plateau::print_board(){
 	    for(int j = 0; j < 8; j++){
 		    if(plateau [i][j] == 0)
 		    	cout << ". ";
-		    else if(plateau[i][j] == 1){
+		    else if(plateau[i][j] == 1)
 		    	cout << "X ";
-		    }
-		    else if(plateau[i][j] == 2){
+		    else if(plateau[i][j] == 2)
 		    	cout << "O ";
-		    }
 	    }
         cout << i+1 << endl;
     }
@@ -168,6 +166,10 @@ bool Plateau::check_notplay(){
 	return false;
 }*/
 void Plateau::print_winner(){
+	cout << "\n \n \nFinal plate \n \n \n" << endl;
+	print_board();
+	cout << "Number of black pawns (O) : " << noirs << endl;
+	cout << "Number of white pawns (X) : " << blancs << endl;
 	if(noirs < blancs)
 		cout << "White player wins !" << endl;
 	else if(blancs < noirs)
