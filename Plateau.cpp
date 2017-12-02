@@ -195,7 +195,7 @@ void Plateau::game(){
     print_winner();	
 }
  
-bool Plateau::player_turn(){
+void Plateau::player_turn(){
     turn++;
     string input = "";
     color = (turn + 1)%2 + 1;

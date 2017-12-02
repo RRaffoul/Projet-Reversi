@@ -24,7 +24,7 @@ class Plateau {
 	bool check_eat(int x, int y);
 	void eat();
 	bool check_notplay();
-	bool player_turn();
+	void player_turn();
 	void print_winner();
 	bool game_over();
 	void game();
