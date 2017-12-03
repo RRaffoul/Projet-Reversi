@@ -1,6 +1,6 @@
 #include "PlateauRomai.h"
 
-Plateau::Plateau(){
+Plateau::Plateau(){ 
 	noirs = 0;
 	blancs = 0;
     turn = 0;
@@ -52,7 +52,7 @@ void Plateau::print_board(){
     }
 	cout << "  a b c d e f g h  " << endl;
 }
-/*construceur du plateau, le 1 c'est les blancs (X) et le 2 c'est les noirs (O)*/
+/*construceur du plateau, le 1 c'est les blancs (X) et le 2 c'est les noirs (O) TEST Daniel*/
 
 bool Plateau::check_input(int x, int y){
     if(x > 8 || x < 0 || y > 8 || y < 0){
