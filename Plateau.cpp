@@ -84,7 +84,7 @@ bool Plateau::check_direction(int x, int y, int direction[2]){
 	return false;
 }
 
-bool Plateau::check_eat(int x, int y){//coriger cette fct sinon il y aura une erreure dans les coins et sur les bords quand x + 1 <0 par ex
+bool Plateau::check_eat(int x, int y){//corriger cette fct sinon il y aura une erreur dans les coins et sur les bords quand x + 1 <0 par ex
 	color = (turn +1)%2 + 1;
 	int count = 0;
 	int direction[2];
