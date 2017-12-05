@@ -21,6 +21,9 @@ Plateau::Plateau(){
 	}
 }
 
+Plateau::~Plateau(){}
+	
+
 int Plateau::get_noirs(){
 	return noirs;
 }
