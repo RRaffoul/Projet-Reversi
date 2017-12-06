@@ -14,5 +14,6 @@ int main(int argc, char *argv[]){
 	
     Plateau* Plate = new Plateau();
     Plate->game();
+    delete Plate;
 	return 0;
 }

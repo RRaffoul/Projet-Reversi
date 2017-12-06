@@ -16,6 +16,7 @@ class Plateau {
 	int blancs;
  public :
 	Plateau ();
+	~Plateau();
 	void print_board();
 	int get_noirs();
 	int get_blancs();
@@ -28,6 +29,5 @@ class Plateau {
 	void print_winner();
 	bool game_over();
 	void game();
-	
 };
 
