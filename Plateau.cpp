@@ -32,37 +32,7 @@ int Plateau::get_blancs(){
 	return blancs;
 }
 
-void Plateau::print_board(){
-	cout << "  a b c d e f g h  " << endl;
-    for(int i = 0; i < 8; i++){
-        cout << i + 1;
-        cout << " ";
-	    for(int j = 0; j < 8; j++){
-		    if(plateau [i][j] == 0)
-		    	cout << ". ";
-		    else if(plateau[i][j] == 1)
-		    	cout << "X ";
-		    else if(plateau[i][j] == 2)
-		    	cout << "O ";
-	    }
-        cout << i+1 << endl;
-    }
-	cout << "  a b c d e f g h  " << endl;
-}
-/*construceur du plateau, le 1 c'est les blancs (X) et le 2 c'est les noirs (O)*/
 
-bool Plateau::check_input(int x, int y){
-    if(x > 8 || x < 0 || y > 8 || y < 0){
-        cout << "Invalid entry" <<endl;
-        return false;
-    }
-    else if(plateau[x][y] != 0){
-        cout << "Invalid entry" <<endl;
-        return false;
-    }
-    else
-        return true;
-}
 /*check si il y a un pion de la meme couleur plus loin dans cette direction, le 2e check pour manger quoi*/
 
 bool Plateau::check_direction(int x, int y, int direction[2]){
@@ -161,86 +131,4 @@ bool Plateau::check_notplay(){
 		}
 	}
 	return r;
-}
-
-/*bool Plateau::end_of_game(){
-	if (passe == 2)
-		return true; //Aurait pu servir comme fonction de fin mais no need
-	return false;
-}*/
-void Plateau::print_winner(){
-	cout << "\n \n \nFinal plate \n \n \n" << endl;
-	print_board();
-	cout << "Number of black pawns (O) : " << noirs << endl;
-	cout << "Number of white pawns (X) : " << blancs << endl;
-	if(noirs < blancs)
-		cout << "White player wins !" << endl;
-	else if(blancs < noirs)
-		cout << "Black player wins !" << endl;
-	else
-		cout << "It's a draw." << endl;
-}
-
-bool Plateau::game_over(){
-	if (passe == 2)
-		return true;
-	else if (noirs + blancs == 64)
-		return true;
-	return false;
-}
-
-
-void Plateau::game(){
-	while(!game_over()){
-        print_board();
-        player_turn();
-    }
-    print_winner();	
-}
- 
-void Plateau::player_turn(){
-    turn++;
-    string input = "";
-    color = (turn + 1)%2 + 1;
-    int x;
-    int y;
-    
-    if(color == 1){
-        cout << "White player turn (X)" << endl;       
-    }    
-    
-    else{
-	    cout << "Black player turn (O)" << endl;       
-    }
-    
-    while(true){
-		cout << "Turn " << turn << endl;
-		cout << "Number of black pawns (O) : " << noirs << endl;
-		cout << "Number of white pawns (X) : " << blancs << endl;
-		cout << "enter a position :";
-		getline(cin, input);
-		if(input.length() == 2){               
-                y = input[0] - 'a';
-                x = input[1] - '1';
-                if(input[0]=='0' && input[1]=='0'){
-					if(check_notplay()){			
-						passe ++;
-						cout << "The player skips he's turn" << endl;
-						break;
-					}
-				}
-                else if(check_input(x,y)){
-					pos_to_eat.clear();					
-                    if(check_eat(x,y)){
-						passe = 0;
-                        eat();
-                        break;
-					}
-                    else
-                        cout << "Impossible move" << endl;
-				}
-		}          
-        else
-            cout << "Invalid entry" << endl;
-	}
 }

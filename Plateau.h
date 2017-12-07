@@ -17,17 +17,11 @@ class Plateau {
  public :
 	Plateau ();
 	~Plateau();
-	void print_board();
 	int get_noirs();
 	int get_blancs();
-	bool check_input(int x, int y);
 	bool check_direction(int x, int y, int direction[2]);
 	bool check_eat(int x, int y);
 	void eat();
 	bool check_notplay();
-	void player_turn();
-	void print_winner();
-	bool game_over();
-	void game();
 };
 
