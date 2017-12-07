@@ -9,7 +9,6 @@ A FAIRE :
 - lecture des commandes et mise à jour du plateau (Javier)
 - Type de structure de données (Farkas)
 
-Problèmes à régler :
-- conditions sur les diagonales avec bords du tableau (2 cases dans les coins opposées peuvent être considérés cote à cote) (JAVIER)
-- implémenter une classe board (ROMAIN)
-- Condition de fin (LOUIS)
+A détruire (à vérifier) :
+- 1 vecteur pos_to_eat
+- LE PLATEAU
