@@ -84,6 +84,7 @@ bool Plateau::check_eat(int x, int y){//corriger cette fct sinon il y aura une e
 		}
 	}
 	if (eat){
+		pos_to_eat.clear();
 		pos_to_eat.push_back (x);
 		pos_to_eat.push_back (y);
 	}

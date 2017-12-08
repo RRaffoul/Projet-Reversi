@@ -2,19 +2,10 @@ void Player::Turn(){
 	view->print_state(Plate);
 	view->ask_pos(Plate);
 	getline(cin, input);
-		if(input.length() == 2){               
-                y = input[0] - 'a';
-                x = input[1] - '1';
-                if(input[0]=='0' && input[1]=='0'){
-					if(check_notplay()){			
-						passe ++;
-						cout << "The player skips he's turn" << endl;
-						break;
-					}
-				}
-                else if(check_input(x,y)){
-					pos_to_eat.clear();					
-                    if(check_eat(x,y)){
+		if(check_input(input)){
+			y = input[0] - 'a';
+			x = input[1] - '1';
+			if(check_eat(x,y)){
 						passe = 0;
                         eat();
                         break;
