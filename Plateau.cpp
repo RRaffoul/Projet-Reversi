@@ -24,18 +24,18 @@ Plateau::Plateau(){
 Plateau::~Plateau(){}
 	
 
-int Plateau::get_noirs(){
+int Plateau::Get_noirs(){
 	return noirs;
 }
 
-int Plateau::get_blancs(){
+int Plateau::Get_blancs(){
 	return blancs;
 }
 
 
 /*check si il y a un pion de la meme couleur plus loin dans cette direction, le 2e check pour manger quoi*/
 
-bool Plateau::check_direction(int x, int y, int direction[2]){
+bool Plateau::Check_direction(int x, int y, int direction[2]){
     int dx = direction[0];
     int dy = direction[1]; //donne la direction en X et en Y dans laquelle on cherche
     color = (turn + 1)%2 + 1; //pour savoir si on est au tour du joueur 1 ou 2 sans avoir modulo d'un nombre paire = 0 mais = 2
@@ -57,7 +57,7 @@ bool Plateau::check_direction(int x, int y, int direction[2]){
 	return false;
 }
 
-bool Plateau::check_eat(int x, int y){//corriger cette fct sinon il y aura une erreur dans les coins et sur les bords quand x + 1 <0 par ex
+bool Plateau::Check_eat(int x, int y){//corriger cette fct sinon il y aura une erreur dans les coins et sur les bords quand x + 1 <0 par ex
 	color = (turn +1)%2 + 1;
 	int count = 0;
 	int direction[2];
@@ -74,7 +74,7 @@ bool Plateau::check_eat(int x, int y){//corriger cette fct sinon il y aura une e
 						* avec des 0 quand il ne faut pas checker par la */
 						direction [0]= i;
 						direction [1]= j; //trouver un moyen d ecrire " direction = {i, j}; "
-						if (check_direction (x, y, direction)){
+						if (Check_direction (x, y, direction)){
 							passe = 0;
 							eat = true; //le if c'est pour que si une fois true reste true tout en continuant de cheker les autres directions
 						}
@@ -97,7 +97,7 @@ bool Plateau::check_eat(int x, int y){//corriger cette fct sinon il y aura une e
 }/*maintenant encore faire une fonction qui goupille celle ci et check_direction en utilisant cette derniere 
  que si la rangée de la matrice direction est != {0,0}*/
  
-void Plateau::eat(){
+void Plateau::Eat(){
 	color = (turn + 1)%2 + 1;
     for(int i =0; i < pos_to_eat.size() - 1;i += 2){
         plateau[pos_to_eat[i]][pos_to_eat[i + 1]] = color;
@@ -116,7 +116,7 @@ void Plateau::eat(){
     }
 }
 
-bool Plateau::check_notplay(){
+bool Plateau::Check_notplay(){
 /*
  * Vérifie si le joueur peut en effet passer son tour
  */

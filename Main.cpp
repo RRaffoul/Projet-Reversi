@@ -14,49 +14,23 @@
 	return false;
 }*/
 
-void Plateau::player_turn(){
+Player* playerW = new Player();
+Player* playerB = new Player();
+
+
+
+void Turn(){
     turn++;
-    string input = "";
     color = (turn + 1)%2 + 1;
-    int x;
-    int y;
-    
+    /*int x;
+    int y;*/
     if(color == 1){
-        cout << "White player turn (X)" << endl;       
+        view->White_turn();
+        playerW->Play();       
     }    
     
     else{
-	    cout << "Black player turn (O)" << endl;       
+	    view->Black_turn();
+        playerB->Play();              
     }
-    
-    while(true){
-		cout << "Turn " << turn << endl;
-		cout << "Number of black pawns (O) : " << noirs << endl;
-		cout << "Number of white pawns (X) : " << blancs << endl;
-		cout << "enter a position :";
-		getline(cin, input);
-		if(input.length() == 2){               
-                y = input[0] - 'a';
-                x = input[1] - '1';
-                if(input[0]=='0' && input[1]=='0'){
-					if(check_notplay()){			
-						passe ++;
-						cout << "The player skips he's turn" << endl;
-						break;
-					}
-				}
-                else if(check_input(x,y)){
-					pos_to_eat.clear();					
-                    if(check_eat(x,y)){
-						passe = 0;
-                        eat();
-                        break;
-					}
-                    else
-                        cout << "Impossible move" << endl;
-				}
-		}          
-        else
-            cout << "Invalid entry" << endl;
-	}
 }

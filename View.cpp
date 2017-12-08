@@ -16,7 +16,7 @@ void View::print_board(Plateau& Plate) const{ //a modif, la vue ne doit recevoir
 	cout << "  a b c d e f g h  " << endl;
 }
 
-void View::print_winner(Plateau& Plate) const{
+void View::Print_winner(Plateau& Plate) const{
 	/*cout << "\n \n \nFinal plate \n \n \n" << endl;
 	print_board(Plate);*/ // A mettre ailleurs, dans le main
 	int noirs = Plate->get_noirs();
@@ -31,7 +31,7 @@ void View::print_winner(Plateau& Plate) const{
 		cout << "It's a draw." << endl;
 }
 
-void View::print_state(Plateau& Plate) const{
+void View::Print_state(Plateau& Plate) const{
 	int noirs = Plate->get_noirs();
 	int blancs = Plate->get_blancs();
 	cout << "Turn " << turn << endl;
@@ -39,7 +39,15 @@ void View::print_state(Plateau& Plate) const{
 	cout << "Number of white pawns (X) : " << blancs << endl;
 }
 
-void View::ask_pos(){
+void View::White_turn(){
+	cout << "White player turn (X)" << endl;
+}
+
+void View::Black_turn(){
+	cout << "Black player turn (X)" << endl;
+}
+
+void View::Ask_pos(){
 	cout << "enter a position :";
 }
 
