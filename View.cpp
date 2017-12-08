@@ -47,6 +47,10 @@ void View::Skip_turn(){
 	cout << "The player skips he's turn" << endl;
 }
 
+void View::Cant_skip(){
+	cout << "A move is possible" << endl;
+}
+
 void View::Inv_entry_1(){
 	cout << "Invalid entry, outside the plate" <<endl;
 }

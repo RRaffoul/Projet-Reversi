@@ -1,35 +1,36 @@
 void Player::Turn(){
+	ok = false;
+	//soit c est ici qu on print le plateau soit dans le main, pareil pour la ligne suivante avec les scores
 	view->print_state(Plate);
-	view->ask_pos(Plate);
-	getline(cin, input);
-		if(check_input(input)){
-			y = input[0] - 'a';
-			x = input[1] - '1';
-			if(check_eat(x,y)){
-						passe = 0;
-                        eat();
-                        break;
+	while(!ok){
+		view->ask_pos(Plate);
+		getline(cin, input);
+			if(check_input(input)){
+				y = input[0] - 'a';
+				x = input[1] - '1';
+				if(x =='0' && y =='0'){  //On ferait pas une fonction pour ce if ?
+					if(Plate->check_notplay()){
+						view->Skip_turn();
+						ok = true;
 					}
-                    else
-                        cout << "Impossible move" << endl;
+					else { 
+						view->Cant_skip();
+						//ok = false;
+					}
 				}
-		}          
-        else
-            cout << "Invalid entry" << endl;
+				else if(Plate->check_eat(x,y)){
+					Plate->eat();
+					ok = true;
+				}
+		}
 	}
+}
 
 
 bool Player::check_input(string input){
 	if(input.length() == 2){               
 		y = input[0] - 'a';
         x = input[1] - '1';
-        if(input[0]=='0' && input[1]=='0'){
-			if(Plate->check_notplay()){			
-				passe ++;
-				view->Skip_turn();
-				return true;
-			}
-		}
 		else if(x > 8 || x < 0 || y > 8 || y < 0){ //check si dans le plateau
 		view->Inv_entry_1();
 			return false;

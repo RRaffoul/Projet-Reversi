@@ -62,6 +62,7 @@ bool Plateau::check_eat(int x, int y){//corriger cette fct sinon il y aura une e
 	int count = 0;
 	int direction[2];
 	bool eat = false;
+	pos_to_eat.clear();
 	//int direction[8][2]={0};    Devenu useless si on combien les fcts check_eat et check_direction
 	for (int i = -1; i <=1; i++){
 		if(x != 0 || i !=-1){ //Pour eviter qu'on ne sorte du plateau en regardant ce qu il y a derriere
@@ -74,6 +75,7 @@ bool Plateau::check_eat(int x, int y){//corriger cette fct sinon il y aura une e
 						direction [0]= i;
 						direction [1]= j; //trouver un moyen d ecrire " direction = {i, j}; "
 						if (check_direction (x, y, direction)){
+							passe = 0;
 							eat = true; //le if c'est pour que si une fois true reste true tout en continuant de cheker les autres directions
 						}
 						/*direction[count][0] = i;
@@ -84,7 +86,6 @@ bool Plateau::check_eat(int x, int y){//corriger cette fct sinon il y aura une e
 		}
 	}
 	if (eat){
-		pos_to_eat.clear();
 		pos_to_eat.push_back (x);
 		pos_to_eat.push_back (y);
 	}
@@ -124,12 +125,12 @@ bool Plateau::check_notplay(){
 		for (int j = 0; j< 8; j++){
 			if(plateau[i][j] == 0){
 				if(check_eat(i, j)){
-					cout << "A move is possible" << endl;
 					r = false;
 					return r;
 				}
 			}
 		}
 	}
+	passe ++;
 	return r;
 }
