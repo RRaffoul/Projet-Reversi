@@ -1,9 +1,7 @@
-Player::Player(Plateau* plate, View* vue){
+Player::Player(Plateau& plate, View& vue){
 	Plate = plate;
 	view = vue;
 }
-
-
 
 void Player::Play(){
 	ok = false;

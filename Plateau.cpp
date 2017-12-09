@@ -1,7 +1,6 @@
 #include "Plateau.h"
 
-Plateau::Plateau(View view){
-	vue = view;
+Plateau::Plateau(){
 	int turn = 0;
 	int passe = 0;
 	noirs = 0;

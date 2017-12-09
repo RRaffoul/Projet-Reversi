@@ -1,7 +1,6 @@
-View::View(Plateau* plate){
+View::View(Plateau plate){
 	Plate = plate;
 }
-
 
 void View::Print_board(){ //a modif, la vue ne doit recevoir que le plateau a print et c est le controleur qui fait la conversion
 	cout << "  a b c d e f g h  " << endl;

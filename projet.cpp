@@ -12,8 +12,8 @@
 
 int main(int argc, char *argv[]){	
 	
-    Plateau* Plate = new Plateau();
-    Plate->game();
-    delete Plate;
+    Main main = new Main();
+    Main->Game();
+    delete Main;
 	return 0;
 }

@@ -1,8 +1,13 @@
+#include <iostream> //tous utiles ?
+#include <string>
+#include <sstream>
 
 class View {
  private :
 	Plateau Plate;
  public :
+	View(Plateau);
+	~View();
 	void print_board();
 	void print_winner();
 	void White_turn();
