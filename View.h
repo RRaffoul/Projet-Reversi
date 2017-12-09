@@ -1,6 +1,7 @@
 
 class View {
  private :
+	Plateau Plate;
  public :
 	void print_board();
 	void print_winner();
