@@ -48,7 +48,7 @@ void Vue::White_turn(){
 }
 
 void Vue::Black_turn(){
-	cout << "Black player turn (X)" << endl;
+	cout << "Black player turn (O)" << endl;
 }
 
 void Vue::Ask_pos(){
@@ -73,4 +73,7 @@ void Vue::Inv_entry_2(){
 
 void Vue::Inv_entry_3(){
 	cout << "Invalid entry, more than 2 characters" <<endl;
+}
+void Vue::Inv_entry_4(){
+	cout << "Invalid position, no play on this position" <<endl;
 }

@@ -24,6 +24,7 @@ class Vue
 	void Inv_entry_1();
 	void Inv_entry_2();
 	void Inv_entry_3();
+	void Inv_entry_4();
 };
 
 #endif // VUE_H

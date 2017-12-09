@@ -29,8 +29,8 @@ int main()
 {
     Plateau* plate = new Plateau();
 	Vue* vue = new Vue();
-	Player* playerW = new Player(*plate, *vue);
-	Player* playerB = new Player(*plate, *vue);
+	Player* playerW = new Player(plate, vue);
+	Player* playerB = new Player(plate, vue);
 	int turn = 0;
 	while(!plate->Game_over()){
 		turn++;

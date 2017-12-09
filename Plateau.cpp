@@ -116,6 +116,7 @@ void Plateau::Eat(){
 			}
 		}
     }
+
 }
 
 void Plateau::Set_Turn(int newTurn){

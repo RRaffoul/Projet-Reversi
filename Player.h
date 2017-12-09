@@ -14,10 +14,10 @@ class Player
 {
  private:
 	bool ok;
-	Plateau plate;
-	Vue vue;
+	Plateau* plate;
+	Vue* vue;
  public:
-	Player(Plateau, Vue);
+	Player(Plateau*, Vue*);
 	~Player();
 	void Play(int);
 	bool Check_input(string);
