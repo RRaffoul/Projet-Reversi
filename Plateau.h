@@ -14,6 +14,7 @@ class Plateau {
 	int passe;
 	int noirs;
 	int blancs;
+	View vue;
  public :
 	Plateau ();
 	~Plateau();

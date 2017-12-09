@@ -1,4 +1,9 @@
-void View::print_board(Plateau& Plate) const{ //a modif, la vue ne doit recevoir que le plateau a print et c est le controleur qui fait la conversion
+View::View(Plateau* plate){
+	Plate = plate;
+}
+
+
+void View::Print_board(){ //a modif, la vue ne doit recevoir que le plateau a print et c est le controleur qui fait la conversion
 	cout << "  a b c d e f g h  " << endl;
     for(int i = 0; i < 8; i++){
         cout << i + 1;
@@ -16,7 +21,7 @@ void View::print_board(Plateau& Plate) const{ //a modif, la vue ne doit recevoir
 	cout << "  a b c d e f g h  " << endl;
 }
 
-void View::Print_winner(Plateau& Plate) const{
+void View::Print_winner(){
 	/*cout << "\n \n \nFinal plate \n \n \n" << endl;
 	print_board(Plate);*/ // A mettre ailleurs, dans le main
 	int noirs = Plate->get_noirs();
@@ -31,7 +36,7 @@ void View::Print_winner(Plateau& Plate) const{
 		cout << "It's a draw." << endl;
 }
 
-void View::Print_state(Plateau& Plate) const{
+void View::Print_state(){
 	int noirs = Plate->get_noirs();
 	int blancs = Plate->get_blancs();
 	cout << "Turn " << turn << endl;
@@ -67,6 +72,6 @@ void View::Inv_entry_2(){
 	cout << "Invalid entry, already played" <<endl;
 }
 
-void View::Inv_entry_1(){
+void View::Inv_entry_3(){
 	cout << "Invalid entry, more than 2 characters" <<endl;
 }

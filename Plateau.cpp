@@ -1,6 +1,7 @@
 #include "Plateau.h"
 
-Plateau::Plateau(){
+Plateau::Plateau(View view){
+	vue = view;
 	int turn = 0;
 	int passe = 0;
 	noirs = 0;
@@ -114,6 +115,14 @@ void Plateau::Eat(){
 			}
 		}
     }
+}
+
+bool Plateau::game_over(){
+	if (passe == 2)
+		return true;
+	else if (noirs + blancs == 64)
+		return true;
+	return false;
 }
 
 bool Plateau::Check_notplay(){

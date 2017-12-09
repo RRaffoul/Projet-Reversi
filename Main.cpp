@@ -1,22 +1,3 @@
-/*void Plateau::game(){
-	while(!game_over()){
-        print_board();
-        player_turn();
-    }
-    print_winner();	
-}*/ //Ca je sais pas ou il faudrait le mettre pour que ca soit O.O., peut etre a redefinir
-
-/*bool Plateau::game_over(){
-	if (passe == 2)
-		return true;
-	else if (noirs + blancs == 64)
-		return true;
-	return false;
-}*/
-
-Player* playerW = new Player();
-Player* playerB = new Player();
-
 
 
 void Turn(){
@@ -33,4 +14,22 @@ void Turn(){
 	    view->Black_turn();
         playerB->Play();              
     }
+}
+
+void Game(){
+	Plateau* plate = new Plateau();
+	View* view = new View(plate);
+	Player* playerW = new Player(plate, view);
+	Player* playerB = new Player(plate, view);
+	int turn = 0;
+	while(!plate->Game_over()){
+		turn++;
+		Turn();
+	}
+	view->Print_board();
+	view->Print_winner();
+	delete playerW;
+	delete playerB;
+	delete view;
+	delete plate;
 }

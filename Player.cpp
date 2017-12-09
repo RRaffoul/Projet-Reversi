@@ -1,10 +1,17 @@
+Player::Player(Plateau* plate, View* vue){
+	Plate = plate;
+	view = vue;
+}
+
+
+
 void Player::Play(){
 	ok = false;
 	//soit c est ici qu on print le plateau soit dans le main, pareil pour la ligne suivante avec les scores
-	view->Print_state(Plate);
+	view->Print_state();
 	string input = "";
 	while(!ok){
-		view->Ask_pos(Plate);
+		view->Ask_pos();
 		getline(cin, input);
 			if(Check_input(input)){
 				y = input[0] - 'a';
