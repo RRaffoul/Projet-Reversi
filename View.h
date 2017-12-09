@@ -1,6 +1,7 @@
 #include <iostream> //tous utiles ?
 #include <string>
 #include <sstream>
+#include "Plateau.h"
 
 class View {
  public :
