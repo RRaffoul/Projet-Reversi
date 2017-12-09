@@ -1,7 +1,6 @@
 #include "Vue.h"
 
 Vue::Vue(){
-
 }
 
 Vue::~Vue(){}

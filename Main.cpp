@@ -3,7 +3,6 @@
 #include <sstream>
 
 
-
 using namespace std;
 
 #include "Vue.h"
@@ -25,8 +24,7 @@ void Turn(int turn, Vue* vue, Player* playerW, Player* playerB){
     }
 }
 
-int main()
-{
+int main(){
     Plateau* plate = new Plateau();
 	Vue* vue = new Vue();
 	Player* playerW = new Player(plate, vue);
@@ -39,10 +37,10 @@ int main()
 	}
 	vue->Print_board(plate->Get_Plate());
 	vue->Print_winner(plate->Get_Noirs(), plate->Get_Blancs());
-	delete &playerW;
-	delete &playerB;
-	delete &vue;
-	delete &plate;
+	delete playerW;
+	delete playerB;
+	delete vue;
+	delete plate;
 	return 0;
 }
 

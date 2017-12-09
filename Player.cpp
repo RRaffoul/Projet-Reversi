@@ -5,10 +5,13 @@ Player::Player(Plateau* platee, Vue* vuee){
 	vue = vuee;
 }
 
+Player::~Player(){
+}
+
 void Player::Play(int turn){
 	ok = false;
 	//soit c est ici qu on print le plateau soit dans le main, pareil pour la ligne suivante avec les scores
-	vue->Print_state(plate->Get_Blancs(), plate->Get_Noirs(), turn);
+	vue->Print_state(plate->Get_Noirs(), plate->Get_Blancs(), turn);
 	string input = "";
 	while(!ok){
 		vue->Ask_pos();
@@ -17,7 +20,7 @@ void Player::Play(int turn){
 				int y = input[0] - 'a';
 				int x = input[1] - '1';
                 plate->Set_Turn(turn);
-				if(x =='0' && y =='0'){  //On ferait pas une fonction pour ce if ?
+				if(x ==('0'-'1') && y ==('0'-'a')){  //On ferait pas une fonction pour ce if ?
 					if(plate->Check_notplay()){
 						vue->Skip_turn();
 						ok = true;
@@ -42,7 +45,11 @@ bool Player::Check_input(string input){
 	if(input.length() == 2){
 		int y = input[0] - 'a';
         int x = input[1] - '1';
-        if(x > 8 || x < 0 || y > 8 || y < 0){ //check si dans le plateau
+        if(x ==('0'-'1') && y ==('0'-'a')){
+			cout<< "lol" << endl;
+			return true;
+		}
+        else if(x > 8 || x < 0 || y > 8 || y < 0){ //check si dans le plateau
 		    vue->Inv_entry_1();
 			return false;
 		}
