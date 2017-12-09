@@ -14,15 +14,14 @@ class Plateau {
 	int passe;
 	int noirs;
 	int blancs;
-	View vue;
+
  public :
 	Plateau ();
 	~Plateau();
-	int get_noirs();
-	int get_blancs();
-	bool check_direction(int x, int y, int direction[2]);
-	bool check_eat(int x, int y);
-	void eat();
-	bool check_notplay();
+	bool Check_direction(int x, int y, int direction[2]);
+	bool Check_eat(int x, int y);
+	void Eat();
+	bool Check_notplay();
+    bool Game_over();
 };
 

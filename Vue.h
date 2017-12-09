@@ -2,10 +2,10 @@
 #include <string>
 #include <sstream>
 
-class View {
+class Vue {
  public :
-	View();
-	~View();
+	Vue();
+	~Vue();
 	void Print_board();
 	void Print_winner();
     void Print_state(){

@@ -24,14 +24,6 @@ Plateau::Plateau(){
 Plateau::~Plateau(){}
 	
 
-int Plateau::Get_noirs(){
-	return noirs;
-}
-
-int Plateau::Get_blancs(){
-	return blancs;
-}
-
 
 /*check si il y a un pion de la meme couleur plus loin dans cette direction, le 2e check pour manger quoi*/
 
@@ -116,7 +108,7 @@ void Plateau::Eat(){
     }
 }
 
-bool Plateau::game_over(){
+bool Plateau::Game_over(){
 	if (passe == 2)
 		return true;
 	else if (noirs + blancs == 64)
@@ -132,7 +124,7 @@ bool Plateau::Check_notplay(){
 	for(int i=0; i<8; i++){
 		for (int j = 0; j< 8; j++){
 			if(plateau[i][j] == 0){
-				if(check_eat(i, j)){
+				if(Check_eat(i, j)){
 					r = false;
 					return r;
 				}

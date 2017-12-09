@@ -1,4 +1,4 @@
-Main::Main()
+Main::Main(){}
 
 void Turn(){
     turn++;
@@ -18,7 +18,7 @@ void Turn(){
 
 void Game(){
 	Plateau* plate = new Plateau();
-	View* view = new View(plate);
+	View* view = new View();
 	Player* playerW = new Player(plate, view);
 	Player* playerB = new Player(plate, view);
 	int turn = 0;
