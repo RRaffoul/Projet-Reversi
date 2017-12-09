@@ -1,35 +1,48 @@
-Main::Main(){}
+#include <iostream>
+#include <string>
+#include <sstream>
 
-void Turn(){
-    turn++;
-    color = (turn + 1)%2 + 1;
+
+
+using namespace std;
+
+#include "Vue.h"
+#include "Plateau.h"
+#include "Player.h"
+
+void Turn(int turn, Vue* vue, Player* playerW, Player* playerB){
+    int color = (turn + 1)%2 + 1;
     /*int x;
     int y;*/
     if(color == 1){
-        view->White_turn();
-        playerW->Play();       
-    }    
-    
+        vue->White_turn();
+        playerW->Play(turn);
+    }
+
     else{
-	    view->Black_turn();
-        playerB->Play();              
+	    vue->Black_turn();
+        playerB->Play(turn);
     }
 }
 
-void Game(){
-	Plateau* plate = new Plateau();
-	View* view = new View();
-	Player* playerW = new Player(plate, view);
-	Player* playerB = new Player(plate, view);
+int main()
+{
+    Plateau* plate = new Plateau();
+	Vue* vue = new Vue();
+	Player* playerW = new Player(*plate, *vue);
+	Player* playerB = new Player(*plate, *vue);
 	int turn = 0;
 	while(!plate->Game_over()){
 		turn++;
-		Turn();
+	    vue->Print_board(plate->Get_Plate());
+		Turn(turn, vue, playerW, playerB);
 	}
-	view->Print_board();
-	view->Print_winner();
-	delete playerW;
-	delete playerB;
-	delete view;
-	delete plate;
+	vue->Print_board(plate->Get_Plate());
+	vue->Print_winner(plate->Get_Noirs(), plate->Get_Blancs());
+	delete &playerW;
+	delete &playerB;
+	delete &vue;
+	delete &plate;
+	return 0;
 }
+

@@ -4,15 +4,24 @@
 #include "Plateau.h"
 #include "Vue.h"
 
+using namespace std;
 
-class Player {
+#ifndef PLAYER_H
+#define PLAYER_H
+
+
+class Player
+{
  private:
 	bool ok;
-	Plateau *Plate;
-	Vue *Vue;
+	Plateau plate;
+	Vue vue;
  public:
 	Player(Plateau, Vue);
 	~Player();
-	void Play();
-	void Check_input(string);
+	void Play(int);
+	bool Check_input(string);
 };
+
+#endif // PLAYER_H
+
