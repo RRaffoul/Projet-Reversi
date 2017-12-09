@@ -2,7 +2,6 @@
 
 Player::Player(Plateau* platee, Vue* vuee){
 	plate = platee;
-    cout << "coucou" <<plate << endl;
 	vue = vuee;
 }
 
