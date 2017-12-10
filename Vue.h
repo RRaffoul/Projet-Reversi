@@ -3,13 +3,20 @@
 #include <sstream>
 #include "Plateau.h"
 
-class Vue {
- public :
+using namespace std;
+
+#ifndef VUE_H
+#define VUE_H
+
+
+class Vue
+{
+    public :
 	Vue();
 	~Vue();
-	void Print_board();
-	void Print_winner();
-    void Print_state(){
+	void Print_board(int*);
+	void Print_winner(int, int);
+    void Print_state(int, int, int);
 	void White_turn();
 	void Black_turn();
 	void Ask_pos();
@@ -18,4 +25,8 @@ class Vue {
 	void Inv_entry_1();
 	void Inv_entry_2();
 	void Inv_entry_3();
+	void Inv_entry_4();
 };
+
+#endif // VUE_H
+

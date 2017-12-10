@@ -1,4 +1,4 @@
-/*
+e/*
  * Projet Reversi
  * INFO-H304
  * Daniel FARKAS
@@ -13,7 +13,7 @@
 int main(int argc, char *argv[]){	
 	
     Main main = new Main();
-    Main->Game();
+    main->Game();
     delete Main;
 	return 0;
 }

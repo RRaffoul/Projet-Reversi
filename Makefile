@@ -1,5 +1,5 @@
 all : Plateau.o Player.o Main.o Vue.o
-	g++ Plateau.o Player.o Main.o Vue.o projet.o -o projet
+	g++ Plateau.o Player.o Main.o Vue.o -o projet
 Plateau.o : Plateau.h Plateau.cpp
 	g++ -c Plateau.cpp
 Player.o : Player.h Player.cpp
@@ -7,7 +7,7 @@ Player.o : Player.h Player.cpp
 Main.o : Main.h Main.cpp
 	g++ -c Main.cpp
 Vue.o : Vue.h Vue.cpp
-	g++ -c View.cpp
+	g++ -c Vue.cpp
 projet.o : projet.cpp
 	g++ -c projet.cpp
 

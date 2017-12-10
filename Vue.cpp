@@ -1,22 +1,21 @@
 #include "Vue.h"
 
 Vue::Vue(){
-    int test = 0;
 }
 
 Vue::~Vue(){}
 
-void Vue::Print_board(){ //a modif, la vue ne doit recevoir que le plateau a print et c est le controleur qui fait la conversion
+void Vue::Print_board(int* plate){ //a modif, la vue ne doit recevoir que le plateau a print et c est le controleur qui fait la conversion
 	cout << "  a b c d e f g h  " << endl;
     for(int i = 0; i < 8; i++){
         cout << i + 1;
         cout << " ";
 	    for(int j = 0; j < 8; j++){
-		    if(Plate [i][j] == 0)
+		    if(*(plate + (8*i) + j) == 0)
 		    	cout << ". ";
-		    else if(Plate[i][j] == 1)
+		    else if(*(plate + (8*i) + j) == 1)
 		    	cout << "X ";
-		    else if(Plate[i][j] == 2)
+		    else if(*(plate + (8*i) + j) == 2)
 		    	cout << "O ";
 	    }
         cout << i+1 << endl;
@@ -24,11 +23,9 @@ void Vue::Print_board(){ //a modif, la vue ne doit recevoir que le plateau a pri
 	cout << "  a b c d e f g h  " << endl;
 }
 
-void Vue::Print_winner(){
+void Vue::Print_winner(int noirs, int blancs){
 	/*cout << "\n \n \nFinal plate \n \n \n" << endl;
 	print_board(Plate);*/ // A mettre ailleurs, dans le main
-	int noirs = Plate->get_noirs();
-	int blancs = Plate->get_blancs();
 	cout << "Number of black pawns (O) : " << noirs << endl;
 	cout << "Number of white pawns (X) : " << blancs << endl;
 	if(noirs < blancs)
@@ -39,9 +36,7 @@ void Vue::Print_winner(){
 		cout << "It's a draw." << endl;
 }
 
-void Vue::Print_state(){
-	int noirs = Plate->get_noirs();
-	int blancs = Plate->get_blancs();
+void Vue::Print_state(int noirs, int blancs, int turn){
 	cout << "Turn " << turn << endl;
 	cout << "Number of black pawns (O) : " << noirs << endl;
 	cout << "Number of white pawns (X) : " << blancs << endl;
@@ -52,7 +47,7 @@ void Vue::White_turn(){
 }
 
 void Vue::Black_turn(){
-	cout << "Black player turn (X)" << endl;
+	cout << "Black player turn (O)" << endl;
 }
 
 void Vue::Ask_pos(){
@@ -77,4 +72,7 @@ void Vue::Inv_entry_2(){
 
 void Vue::Inv_entry_3(){
 	cout << "Invalid entry, more than 2 characters" <<endl;
+}
+void Vue::Inv_entry_4(){
+	cout << "Invalid position, no play on this position" <<endl;
 }
