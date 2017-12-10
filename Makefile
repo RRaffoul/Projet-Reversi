@@ -4,7 +4,7 @@ Plateau.o : Plateau.h Plateau.cpp
 	g++ -c Plateau.cpp
 Player.o : Player.h Player.cpp
 	g++ -c Player.cpp
-Main.o : Main.h Main.cpp
+Main.o : Main.cpp
 	g++ -c Main.cpp
 Vue.o : Vue.h Vue.cpp
 	g++ -c Vue.cpp
