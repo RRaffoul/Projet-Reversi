@@ -5,29 +5,34 @@
 
 using namespace std;
 
-class Plateau {
+#ifndef PLATEAU_H
+#define PLATEAU_H
+
+
+class Plateau
+{
  private :
-	int plateau [8][8]; 
+	int plateau [8][8];
 	vector<int> pos_to_eat;
 	int turn;
 	int color;
 	int passe;
 	int noirs;
 	int blancs;
+
  public :
 	Plateau ();
 	~Plateau();
-	void print_board();
-	int get_noirs();
-	int get_blancs();
-	bool check_input(int x, int y);
-	bool check_direction(int x, int y, int direction[2]);
-	bool check_eat(int x, int y);
-	void eat();
-	bool check_notplay();
-	void player_turn();
-	void print_winner();
-	bool game_over();
-	void game();
+	bool Check_direction(int x, int y, int direction[2]);
+	bool Check_eat(int x, int y);
+	int* Get_Plate();
+    int Get_Blancs();
+    int Get_Noirs();
+    void Set_Turn(int);
+	void Eat();
+	bool Check_notplay();
+    bool Game_over();
 };
+
+#endif // PLATEAU_H
 

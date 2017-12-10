@@ -1,4 +1,4 @@
-/*
+e/*
  * Projet Reversi
  * INFO-H304
  * Daniel FARKAS
@@ -12,8 +12,8 @@
 
 int main(int argc, char *argv[]){	
 	
-    Plateau* Plate = new Plateau();
-    Plate->game();
-    delete Plate;
+    Main main = new Main();
+    main->Game();
+    delete Main;
 	return 0;
 }
