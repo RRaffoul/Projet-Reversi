@@ -28,7 +28,6 @@ HumanPlayer::~HumanPlayer(){
 
 void HumanPlayer::Play(int turn){
 	//Player::Play(turn);
-	cout << "Ca part en couilles ?" << endl;
 	ok = false;
 	//soit c est ici qu on print le plateau soit dans le main, pareil pour la ligne suivante avec les scores
 	vue->Print_state(plate->Get_Noirs(), plate->Get_Blancs(), turn);
