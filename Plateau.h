@@ -1,14 +1,38 @@
-#include "Case.h"
-#include <array>
+#include <iostream>
+#include <string>
+#include <sstream>
+#include <vector>
 
-class Plateau {
-	private:
-		array<Case, 64> plateau;
-	public:
-		Plateau();
-		~Plateau();
-		int imprimePlateau();
-		int joueBlanc();
-		int joueNoir();
-		int valideTour();
+using namespace std;
+
+#ifndef PLATEAU_H
+#define PLATEAU_H
+
+
+class Plateau
+{
+ private :
+	int plateau [8][8];
+	vector<int> pos_to_eat;
+	int turn;
+	int color;
+	int passe;
+	int noirs;
+	int blancs;
+
+ public :
+	Plateau ();
+	~Plateau();
+	bool Check_direction(int x, int y, int direction[2]);
+	bool Check_eat(int x, int y);
+	int* Get_Plate();
+    int Get_Blancs();
+    int Get_Noirs();
+    void Set_Turn(int);
+	void Eat();
+	bool Check_notplay();
+    bool Game_over();
 };
+
+#endif // PLATEAU_H
+
