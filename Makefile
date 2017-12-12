@@ -1,5 +1,7 @@
+STD = -std=c++11
+
 all : Plateau.o Player.o Main.o Vue.o
-	g++ Plateau.o Player.o Main.o Vue.o -o projet
+	g++ $(STD) Plateau.o Player.o Main.o Vue.o -o projet
 Plateau.o : Plateau.h Plateau.cpp
 	g++ -c Plateau.cpp
 Player.o : Player.h Player.cpp
