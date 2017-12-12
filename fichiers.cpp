@@ -45,7 +45,7 @@ void explore(char * dir_name){
 	{
 		if (entry->d_name[0] != '.'){
 			string path = string(dir_name) + '/' + string(entry->d_name);
-			cout << "- " << path << '\n' << endl;
+			cout << "- " << path << endl;
 			stat(path.c_str(), &info);
 		}
 	}
