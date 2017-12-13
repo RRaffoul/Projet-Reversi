@@ -11,13 +11,29 @@ using namespace std;
 
 class Player
 {
- private:
+ protected: //Nécessaire pour que les classes enfants puissent y accéder
 	bool ok;
 	Plateau* plate;
 	Vue* vue;
  public:
 	Player(Plateau*, Vue*);
-	~Player();
+	virtual ~Player();
+	virtual void Play(int);
+	virtual bool Check_input(string);
+};
+
+class HumanPlayer : public Player{
+public:	
+	HumanPlayer(Plateau*, Vue*);
+	~HumanPlayer();
+	void Play(int);
+	bool Check_input(string);
+};
+
+class FilePlayer : public Player{
+public:
+	FilePlayer(Plateau*, Vue*);
+	~FilePlayer();
 	void Play(int);
 	bool Check_input(string);
 };

@@ -5,7 +5,6 @@
 #include <sys/stat.h>
 #include <chrono>
 #include <thread>
-#include <unistd.h> // nécessaire pour l'utilisation de la fct access()
 using std::ifstream;
 using std::ofstream;
 using std::cout;
