@@ -5,9 +5,9 @@ all : Plateau.o Player.o Main.o Vue.o
 Plateau.o : Plateau.h Plateau.cpp
 	g++ -c Plateau.cpp
 Player.o : Player.h Player.cpp
-	g++ -c Player.cpp
+	g++ $(STD) -c Player.cpp
 Main.o : Main.cpp
-	g++ -c Main.cpp
+	g++ $(STD) -c Main.cpp
 Vue.o : Vue.h Vue.cpp
 	g++ -c Vue.cpp
 projet.o : projet.cpp

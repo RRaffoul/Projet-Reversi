@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <sstream>
 
@@ -24,10 +25,10 @@ void Turn(int turn, Vue* vue, Player* playerW, Player* playerB){
     }
 }
 
-Player* choice(Plateau* plate, Vue* vue){
+Player* choice(Plateau* plate, Vue* vue, string player){
 	string uresp; //string contenant la réponse de l'utilisateur
 	while(*(uresp.c_str()) != 'h' || *(uresp.c_str()) != 'f'){
-		cout << "Joueur Blanc : IA (i) ou Humain (h) ou Fichier (f) ?" << endl;
+		cout << "Joueur " << player << " : IA (i) ou Humain (h) ou Fichier (f) ?" << endl;
 		getline(cin, uresp);
 		if(*(uresp.c_str()) == 'h'){
 			HumanPlayer* player = new HumanPlayer(plate, vue);
@@ -47,8 +48,8 @@ int main(){
 	Vue* vue = new Vue();
 	Player* playerW;
 	Player* playerB;
-	playerW = choice(plate, vue);
-	playerB = choice(plate, vue);
+	playerW = choice(plate, vue, "blanc");
+	playerB = choice(plate, vue, "noir");
 	int turn = 0;
 	while(!plate->Game_over()){
 		turn++;

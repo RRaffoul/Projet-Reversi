@@ -1,6 +1,11 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <fstream>
+#include <dirent.h>
+#include <sys/stat.h>
+#include <chrono>
+#include <thread>
 #include "Vue.h"
 
 using namespace std;
@@ -31,9 +36,14 @@ public:
 };
 
 class FilePlayer : public Player{
+private:
+	ofstream fichier_ecr;
+	ifstream fichier_lect;
 public:
 	FilePlayer(Plateau*, Vue*);
 	~FilePlayer();
+	void explore(char *);
+	string init();
 	void Play(int);
 	bool Check_input(string);
 };
