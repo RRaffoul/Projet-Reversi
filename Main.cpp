@@ -24,11 +24,31 @@ void Turn(int turn, Vue* vue, Player* playerW, Player* playerB){
     }
 }
 
+Player* choice(Plateau* plate, Vue* vue){
+	string uresp; //string contenant la réponse de l'utilisateur
+	while(*(uresp.c_str()) != 'h' || *(uresp.c_str()) != 'f'){
+		cout << "Joueur Blanc : IA (i) ou Humain (h) ou Fichier (f) ?" << endl;
+		getline(cin, uresp);
+		if(*(uresp.c_str()) == 'h'){
+			HumanPlayer* player = new HumanPlayer(plate, vue);
+	        return player;
+		}
+		else if(*(uresp.c_str()) == 'f'){
+			FilePlayer* player = new FilePlayer(plate, vue);
+	        return player;
+		}
+	}
+
+}
+
+
 int main(){
     Plateau* plate = new Plateau();
 	Vue* vue = new Vue();
-	Player* playerW = new Player(plate, vue);
-	Player* playerB = new Player(plate, vue);
+	Player* playerW;
+	Player* playerB;
+	playerW = choice(plate, vue);
+	playerB = choice(plate, vue);
 	int turn = 0;
 	while(!plate->Game_over()){
 		turn++;

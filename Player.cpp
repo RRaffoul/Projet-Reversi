@@ -2,14 +2,32 @@
 
 
 Player::Player(Plateau* platee, Vue* vuee){
-	plate = platee;
-	vue = vuee;
+		plate = platee;
+		vue = vuee;
 }
 
 Player::~Player(){
+	cout << "Destruction d'un Player" << endl;
 }
 
 void Player::Play(int turn){
+	//Voir ce qui est commun au 2(3) types de player
+}
+
+bool Player::Check_input(string input){
+	//Voir ce qui est commun au 2(3) types de player
+}
+
+HumanPlayer::HumanPlayer(Plateau* platee, Vue* vuee) : Player(platee, vuee){
+	cout << "Creation d'un HumanPlayer" << endl;
+}
+
+HumanPlayer::~HumanPlayer(){
+	cout << "Destruction d'un HumanPlayer" << endl;
+}
+
+void HumanPlayer::Play(int turn){
+	//Player::Play(turn);
 	ok = false;
 	//soit c est ici qu on print le plateau soit dans le main, pareil pour la ligne suivante avec les scores
 	vue->Print_state(plate->Get_Noirs(), plate->Get_Blancs(), turn);
@@ -42,7 +60,8 @@ void Player::Play(int turn){
 }
 
 
-bool Player::Check_input(string input){
+bool HumanPlayer::Check_input(string input){
+	Player::Check_input(input);
 	if(input.length() == 2){
 		int y = input[0] - 'a';
         int x = input[1] - '1';
@@ -65,4 +84,21 @@ bool Player::Check_input(string input){
 		vue->Inv_entry_3();
 		return false;
 	}
+}
+
+FilePlayer::FilePlayer(Plateau* platee, Vue* vuee) : Player(platee, vuee){
+	cout << "Creation d'un FilePlayer" << endl;
+}
+
+FilePlayer::~FilePlayer(){
+	cout << "Destruction d'un FilePlayer" << endl;
+}
+bool FilePlayer::Check_input(string input){
+	Player::Check_input(input);
+	cout << "ceci est la fct check_input de Fileplayer" << endl;
+}
+
+void FilePlayer::Play(int turn){
+	Player::Play(turn);
+	cout << "ceci est la fct play de Fileplayer" << endl;
 }
