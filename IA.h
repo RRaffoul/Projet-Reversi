@@ -4,7 +4,6 @@ class IA{
  private:
 	Plateau* plate;
 	Vue* vue;
-	Plateau original;
 	Plateau imaginaire;
 	vector<int> pos_to_check;
 	int count;

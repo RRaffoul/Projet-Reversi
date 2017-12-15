@@ -1,3 +1,12 @@
+/*Trucs à optimiser:
+ * 
+ * Pour l instant on recalcule chaque sous branche chaque fois pour chaque branche alors 
+ * qu on sait deja quelle sous branche est la meilleure, il faudrait garder ca en mémoire pour economiser
+ * 
+ * Faire un pruning alpha/beta
+ * 
+ * */
+
 
 
 IA::IA(Plateau* platee, Vue* vuee){
