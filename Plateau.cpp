@@ -147,3 +147,18 @@ bool Plateau::Check_notplay(){
 	return true;
 }
 
+vector<int> Plateau::Pos_Play(){
+    
+    vector<int> posPlay;
+	for(int i=0; i<8; i++){
+		for (int j = 0; j< 8; j++){
+			if(plateau[i][j] == 0){
+				if(Check_eat(i, j)){
+				    posPlay.push_back(i);
+				    posPlay.push_back(j);
+				}
+			}
+		}
+	}
+	return posPlay;
+}

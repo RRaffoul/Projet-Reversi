@@ -37,6 +37,10 @@ Player* choice(Plateau* plate, Vue* vue){
 			FilePlayer* player = new FilePlayer(plate, vue);
 	        return player;
 		}
+		else if(*(uresp.c_str()) == 'i'){
+			IAPlayer* player = new IAPlayer(plate, vue);
+	        return player;
+		}
 	}
 
 }
