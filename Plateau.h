@@ -32,6 +32,7 @@ class Plateau
     int Get_Turn();
 	void Eat();
 	bool Check_notplay();
+	void Not_play();
     vector<int> Pos_Play();
     bool Game_over();
 };

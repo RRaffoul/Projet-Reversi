@@ -38,7 +38,8 @@ public:
 	~IAPlayer();
     void Play(int);
 	int* Search_func(Plateau board);
-	float A(Plateau board,int);
+	float A(Plateau board,int count);
+	float B(Plateau board,int count);
 };
 
 class FilePlayer : public Player{

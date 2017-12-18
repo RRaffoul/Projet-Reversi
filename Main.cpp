@@ -10,7 +10,7 @@ using namespace std;
 #include "Player.h"
 
 void Turn(int turn, Vue* vue, Player* playerW, Player* playerB){
-    int color = (turn + 1)%2 + 1;
+    int color = turn %2 + 1;
     /*int x;
     int y;*/
     if(color == 1){

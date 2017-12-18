@@ -39,7 +39,7 @@ int Plateau::Get_Noirs(){
 bool Plateau::Check_direction(int x, int y, int direction[2]){
     int dx = direction[0];
     int dy = direction[1]; //donne la direction en X et en Y dans laquelle on cherche
-    color = (turn + 1)%2 + 1; //pour savoir si on est au tour du joueur 1 ou 2 sans avoir modulo d'un nombre paire = 0 mais = 2
+    color = turn % 2 + 1; //pour savoir si on est au tour du joueur 1 ou 2 sans avoir modulo d'un nombre paire = 0 mais = 2
 
     for(int dist = 2; dist < 8; dist++){
 		if(((x + dist*dx) > 7) || ((x + dist*dx) <0) || ((y + dist*dy) > 7) || ((y + dist*dy) <0) || (plateau[x + dist*dx][y + dist*dy] == 0)) {
@@ -60,7 +60,7 @@ bool Plateau::Check_direction(int x, int y, int direction[2]){
 
 bool Plateau::Check_eat(int x, int y){//corriger cette fct sinon il y aura une erreur dans les coins et sur les bords quand x + 1 <0 par ex
 
-	color = (turn +1)%2 + 1;
+	color = turn %2 + 1;
 	int count = 0;
 	int direction[2];
 	bool eat = false;
@@ -100,7 +100,7 @@ bool Plateau::Check_eat(int x, int y){//corriger cette fct sinon il y aura une e
  que si la rangée de la matrice direction est != {0,0}*/
 
 void Plateau::Eat(){
-	color = (turn + 1)%2 + 1;
+	color = turn %2 + 1;
     for(int i =0; i < pos_to_eat.size() - 1;i += 2){
         plateau[pos_to_eat[i]][pos_to_eat[i + 1]] = color;
         if (color == 1){
@@ -152,8 +152,11 @@ bool Plateau::Check_notplay(){
 	return true;
 }
 
+void Plateau::Not_play(){
+	passe++;
+}
+
 vector<int> Plateau::Pos_Play(){
-    
     vector<int> posPlay;
 	for(int i=0; i<8; i++){
 		for (int j = 0; j< 8; j++){

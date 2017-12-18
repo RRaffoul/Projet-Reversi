@@ -102,36 +102,60 @@ void IAPlayer::Play(int turn){
     float temp = 0;
     int pos[2] ={};
     vector<int> pos_to_check = plate->Pos_Play();
-    for(int i = 0; i < pos_to_check.size(); i+=2){
-        imaginaire = *plate;
-        if(imaginaire.Check_eat(pos_to_check[i], pos_to_check[i+1])){
-            imaginaire.Eat();
-            imaginaire.Set_Turn(imaginaire.Get_Turn() + 1);
-            count++;
-            temp = imaginaire.Get_Blancs() +  A(imaginaire,count);
-            if( temp > value){
-                value =temp;
-                pos[0] = pos_to_check[i];
-                pos[1] = pos_to_check[i+1];
-            }
-        }
-    }
-	if(pos[1] == 0 && pos [2] == 0){
-		vue->Skip_turn();
-	}
+    if ((turn % 2 + 1) == 1){
+		for(int i = 0; i < pos_to_check.size(); i+=2){
+			imaginaire = *plate;
+			if(imaginaire.Check_eat(pos_to_check[i], pos_to_check[i+1])){
+				imaginaire.Eat();
+				imaginaire.Set_Turn(imaginaire.Get_Turn() + 1);
+				count = 0;
+				temp = imaginaire.Get_Blancs() -  B(imaginaire,count);
+				if( temp > value){
+					value =temp;
+					pos[0] = pos_to_check[i];
+					pos[1] = pos_to_check[i+1];
+				}
+			}
+		}
+		if(pos[0] == 0 && pos[1] == 0){
+			vue->Skip_turn();
+			plate->Not_play();
+		}
 
-	else if(plate->Check_eat(pos[0],pos[1])){
-		plate->Eat();
+		else if(plate->Check_eat(pos[0],pos[1])){
+			plate->Eat();
+		}
+	}
+	else{
+		for(int i = 0; i < pos_to_check.size(); i+=2){
+			imaginaire = *plate;
+			if(imaginaire.Check_eat(pos_to_check[i], pos_to_check[i+1])){
+				imaginaire.Eat();
+				imaginaire.Set_Turn(imaginaire.Get_Turn() + 1);
+				count = 0;
+				temp = imaginaire.Get_Noirs() -  A(imaginaire,count);
+				if( temp > value){
+					value =temp;
+					pos[0] = pos_to_check[i];
+					pos[1] = pos_to_check[i+1];
+				}
+			}
+		}
+		if(pos[0] == 0 && pos[1] == 0){
+			vue->Skip_turn();
+			plate->Not_play();
+		}
+
+		else if(plate->Check_eat(pos[0],pos[1])){
+			plate->Eat();
+		}
 	}
 }
 
-
-
-
-float IAPlayer::A(Plateau board, int count){
+float IAPlayer::B(Plateau board, int count){
     float value = 0;
     float temp = 0;
-    if(count <= 20){
+    if(count < 20){
         vector<int> pos_to_check = board.Pos_Play();
         for(int i = 0; i < pos_to_check.size(); i+=2){
             imaginaire = board;
@@ -139,14 +163,35 @@ float IAPlayer::A(Plateau board, int count){
                 imaginaire.Eat();
                 imaginaire.Set_Turn(imaginaire.Get_Turn() + 1);
                 count++;
-                temp = imaginaire.Get_Blancs() + A(imaginaire,count);
+                temp = imaginaire.Get_Noirs() - A(imaginaire,count); //enfait en mettant le - au lieu du +, on fait - les tours de l autre et + nos tours a nous
                 if(temp>value){
                     value = temp;
                 }
             }
         }
     return value;
-    }
+	}
+}
+
+float IAPlayer::A(Plateau board, int count){
+    float value = 0;
+    float temp = 0;
+    if(count < 20){
+        vector<int> pos_to_check = board.Pos_Play();
+        for(int i = 0; i < pos_to_check.size(); i+=2){
+            imaginaire = board;
+            if(imaginaire.Check_eat(pos_to_check[i], pos_to_check[i+1])){
+                imaginaire.Eat();
+                imaginaire.Set_Turn(imaginaire.Get_Turn() + 1);
+                count++;
+                temp = imaginaire.Get_Blancs() - B(imaginaire,count); //enfait en mettant le - au lieu du +, on fait - les tours de l autre et + nos tours a nous
+                if(temp>value){
+                    value = temp;
+                }
+            }
+        }
+    return value;
+	}
 /*    int* futur;	
     cout << count  << endl;
 	if(count <= 5){ //si on s arrete a 4 (pair) ca n a pas de sens, on s arreterait sur un coup d un adversaire, pas sur un a toi
