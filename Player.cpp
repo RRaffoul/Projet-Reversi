@@ -107,8 +107,7 @@ void IAPlayer::Play(int turn){
         if(imaginaire.Check_eat(pos_to_check[i], pos_to_check[i+1])){
             imaginaire.Eat();
             imaginaire.Set_Turn(imaginaire.Get_Turn() + 1);
-            count++;
-            temp = imaginaire.Get_Blancs() +  A(imaginaire,count);
+            temp = Heuristic(imaginaire) +  A(imaginaire,count);
             if( temp > value){
                 value =temp;
                 pos[0] = pos_to_check[i];
@@ -131,7 +130,7 @@ void IAPlayer::Play(int turn){
 float IAPlayer::A(Plateau board, int count){
     float value = 0;
     float temp = 0;
-    if(count <= 20){
+    if(count <= 15){
         vector<int> pos_to_check = board.Pos_Play();
         for(int i = 0; i < pos_to_check.size(); i+=2){
             imaginaire = board;
@@ -139,7 +138,7 @@ float IAPlayer::A(Plateau board, int count){
                 imaginaire.Eat();
                 imaginaire.Set_Turn(imaginaire.Get_Turn() + 1);
                 count++;
-                temp = imaginaire.Get_Blancs() + A(imaginaire,count);
+                temp = Heuristic(imaginaire) + A(imaginaire,count);
                 if(temp>value){
                     value = temp;
                 }
@@ -199,6 +198,11 @@ float IAPlayer::A(Plateau board, int count){
 */
 }
 
+float IAPlayer::Heuristic(Plateau board){
+    float score;
+    score = board.Get_Blancs();
+    return score;
+}
 int* IAPlayer::Search_func(Plateau board){
 /*	count = 1; //si on veut mettre = 0, modifier dans l autre fonction dans le if <= devient < 
 	int* direction = A(board);

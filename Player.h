@@ -37,8 +37,9 @@ public:
 	IAPlayer(Plateau*, Vue*);
 	~IAPlayer();
     void Play(int);
-	int* Search_func(Plateau board);
-	float A(Plateau board,int);
+    float Heuristic(Plateau);
+	int* Search_func(Plateau);
+	float A(Plateau,int);
 };
 
 class FilePlayer : public Player{
