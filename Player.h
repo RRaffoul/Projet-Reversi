@@ -46,7 +46,7 @@ public:
 	string init();
 	string Play(int, string);
 	//bool Check_input(string);
-	string getLastMove();
+	void saveLastMove(string);
 	string getMove();
 };
 

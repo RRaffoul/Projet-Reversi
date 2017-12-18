@@ -120,7 +120,7 @@ bool HumanPlayer::Check_input(string input){
 FilePlayer::FilePlayer(Plateau* platee, Vue* vuee, string player_name): Player(platee, vuee){
 	string dir_name = init();
 	string names[2];
-	if(player_name == "blanc"){ //Si le joueur fichiers est blanc, on va lire ses coups dans le fichier blanc.txt et écrire les coups de l'adversaire dans noir.txt
+	if(player_name == "blanc"){ // voir Precision_Joueur_Fichier.md si incompréhension
 		names[0] = "noir";
 		names[1] = "blanc";
 		cout << "test" << endl;
@@ -133,7 +133,12 @@ FilePlayer::FilePlayer(Plateau* platee, Vue* vuee, string player_name): Player(p
 	string nom_fichier_ecr = dir_name+names[0]+".txt";
 	string nom_fichier_lect = dir_name+names[1]+".txt";
 	fichier_ecr.open(nom_fichier_ecr, fstream::in | fstream::out | fstream::trunc);
-	fichier_lect.open(nom_fichier_lect, fstream::in | fstream::out | fstream::trunc); // attention le fichier n'est pas créé ICI, doit être créé !
+	fichier_lect.open(nom_fichier_lect, fstream::in | fstream::out | fstream::trunc); 	/* 	idéalement ce fichier devrait être ouvert en
+																						*	écriture uniquement mais pour cela il faut
+																						* 	que le fichie blanc/noir.txt existe déjà
+																						* 	dans le bon répertoire
+																						*/
+										
 	while (!fichier_lect.is_open()){
 			cout << "Attente du joueur "<< names[1] <<" (fichier "<< names[1] <<".txt indisponible)" << endl;
 			// Ajout d'une temporisation avant de réessayer
@@ -202,7 +207,7 @@ string FilePlayer::Play(int turn, string last_move){
 	ok = false;
 	//soit c est ici qu on print le plateau soit dans le main, pareil pour la ligne suivante avec les scores
 	vue->Print_state(plate->Get_Noirs(), plate->Get_Blancs(), turn);
-	
+	saveLastMove(last_move);
 	string input = "";
 	while(!ok){
 		vue->Ask_pos();
@@ -240,16 +245,13 @@ bool FilePlayer::Check_input(string input){
 }*/
 
 
-string FilePlayer::getLastMove(){
-	string last_move;
-	while (!(getline(fichier_ecr, last_move))){
-		// Echec de la lecture - Effacement des flags d'erreur
-		fichier_ecr.clear();
-		// Ajout d'une temporisation avant de réessayer
-		std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+void FilePlayer::saveLastMove(string last_move){
+	if( fichier_ecr.is_open()){
+		fichier_ecr << last_move << endl;
+		cout << "L'adversaire a joué : "<< last_move << endl;
 	}
-	cout << "L'adversaire a joué : "<< last_move << endl;
-	return last_move;
+	else
+		cout << "problem" <<endl;
 }
 
 string FilePlayer::getMove(){
