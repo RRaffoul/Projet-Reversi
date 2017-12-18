@@ -10,12 +10,33 @@ Player::~Player(){
 	cout << "Destruction d'un Player" << endl;
 }
 
-void Player::Play(int turn){
-	//Voir ce qui est commun au 2(3) types de player
+string Player::Play(int turn, string last_move){
+	//Voir ce qui est commun aux 2(3) types de player
 }
 
 bool Player::Check_input(string input){
-	//Voir ce qui est commun au 2(3) types de player
+	if(input.length() == 2){
+		int y = input[0] - 'a';
+        int x = input[1] - '1';
+        if(x ==('0'-'1') && y ==('0'-'a')){
+			cout<< "lol" << endl;
+			return true;
+		}
+        else if(x > 8 || x < 0 || y > 8 || y < 0){ //check si dans le plateau
+		    vue->Inv_entry_1();
+			return false;
+		}
+		else if(*(plate->Get_Plate() + 8 * x + y) != 0){ //check si deja un pion a cet endroit là
+			vue->Inv_entry_2();
+			return false;
+		}
+		else
+			return true;
+    }
+	else {
+		vue->Inv_entry_3();
+		return false;
+	}
 }
 
 ///////////////////////// HUMANPLAYER ///////////////////////////////
@@ -28,7 +49,7 @@ HumanPlayer::~HumanPlayer(){
 	cout << "Destruction d'un HumanPlayer" << endl;
 }
 
-void HumanPlayer::Play(int turn){
+string HumanPlayer::Play(int turn, string last_move){
 	ok = false;
 	//soit c est ici qu on print le plateau soit dans le main, pareil pour la ligne suivante avec les scores
 	vue->Print_state(plate->Get_Noirs(), plate->Get_Blancs(), turn);
@@ -58,10 +79,12 @@ void HumanPlayer::Play(int turn){
                     vue->Inv_entry_4();
 		}
 	}
+	return input;
 }
 
-
+/*
 bool HumanPlayer::Check_input(string input){
+	//Player::Check_input(input);
 	if(input.length() == 2){
 		int y = input[0] - 'a';
         int x = input[1] - '1';
@@ -84,7 +107,7 @@ bool HumanPlayer::Check_input(string input){
 		vue->Inv_entry_3();
 		return false;
 	}
-}
+}*/
 
 ///////////////////////// FILEPLAYER ///////////////////////////////
 /*
@@ -94,40 +117,34 @@ bool HumanPlayer::Check_input(string input){
  * noir écrira (via un autre terminal) ses mouvements.
  */
 
-FilePlayer::FilePlayer(Plateau* platee, Vue* vuee): Player(platee, vuee){
+FilePlayer::FilePlayer(Plateau* platee, Vue* vuee, string player_name): Player(platee, vuee){
 	string dir_name = init();
+	string names[2];
+	if(player_name == "blanc"){ //Si le joueur fichiers est blanc, on va lire ses coups dans le fichier blanc.txt et écrire les coups de l'adversaire dans noir.txt
+		names[0] = "noir";
+		names[1] = "blanc";
+		cout << "test" << endl;
+	}
+	else{
+		names[0] = "blanc";
+		names[1] = "noir";
+	}
 	cout << "emplacement des fichiers : " << dir_name << endl;
-	string nom_fichier_noir = dir_name+"noir.txt";
-	string nom_fichier_blanc = dir_name+"blanc.txt";
-	fichier_ecr.open(nom_fichier_noir);
-	fichier_lect.open(nom_fichier_blanc);
-	if(fichier_ecr.is_open())
-		cout << "c'est la teuf en ecriture" << endl;
-	if(fichier_lect.is_open())
-		cout << "c'est la teuf en lecture" << endl;
-	cout << "Creation d'un FilePlayer" << endl;
+	string nom_fichier_ecr = dir_name+names[0]+".txt";
+	string nom_fichier_lect = dir_name+names[1]+".txt";
+	fichier_ecr.open(nom_fichier_ecr, fstream::in | fstream::out | fstream::trunc);
+	fichier_lect.open(nom_fichier_lect, fstream::in | fstream::out | fstream::trunc); // attention le fichier n'est pas créé ICI, doit être créé !
+	while (!fichier_lect.is_open()){
+			cout << "Attente du joueur "<< names[1] <<" (fichier "<< names[1] <<".txt indisponible)" << endl;
+			// Ajout d'une temporisation avant de réessayer
+			std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+			fichier_lect.open(nom_fichier_lect);
+	}
 }
 
 FilePlayer::~FilePlayer(){
 	cout << "Destruction d'un FilePlayer" << endl;
 }
-/*
-void FilePlayer::set_ofstream(ofstream fichier_noir){
-	fichier_ecr = &fichier_noir;
-}
-
-void FilePlayer::set_ifstream(ifstream fichier_blanc){
-	fichier_lect = &fichier_blanc;
-}
-
-ofstream FilePlayer::get_ofstream() const{
-	return &fichier_ecr;
-}
-
-ifstream FilePlayer::get_ifstream() const{
-	return &fichier_lect;
-}
-*/
 void FilePlayer::explore(char * dir_name){
 /*
  * Méthode permettant d'indiquer le contenu du répertoire pris en param.
@@ -150,7 +167,7 @@ void FilePlayer::explore(char * dir_name){
 	while ((entry = readdir(dir)) != NULL)
 	{
 		if (entry->d_name[0] != '.'){
-			string path = string(dir_name) + string(entry->d_name);
+			string path = /*string(dir_name) +*/ string(entry->d_name);
 			cout << "- " << path << endl;
 			stat(path.c_str(), &info);
 		}
@@ -180,13 +197,69 @@ string FilePlayer::init(){
 	return pathname;
 }
 
-void FilePlayer::Play(int turn){
+string FilePlayer::Play(int turn, string last_move){
 	//Player::Play(turn);
+	ok = false;
+	//soit c est ici qu on print le plateau soit dans le main, pareil pour la ligne suivante avec les scores
+	vue->Print_state(plate->Get_Noirs(), plate->Get_Blancs(), turn);
+	
+	string input = "";
+	while(!ok){
+		vue->Ask_pos();
+		fichier_lect.clear();
+		input = getMove();
+		if(Check_input(input)){
+			int y = input[0] - 'a';
+			int x = input[1] - '1';
+			plate->Set_Turn(turn);
+			if(x ==('0'-'1') && y ==('0'-'a')){  //On ferait pas une fonction pour ce if ?
+				if(plate->Check_notplay()){
+					vue->Skip_turn();
+					ok = true;
+				}
+				else {
+					vue->Cant_skip();
+					//ok = false;
+				}
+			}
+			else if(plate->Check_eat(x,y)){
+				plate->Eat();
+				ok = true;
+			}
+			else
+				vue->Inv_entry_4();
+		}
+	}
+	return input;
 	
 	
 }
-
+/*
 bool FilePlayer::Check_input(string input){
-	//Player::Check_input(input);
-	cout << "ceci est la fct check_input de Fileplayer" << endl;
+	Player::Check_input(input);
+}*/
+
+
+string FilePlayer::getLastMove(){
+	string last_move;
+	while (!(getline(fichier_ecr, last_move))){
+		// Echec de la lecture - Effacement des flags d'erreur
+		fichier_ecr.clear();
+		// Ajout d'une temporisation avant de réessayer
+		std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+	}
+	cout << "L'adversaire a joué : "<< last_move << endl;
+	return last_move;
+}
+
+string FilePlayer::getMove(){
+	string move;
+	while (!(getline(fichier_lect, move))){
+		// Echec de la lecture - Effacement des flags d'erreur
+		fichier_lect.clear();
+		// Ajout d'une temporisation avant de réessayer
+		cout << "En attente du joueur fichier" <<endl;
+		std::this_thread::sleep_for(std::chrono::milliseconds(7000));
+	}
+	return move;
 }

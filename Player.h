@@ -23,29 +23,31 @@ class Player
  public:
 	Player(Plateau*, Vue*);
 	virtual ~Player();
-	virtual void Play(int);
-	virtual bool Check_input(string);
+	virtual string Play(int, string);
+	bool Check_input(string);
 };
 
 class HumanPlayer : public Player{
 public:	
 	HumanPlayer(Plateau*, Vue*);
 	~HumanPlayer();
-	void Play(int);
-	bool Check_input(string);
+	string Play(int, string);
+	//bool Check_input(string);
 };
 
 class FilePlayer : public Player{
 private:
-	ofstream fichier_ecr;
-	ifstream fichier_lect;
+	fstream fichier_ecr;
+	fstream fichier_lect;
 public:
-	FilePlayer(Plateau*, Vue*);
+	FilePlayer(Plateau*, Vue*, string);
 	~FilePlayer();
 	void explore(char *);
 	string init();
-	void Play(int);
-	bool Check_input(string);
+	string Play(int, string);
+	//bool Check_input(string);
+	string getLastMove();
+	string getMove();
 };
 
 #endif // PLAYER_H
