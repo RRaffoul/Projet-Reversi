@@ -122,6 +122,7 @@ void Plateau::Eat(){
 void Plateau::Set_Turn(int newTurn){
     turn = newTurn;
 }
+
 bool Plateau::Game_over(){
 	if (passe == 2)
 		return true;
@@ -160,5 +161,9 @@ vector<int> Plateau::Pos_Play(){
 			}
 		}
 	}
+    for(int i = 0; i < posPlay.size();i++){
+        cout << posPlay[i] << "  "; 
+    }
+    cout <<endl;
 	return posPlay;
 }

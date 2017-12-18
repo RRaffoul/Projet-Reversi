@@ -112,30 +112,36 @@ void IAPlayer::Play(int turn){
 int* IAPlayer::A(Plateau board){
 	int* best;
     int* futur;	
+    cout << count << "yo"  << endl;
 	if(count <= 5){ //si on s arrete a 4 (pair) ca n a pas de sens, on s arreterait sur un coup d un adversaire, pas sur un a toi
 		if (count % 2 == 0){ /*donc c est au tour de l adversaire, ca compte pas ses point mais on pourrait proceder par malus 
 			exactement de la meme facon en negatif ou des bonus si l adversaire passe son tour ahah !*/
 			imaginaire = board;
-			pos_to_check = imaginaire.Pos_Play(); //jsp si ca s ecrti vector1 = vector2 
-			int a = pos_to_check.size(); //pas mieux de faire ca plutot que de le mettre dans le if comme dans plateau ? Doit compter moins de fois tout non ?
-			for (int i = 0; i < a; i+=2){  //on remarque que si a = 0 on a un retour de 00 pour le choix de position
+			pos_to_check = imaginaire.Pos_Play(); //jsp si ca s ecrti vector1 = vector2
+
+			for (int i = 0; i < pos_to_check.size(); i+=2){  //on remarque que si a = 0 on a un retour de 00 pour le choix de position
 				imaginaire = board;
 				if(imaginaire.Check_eat(pos_to_check[i], pos_to_check[i+1])){//a regler ca hein
 					imaginaire.Eat();
+
 				}
+                imaginaire.Set_Turn(1);
+                count++;
 				futur = A(imaginaire);
 				best[0] = futur[0];  //ici on devrait remettre valeur etc pour rajouter des points negatifs
 			}
 		}
 		else{ //donc c est a nous
 			imaginaire = board;
-			pos_to_check = imaginaire.Pos_Play(); //jsp si ca s ecrti vector1 = vector2 
-			int a = pos_to_check.size(); //pas mieux de faire ca plutot que de le mettre dans le if comme dans plateau ? Doit compter moins de fois tout non ?
-			for (int i = 0; i < a; i+=2){
+			pos_to_check = imaginaire.Pos_Play(); //jsp si ca s ecrti vector1 = vector2
+			for (int i = 0; i < pos_to_check.size(); i+=2){
 				imaginaire = board;
 				if(imaginaire.Check_eat(pos_to_check[i], pos_to_check[i+1])){//a regler ca hein
 					imaginaire.Eat();
+	                vue->Print_board(imaginaire.Get_Plate());
 				}
+                imaginaire.Set_Turn(2);
+                count++;
 				futur = A(imaginaire);
 				int valeur = imaginaire.Get_Blancs() + futur[0]; //on doit optimiser le premier membre de cette somme
 				if (best[0] < valeur){
@@ -145,7 +151,6 @@ int* IAPlayer::A(Plateau board){
 				}
 			}
 		}
-		count++;
 	}
 	return best;
 }
