@@ -1,6 +1,11 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <fstream>
+#include <dirent.h>
+#include <sys/stat.h>
+#include <chrono>
+#include <thread>
 #include "Vue.h"
 
 using namespace std;
@@ -18,24 +23,31 @@ class Player
  public:
 	Player(Plateau*, Vue*);
 	virtual ~Player();
-	virtual void Play(int);
-	virtual bool Check_input(string);
+	virtual string Play(int, string);
+	bool Check_input(string);
 };
 
 class HumanPlayer : public Player{
 public:	
 	HumanPlayer(Plateau*, Vue*);
 	~HumanPlayer();
-	void Play(int);
-	bool Check_input(string);
+	string Play(int, string);
+	//bool Check_input(string);
 };
 
 class FilePlayer : public Player{
+private:
+	fstream fichier_ecr;
+	fstream fichier_lect;
 public:
-	FilePlayer(Plateau*, Vue*);
+	FilePlayer(Plateau*, Vue*, string);
 	~FilePlayer();
-	void Play(int);
-	bool Check_input(string);
+	void explore(char *);
+	string init();
+	string Play(int, string);
+	//bool Check_input(string);
+	void saveLastMove(string);
+	string getMove();
 };
 
 #endif // PLAYER_H
