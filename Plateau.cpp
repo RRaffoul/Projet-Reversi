@@ -165,9 +165,5 @@ vector<int> Plateau::Pos_Play(){
 			}
 		}
 	}
-    for(int i = 0; i < posPlay.size();i++){
-        cout << posPlay[i] << "  "; 
-    }
-    cout <<endl;
 	return posPlay;
 }

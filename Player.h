@@ -33,15 +33,12 @@ public:
 class IAPlayer : public Player{
 private:
 	Plateau imaginaire;
-	vector<int> pos_to_check;
-	int count;
-	int* pos; 
 public:	
 	IAPlayer(Plateau*, Vue*);
 	~IAPlayer();
     void Play(int);
 	int* Search_func(Plateau board);
-	int* A(Plateau board);
+	float A(Plateau board,int);
 };
 
 class FilePlayer : public Player{

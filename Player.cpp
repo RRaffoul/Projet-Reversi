@@ -97,10 +97,29 @@ IAPlayer::~IAPlayer(){
 void IAPlayer::Play(int turn){
 	vue->Print_state(plate->Get_Noirs(), plate->Get_Blancs(), turn);
 	plate->Set_Turn(turn);
-	pos = Search_func(*plate);
-	if(pos[0] == 0 && pos [1] == 0){
+    int count = 1;
+    float value = 0;
+    float temp = 0;
+    int pos[2] ={};
+    vector<int> pos_to_check = plate->Pos_Play();
+    for(int i = 0; i < pos_to_check.size(); i+=2){
+        imaginaire = *plate;
+        if(imaginaire.Check_eat(pos_to_check[i], pos_to_check[i+1])){
+            imaginaire.Eat();
+            imaginaire.Set_Turn(imaginaire.Get_Turn() + 1);
+            count++;
+            temp = imaginaire.Get_Blancs() +  A(imaginaire,count);
+            if( temp > value){
+                value =temp;
+                pos[0] = pos_to_check[i];
+                pos[1] = pos_to_check[i+1];
+            }
+        }
+    }
+	if(pos[1] == 0 && pos [2] == 0){
 		vue->Skip_turn();
 	}
+
 	else if(plate->Check_eat(pos[0],pos[1])){
 		plate->Eat();
 	}
@@ -109,13 +128,32 @@ void IAPlayer::Play(int turn){
 
 
 
-int* IAPlayer::A(Plateau board){
-	int* best;
-    int* futur;	
+float IAPlayer::A(Plateau board, int count){
+    float value = 0;
+    float temp = 0;
+    if(count <= 20){
+        vector<int> pos_to_check = board.Pos_Play();
+        for(int i = 0; i < pos_to_check.size(); i+=2){
+            imaginaire = board;
+            if(imaginaire.Check_eat(pos_to_check[i], pos_to_check[i+1])){
+                imaginaire.Eat();
+                imaginaire.Set_Turn(imaginaire.Get_Turn() + 1);
+                count++;
+                temp = imaginaire.Get_Blancs() + A(imaginaire,count);
+                if(temp>value){
+                    value = temp;
+                }
+            }
+        }
+    return value;
+    }
+/*    int* futur;	
     cout << count  << endl;
 	if(count <= 5){ //si on s arrete a 4 (pair) ca n a pas de sens, on s arreterait sur un coup d un adversaire, pas sur un a toi
+        for(int i =0; i<=2;i++)
+            best[i] = 0;
 		if ((imaginaire.Get_Turn()%2) == 0){ /*donc c est au tour de l adversaire, ca compte pas ses point mais on pourrait proceder par malus 
-			exactement de la meme facon en negatif ou des bonus si l adversaire passe son tour ahah !*/
+			exactement de la meme facon en negatif ou des bonus si l adversaire passe son tour ahah !
 			imaginaire = board;
 			pos_to_check = imaginaire.Pos_Play(); //jsp si ca s ecrti vector1 = vector2
 
@@ -129,13 +167,14 @@ int* IAPlayer::A(Plateau board){
                 count++;
 				futur = A(imaginaire);
                 count--;
-				best[0] = futur[0];  //ici on devrait remettre valeur etc pour rajouter des points negatifs
+				//best[0] = 0;  //ici on devrait remettre valeur etc pour rajouter des points negatifs
 			}
 		}
 		else{ //donc c est a nous
 			imaginaire = board;
 			pos_to_check = imaginaire.Pos_Play(); //jsp si ca s ecrti vector1 = vector2
 			for (int i = 0; i < pos_to_check.size(); i+=2){
+                cout << "I :  " << i<< endl;
 				imaginaire = board;
 				if(imaginaire.Check_eat(pos_to_check[i], pos_to_check[i+1])){//a regler ca hein
 					imaginaire.Eat();
@@ -155,16 +194,19 @@ int* IAPlayer::A(Plateau board){
 		}
     count++;
 	}
-	return best;
+    cout << best[0] << " : " << best[1] << " : " << best[2] << endl;
+	return &(best[0]);
+*/
 }
 
 int* IAPlayer::Search_func(Plateau board){
-	count = 1; //si on veut mettre = 0, modifier dans l autre fonction dans le if <= devient < 
+/*	count = 1; //si on veut mettre = 0, modifier dans l autre fonction dans le if <= devient < 
 	int* direction = A(board);
-	int* objectif;
-	objectif [0] = direction [1];
-	objectif [1] = direction [2];
-	return objectif;
+
+    cout << direction[0] << "   " << direction[1] << "   " << direction[2] << endl;
+	return direction;
+*/
+return 0;
 }
 
 FilePlayer::FilePlayer(Plateau* platee, Vue* vuee) : Player(platee, vuee){
