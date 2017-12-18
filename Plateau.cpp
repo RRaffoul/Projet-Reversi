@@ -123,6 +123,10 @@ void Plateau::Set_Turn(int newTurn){
     turn = newTurn;
 }
 
+int Plateau::Get_Turn(){
+    return turn;
+}
+
 bool Plateau::Game_over(){
 	if (passe == 2)
 		return true;

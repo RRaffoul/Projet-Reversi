@@ -29,6 +29,7 @@ class Plateau
     int Get_Blancs();
     int Get_Noirs();
     void Set_Turn(int);
+    int Get_Turn();
 	void Eat();
 	bool Check_notplay();
     vector<int> Pos_Play();

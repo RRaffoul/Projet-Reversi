@@ -112,9 +112,9 @@ void IAPlayer::Play(int turn){
 int* IAPlayer::A(Plateau board){
 	int* best;
     int* futur;	
-    cout << count << "yo"  << endl;
+    cout << count  << endl;
 	if(count <= 5){ //si on s arrete a 4 (pair) ca n a pas de sens, on s arreterait sur un coup d un adversaire, pas sur un a toi
-		if (count % 2 == 0){ /*donc c est au tour de l adversaire, ca compte pas ses point mais on pourrait proceder par malus 
+		if ((imaginaire.Get_Turn()%2) == 0){ /*donc c est au tour de l adversaire, ca compte pas ses point mais on pourrait proceder par malus 
 			exactement de la meme facon en negatif ou des bonus si l adversaire passe son tour ahah !*/
 			imaginaire = board;
 			pos_to_check = imaginaire.Pos_Play(); //jsp si ca s ecrti vector1 = vector2
@@ -123,11 +123,12 @@ int* IAPlayer::A(Plateau board){
 				imaginaire = board;
 				if(imaginaire.Check_eat(pos_to_check[i], pos_to_check[i+1])){//a regler ca hein
 					imaginaire.Eat();
-
+	                vue->Print_board(imaginaire.Get_Plate());
 				}
                 imaginaire.Set_Turn(1);
                 count++;
 				futur = A(imaginaire);
+                count--;
 				best[0] = futur[0];  //ici on devrait remettre valeur etc pour rajouter des points negatifs
 			}
 		}
@@ -143,6 +144,7 @@ int* IAPlayer::A(Plateau board){
                 imaginaire.Set_Turn(2);
                 count++;
 				futur = A(imaginaire);
+                count--;
 				int valeur = imaginaire.Get_Blancs() + futur[0]; //on doit optimiser le premier membre de cette somme
 				if (best[0] < valeur){
 					best[0] = valeur;
@@ -151,6 +153,7 @@ int* IAPlayer::A(Plateau board){
 				}
 			}
 		}
+    count++;
 	}
 	return best;
 }
