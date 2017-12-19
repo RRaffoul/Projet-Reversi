@@ -58,6 +58,7 @@ int main(){
 	playerB = choice(plate, vue, "noir");
 	int turn = 0;
 	string last_move = "";
+	cout << "Début de la partie" << endl;
 	while(!plate->Game_over()){
 		turn++;
 	    vue->Print_board(plate->Get_Plate());

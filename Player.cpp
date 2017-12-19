@@ -99,7 +99,7 @@ FilePlayer::FilePlayer(Plateau* platee, Vue* vuee, string player_name): Player(p
 	string nom_fichier_ecr = dir_name+names[0]+".txt";
 	string nom_fichier_lect = dir_name+names[1]+".txt";
 	fichier_ecr.open(nom_fichier_ecr, fstream::in | fstream::out | fstream::trunc);
-	fichier_lect.open(nom_fichier_lect, fstream::in | fstream::out | fstream::trunc); 	/* 	idéalement ce fichier devrait être ouvert en
+	fichier_lect.open(nom_fichier_lect, fstream::in /*| fstream::out | fstream::trunc*/); 	/* 	idéalement ce fichier devrait être ouvert en
 																						*	écriture uniquement mais pour cela il faut
 																						* 	que le fichie blanc/noir.txt existe déjà
 																						* 	dans le bon répertoire
@@ -173,8 +173,9 @@ string FilePlayer::Play(int turn, string last_move){
 	ok = false;
 	//soit c est ici qu on print le plateau soit dans le main, pareil pour la ligne suivante avec les scores
 	vue->Print_state(plate->Get_Noirs(), plate->Get_Blancs(), turn);
-	if(turn != 1)
-		saveLastMove(last_move);
+	if(turn != 1){
+		saveLastMove(last_move); //éventuellement rajouter condition pour obliger la validation de la bonne réception des infos
+	}
 	string input = "";
 	while(!ok){
 		vue->Ask_pos(name);
@@ -268,8 +269,8 @@ string IAPlayer::Play(int turn, string last_move){ //Inutile de lui donner param
 	}
 	else if(plate->Check_eat(pos[0],pos[1])){
 		plate->Eat();
-		char xc = (pos[0]+'a');
-		char yc = (pos[1]+'1');
+		char xc = (pos[1]+'a');
+		char yc = (pos[0]+'1');
 		char end = ('\0');
 		char char_move[3] = {xc,yc,end};
 		string string_move = char_move;
