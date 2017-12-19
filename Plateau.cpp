@@ -168,5 +168,9 @@ vector<int> Plateau::Pos_Play(){
 			}
 		}
 	}
+    if(posPlay.size() == 0){
+        posPlay.push_back(9);
+        posPlay.push_back(9);
+    }
 	return posPlay;
 }

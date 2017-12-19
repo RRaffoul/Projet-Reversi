@@ -66,7 +66,6 @@ bool HumanPlayer::Check_input(string input){
 		int y = input[0] - 'a';
         int x = input[1] - '1';
         if(x ==('0'-'1') && y ==('0'-'a')){
-			cout<< "lol" << endl;
 			return true;
 		}
         else if(x > 8 || x < 0 || y > 8 || y < 0){ //check si dans le plateau
@@ -102,37 +101,12 @@ void IAPlayer::Play(int turn){
     float temp = 0;
     int pos[2] ={};
     vector<int> pos_to_check = plate->Pos_Play();
-<<<<<<< HEAD
-    if ((turn % 2 + 1) == 1){
-		for(int i = 0; i < pos_to_check.size(); i+=2){
-			imaginaire = *plate;
-			if(imaginaire.Check_eat(pos_to_check[i], pos_to_check[i+1])){
-				imaginaire.Eat();
-				imaginaire.Set_Turn(imaginaire.Get_Turn() + 1);
-				count = 0;
-				temp = imaginaire.Get_Blancs() -  B(imaginaire,count);
-				if( temp > value){
-					value =temp;
-					pos[0] = pos_to_check[i];
-					pos[1] = pos_to_check[i+1];
-				}
-			}
-		}
-		if(pos[0] == 0 && pos[1] == 0){
-			vue->Skip_turn();
-			plate->Not_play();
-		}
-
-		else if(plate->Check_eat(pos[0],pos[1])){
-			plate->Eat();
-		}
-=======
     for(int i = 0; i < pos_to_check.size(); i+=2){
         imaginaire = *plate;
         if(imaginaire.Check_eat(pos_to_check[i], pos_to_check[i+1])){
             imaginaire.Eat();
             imaginaire.Set_Turn(imaginaire.Get_Turn() + 1);
-            temp = Heuristic(imaginaire) +  A(imaginaire,count);
+            temp = Heuristic(imaginaire ,plate->Get_Turn(),(plate->Get_Turn()%2) +1) +  A(imaginaire,count,(plate->Get_Turn()%2) +1);
             if( temp > value){
                 value =temp;
                 pos[0] = pos_to_check[i];
@@ -140,65 +114,22 @@ void IAPlayer::Play(int turn){
             }
         }
     }
-	if(pos[1] == 0 && pos [2] == 0){
+
+    if(pos[0] == 9 && pos[1] == 9){
 		vue->Skip_turn();
->>>>>>> origin/Romain
+		plate->Not_play();
 	}
-	else{
-		for(int i = 0; i < pos_to_check.size(); i+=2){
-			imaginaire = *plate;
-			if(imaginaire.Check_eat(pos_to_check[i], pos_to_check[i+1])){
-				imaginaire.Eat();
-				imaginaire.Set_Turn(imaginaire.Get_Turn() + 1);
-				count = 0;
-				temp = imaginaire.Get_Noirs() -  A(imaginaire,count);
-				if( temp > value){
-					value =temp;
-					pos[0] = pos_to_check[i];
-					pos[1] = pos_to_check[i+1];
-				}
-			}
-		}
-		if(pos[0] == 0 && pos[1] == 0){
-			vue->Skip_turn();
-			plate->Not_play();
-		}
 
-		else if(plate->Check_eat(pos[0],pos[1])){
+	else if(plate->Check_eat(pos[0],pos[1])){
 			plate->Eat();
-		}
 	}
 }
 
-float IAPlayer::B(Plateau board, int count){
-    float value = 0;
-    float temp = 0;
-    if(count < 20){
-        vector<int> pos_to_check = board.Pos_Play();
-        for(int i = 0; i < pos_to_check.size(); i+=2){
-            imaginaire = board;
-            if(imaginaire.Check_eat(pos_to_check[i], pos_to_check[i+1])){
-                imaginaire.Eat();
-                imaginaire.Set_Turn(imaginaire.Get_Turn() + 1);
-                count++;
-                temp = imaginaire.Get_Noirs() - A(imaginaire,count); //enfait en mettant le - au lieu du +, on fait - les tours de l autre et + nos tours a nous
-                if(temp>value){
-                    value = temp;
-                }
-            }
-        }
-    return value;
-	}
-}
 
-float IAPlayer::A(Plateau board, int count){
+float IAPlayer::A(Plateau board, int count, int realColor){
     float value = 0;
     float temp = 0;
-<<<<<<< HEAD
-    if(count < 20){
-=======
     if(count <= 15){
->>>>>>> origin/Romain
         vector<int> pos_to_check = board.Pos_Play();
         for(int i = 0; i < pos_to_check.size(); i+=2){
             imaginaire = board;
@@ -206,11 +137,7 @@ float IAPlayer::A(Plateau board, int count){
                 imaginaire.Eat();
                 imaginaire.Set_Turn(imaginaire.Get_Turn() + 1);
                 count++;
-<<<<<<< HEAD
-                temp = imaginaire.Get_Blancs() - B(imaginaire,count); //enfait en mettant le - au lieu du +, on fait - les tours de l autre et + nos tours a nous
-=======
-                temp = Heuristic(imaginaire) + A(imaginaire,count);
->>>>>>> origin/Romain
+                temp = Heuristic(imaginaire, (count+realColor)-1, realColor) + A(imaginaire,count,realColor);
                 if(temp>value){
                     value = temp;
                 }
@@ -218,71 +145,29 @@ float IAPlayer::A(Plateau board, int count){
         }
     return value;
 	}
-/*    int* futur;	
-    cout << count  << endl;
-	if(count <= 5){ //si on s arrete a 4 (pair) ca n a pas de sens, on s arreterait sur un coup d un adversaire, pas sur un a toi
-        for(int i =0; i<=2;i++)
-            best[i] = 0;
-		if ((imaginaire.Get_Turn()%2) == 0){ /*donc c est au tour de l adversaire, ca compte pas ses point mais on pourrait proceder par malus 
-			exactement de la meme facon en negatif ou des bonus si l adversaire passe son tour ahah !
-			imaginaire = board;
-			pos_to_check = imaginaire.Pos_Play(); //jsp si ca s ecrti vector1 = vector2
-
-			for (int i = 0; i < pos_to_check.size(); i+=2){  //on remarque que si a = 0 on a un retour de 00 pour le choix de position
-				imaginaire = board;
-				if(imaginaire.Check_eat(pos_to_check[i], pos_to_check[i+1])){//a regler ca hein
-					imaginaire.Eat();
-	                vue->Print_board(imaginaire.Get_Plate());
-				}
-                imaginaire.Set_Turn(1);
-                count++;
-				futur = A(imaginaire);
-                count--;
-				//best[0] = 0;  //ici on devrait remettre valeur etc pour rajouter des points negatifs
-			}
-		}
-		else{ //donc c est a nous
-			imaginaire = board;
-			pos_to_check = imaginaire.Pos_Play(); //jsp si ca s ecrti vector1 = vector2
-			for (int i = 0; i < pos_to_check.size(); i+=2){
-                cout << "I :  " << i<< endl;
-				imaginaire = board;
-				if(imaginaire.Check_eat(pos_to_check[i], pos_to_check[i+1])){//a regler ca hein
-					imaginaire.Eat();
-	                vue->Print_board(imaginaire.Get_Plate());
-				}
-                imaginaire.Set_Turn(2);
-                count++;
-				futur = A(imaginaire);
-                count--;
-				int valeur = imaginaire.Get_Blancs() + futur[0]; //on doit optimiser le premier membre de cette somme
-				if (best[0] < valeur){
-					best[0] = valeur;
-					best[1] = pos_to_check[i];
-					best[2] = pos_to_check[i+1];
-				}
-			}
-		}
-    count++;
-	}
-    cout << best[0] << " : " << best[1] << " : " << best[2] << endl;
-	return &(best[0]);
-*/
 }
 
-float IAPlayer::Heuristic(Plateau board){
-    float score;
-    score = board.Get_Blancs();
+float IAPlayer::Heuristic(Plateau board, int color, int realColor){
+    float score; 
+    if(realColor == 0){
+        if(color%2 == 0){
+            score = board.Get_Noirs();
+        }
+    
+        else{
+            score = -board.Get_Blancs();
+        }   
+    }
+    else{
+        if(color%2 == 0){
+            score = -board.Get_Noirs();
+        }
+    
+        else{
+            score = board.Get_Blancs();
+        } 
+    }
     return score;
-}
-int* IAPlayer::Search_func(Plateau board){
-/*	count = 1; //si on veut mettre = 0, modifier dans l autre fonction dans le if <= devient < 
-	int* direction = A(board);
-
-    cout << direction[0] << "   " << direction[1] << "   " << direction[2] << endl;
-	return direction;
-*/
-return 0;
 }
 
 FilePlayer::FilePlayer(Plateau* platee, Vue* vuee) : Player(platee, vuee){
