@@ -106,6 +106,7 @@ void IAPlayer::Play(int turn){
         if(imaginaire.Check_eat(pos_to_check[i], pos_to_check[i+1])){
             imaginaire.Eat();
             imaginaire.Set_Turn(imaginaire.Get_Turn() + 1);
+            cout << count << endl;
             temp = Heuristic(imaginaire ,plate->Get_Turn(),plate->Get_Turn()%2) +  A(imaginaire,count,plate->Get_Turn()%2);
             if( temp > value){
                 value =temp;
@@ -147,21 +148,21 @@ float IAPlayer::A(Plateau board, int count, int realColor){
 
 float IAPlayer::Heuristic(Plateau board, int color, int realColor){
     float score; 
-    if(realColor == 0){
-        if(color%2 == 0){
+    if(realColor == 0){  //blancs
+        if(color%2 == 0){ //blancs
             score = board.Get_Blancs();
         }
     
-        else{
+        else{ // noirs
             score = -board.Get_Noirs();
         }   
     }
-    else{
-        if(color%2 == 0){
+    else{ // noirs
+        if(color%2 == 0){ //blancs
             score = -board.Get_Blancs();
         }
     
-        else{
+        else{ //noirs
             score = board.Get_Noirs();
         } 
     }
