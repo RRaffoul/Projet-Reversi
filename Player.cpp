@@ -106,6 +106,7 @@ void IAPlayer::Play(int turn){
         if(imaginaire.Check_eat(pos_to_check[i], pos_to_check[i+1])){
             imaginaire.Eat();
             imaginaire.Set_Turn(imaginaire.Get_Turn() + 1); // on rajoute un tour de jeu --> chgt de joueur
+            cout << count << endl;
             temp = Heuristic(imaginaire ,plate->Get_Turn(),plate->Get_Turn()%2) +  A(imaginaire,count,plate->Get_Turn()%2);
             if( temp > value){
                 value =temp;					// Cette condition permet de garder en mémoire le meilleur scénario
@@ -145,23 +146,24 @@ float IAPlayer::A(Plateau board, int count, int realColor){	// Reprends le meme 
 	}
 }
 
+
 float IAPlayer::Heuristic(Plateau board, int color, int realColor){ // realColor est la couleur du pion que l'IA incarne,
     float score; 													// color est la couleur de l'adversaire
-    if(realColor == 0){
-        if(color%2 == 0){					// Ces lignes permettent de prendre en compte,
+    if(realColor == 0){ //blancs
+        if(color%2 == 0){	//blancs		// Ces lignes permettent de prendre en compte,
             score = board.Get_Blancs();		// dans le choix de l'IA, le nombre de pions mangés.
         }
     
-        else{
+        else{ // noirs
             score = -board.Get_Noirs();
         }   
     }
-    else{
-        if(color%2 == 0){
+    else{ // noirs
+        if(color%2 == 0){ //blancs
             score = -board.Get_Blancs();
         }
     
-        else{
+        else{ //noirs
             score = board.Get_Noirs();
         } 
     }
