@@ -270,7 +270,8 @@ string IAPlayer::Play(int turn, string last_move){ //Inutile de lui donner param
 		plate->Eat();
 		char xc = (pos[0]+'a');
 		char yc = (pos[1]+'1');
-		char char_move[2] = {xc,yc};
+		char end = ('\0');
+		char char_move[3] = {xc,yc,end};
 		string string_move = char_move;
 		return string_move;
 	}
