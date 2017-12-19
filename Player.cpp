@@ -100,23 +100,23 @@ void IAPlayer::Play(int turn){
     float value = 0;
     float temp = 0;
     int pos[2] ={};
-    vector<int> pos_to_check = plate->Pos_Play();
-    for(int i = 0; i < pos_to_check.size(); i+=2){
-        imaginaire = *plate;
+    vector<int> pos_to_check = plate->Pos_Play(); 	// pos_to_check, contient toutes les positions ou le pion peut se placer
+    for(int i = 0; i < pos_to_check.size(); i+=2){ 	// pos_to_check, de la forme (ax, ay, bx, by) on prend donc coord 2 par 2
+        imaginaire = *plate; 						// copie du plateau que l'on va manipuler
         if(imaginaire.Check_eat(pos_to_check[i], pos_to_check[i+1])){
             imaginaire.Eat();
-            imaginaire.Set_Turn(imaginaire.Get_Turn() + 1);
+            imaginaire.Set_Turn(imaginaire.Get_Turn() + 1); // on rajoute un tour de jeu --> chgt de joueur
             temp = Heuristic(imaginaire ,plate->Get_Turn(),plate->Get_Turn()%2) +  A(imaginaire,count,plate->Get_Turn()%2);
             if( temp > value){
-                value =temp;
-                pos[0] = pos_to_check[i];
+                value =temp;					// Cette condition permet de garder en mémoire le meilleur scénario
+                pos[0] = pos_to_check[i];		// et a l'IA de jouer ce coup là
                 pos[1] = pos_to_check[i+1];
             }
         }
     }
-    if(pos_to_check[0] == 9 && pos_to_check[1] == 9){
-		vue->Skip_turn();
-		plate->Not_play();
+    if(pos_to_check[0] == 9 && pos_to_check[1] == 9){	// Dans ans le cas ou le vecteur pos_to_check est de taille nulle,
+		vue->Skip_turn();								// la fonction Pos_Play() initialise ses 2 premières valeurs à 9
+		plate->Not_play();								// ce qui est scénario ou l'IA doit passer son tour car rien à manger
 	}
 	else if(plate->Check_eat(pos[0],pos[1])){
 			plate->Eat();
@@ -124,32 +124,32 @@ void IAPlayer::Play(int turn){
 }
 
 
-float IAPlayer::A(Plateau board, int count, int realColor){
-    float value = 0;
-    float temp = 0;
-    if(count <= 15){
+float IAPlayer::A(Plateau board, int count, int realColor){	// Reprends le meme fonctionnement que la fonction Play
+    float value = 0;										// on va partir du plateau imaginaire pour imaginer plusieurs
+    float temp = 0;											// tours à l'avance, mais on est limité par count
+    if(count <= 15){										// car l'IA ne peut répondre en plus de 20 secondes
         vector<int> pos_to_check = board.Pos_Play();
         for(int i = 0; i < pos_to_check.size(); i+=2){
             imaginaire = board;
             if(imaginaire.Check_eat(pos_to_check[i], pos_to_check[i+1])){
                 imaginaire.Eat();
-                imaginaire.Set_Turn(imaginaire.Get_Turn() + 1);
+                imaginaire.Set_Turn(imaginaire.Get_Turn() + 1); //A chaque appel de A(...) on simule un tour de plus
                 count++;
                 temp = Heuristic(imaginaire, (count+realColor)-1, realColor) + A(imaginaire,count,realColor);
                 if(temp>value){
-                    value = temp;
-                }
-            }
+                    value = temp; 	// Parmis les différentes pos à jouer pour les tours [count], on vérifie que
+                }					// cela va nous rapporter. De cette manière on sait si la pos examinée dans Play()
+            }						// place bien l'IA pour la suite
         }
     return value;
 	}
 }
 
-float IAPlayer::Heuristic(Plateau board, int color, int realColor){
-    float score; 
+float IAPlayer::Heuristic(Plateau board, int color, int realColor){ // realColor est la couleur du pion que l'IA incarne,
+    float score; 													// color est la couleur de l'adversaire
     if(realColor == 0){
-        if(color%2 == 0){
-            score = board.Get_Blancs();
+        if(color%2 == 0){					// Ces lignes permettent de prendre en compte,
+            score = board.Get_Blancs();		// dans le choix de l'IA, le nombre de pions mangés.
         }
     
         else{
