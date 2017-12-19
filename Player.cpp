@@ -118,18 +118,17 @@ bool HumanPlayer::Check_input(string input){
  */
 
 FilePlayer::FilePlayer(Plateau* platee, Vue* vuee, string player_name): Player(platee, vuee){
+	name = player_name; //Get and Set name à faire ?
 	string dir_name = init();
 	string names[2];
 	if(player_name == "blanc"){ // voir Precision_Joueur_Fichier.md si incompréhension
 		names[0] = "noir";
 		names[1] = "blanc";
-		cout << "test" << endl;
 	}
 	else{
 		names[0] = "blanc";
 		names[1] = "noir";
 	}
-	cout << "emplacement des fichiers : " << dir_name << endl;
 	string nom_fichier_ecr = dir_name+names[0]+".txt";
 	string nom_fichier_lect = dir_name+names[1]+".txt";
 	fichier_ecr.open(nom_fichier_ecr, fstream::in | fstream::out | fstream::trunc);
@@ -210,8 +209,7 @@ string FilePlayer::Play(int turn, string last_move){
 	saveLastMove(last_move);
 	string input = "";
 	while(!ok){
-		vue->Ask_pos();
-		fichier_lect.clear();
+		vue->Ask_pos(name);
 		input = getMove();
 		if(Check_input(input)){
 			int y = input[0] - 'a';
@@ -260,8 +258,8 @@ string FilePlayer::getMove(){
 		// Echec de la lecture - Effacement des flags d'erreur
 		fichier_lect.clear();
 		// Ajout d'une temporisation avant de réessayer
-		cout << "En attente du joueur fichier" <<endl;
-		std::this_thread::sleep_for(std::chrono::milliseconds(7000));
+		//cout << "En attente du joueur fichier" <<endl; //impression non nécessaire, mais aide
+		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	}
 	return move;
 }

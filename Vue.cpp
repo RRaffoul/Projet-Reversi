@@ -51,7 +51,11 @@ void Vue::Black_turn(){
 }
 
 void Vue::Ask_pos(){
-	cout << "enter a position :";
+		cout << "enter a position : ";
+}
+
+void Vue::Ask_pos(string player){
+		cout << "Player " << player << " writes a position in his/her file" << endl;
 }
 
 void Vue::Skip_turn(){

@@ -39,6 +39,7 @@ class FilePlayer : public Player{
 private:
 	fstream fichier_ecr;
 	fstream fichier_lect;
+	string name;
 public:
 	FilePlayer(Plateau*, Vue*, string);
 	~FilePlayer();

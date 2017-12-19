@@ -20,6 +20,7 @@ class Vue
 	void White_turn();
 	void Black_turn();
 	void Ask_pos();
+	void Ask_pos(string);
 	void Skip_turn();
 	void Cant_skip();
 	void Inv_entry_1();
