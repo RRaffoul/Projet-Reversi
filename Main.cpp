@@ -10,10 +10,10 @@ using namespace std;
 #include "Player.h"
 
 void Turn(int turn, Vue* vue, Player* playerW, Player* playerB){
-    int color = turn %2 + 1;
+    int color = turn %2;
     /*int x;
     int y;*/
-    if(color == 1){
+    if(color == 0){
         vue->White_turn();
         playerW->Play(turn);
     }

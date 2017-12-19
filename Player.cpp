@@ -106,7 +106,7 @@ void IAPlayer::Play(int turn){
         if(imaginaire.Check_eat(pos_to_check[i], pos_to_check[i+1])){
             imaginaire.Eat();
             imaginaire.Set_Turn(imaginaire.Get_Turn() + 1);
-            temp = Heuristic(imaginaire ,plate->Get_Turn(),(plate->Get_Turn()%2) +1) +  A(imaginaire,count,(plate->Get_Turn()%2) +1);
+            temp = Heuristic(imaginaire ,plate->Get_Turn(),plate->Get_Turn()%2) +  A(imaginaire,count,plate->Get_Turn()%2);
             if( temp > value){
                 value =temp;
                 pos[0] = pos_to_check[i];
@@ -114,12 +114,10 @@ void IAPlayer::Play(int turn){
             }
         }
     }
-
-    if(pos[0] == 9 && pos[1] == 9){
+    if(pos_to_check[0] == 9 && pos_to_check[1] == 9){
 		vue->Skip_turn();
 		plate->Not_play();
 	}
-
 	else if(plate->Check_eat(pos[0],pos[1])){
 			plate->Eat();
 	}
@@ -151,20 +149,20 @@ float IAPlayer::Heuristic(Plateau board, int color, int realColor){
     float score; 
     if(realColor == 0){
         if(color%2 == 0){
-            score = board.Get_Noirs();
+            score = board.Get_Blancs();
         }
     
         else{
-            score = -board.Get_Blancs();
+            score = -board.Get_Noirs();
         }   
     }
     else{
         if(color%2 == 0){
-            score = -board.Get_Noirs();
+            score = -board.Get_Blancs();
         }
     
         else{
-            score = board.Get_Blancs();
+            score = board.Get_Noirs();
         } 
     }
     return score;
