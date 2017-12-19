@@ -82,40 +82,7 @@ string HumanPlayer::Play(int turn, string last_move){
 	return input;
 }
 
-/*
-bool HumanPlayer::Check_input(string input){
-	//Player::Check_input(input);
-	if(input.length() == 2){
-		int y = input[0] - 'a';
-        int x = input[1] - '1';
-        if(x ==('0'-'1') && y ==('0'-'a')){
-			cout<< "lol" << endl;
-			return true;
-		}
-        else if(x > 8 || x < 0 || y > 8 || y < 0){ //check si dans le plateau
-		    vue->Inv_entry_1();
-			return false;
-		}
-		else if(*(plate->Get_Plate() + 8 * x + y) != 0){ //check si deja un pion a cet endroit là
-			vue->Inv_entry_2();
-			return false;
-		}
-		else
-			return true;
-    }
-	else {
-		vue->Inv_entry_3();
-		return false;
-	}
-}*/
-
 ///////////////////////// FILEPLAYER ///////////////////////////////
-/*
- * Pour le moment le joueur de type fichier sera le joueur noir.
- * Donc le programme doit ECRIRE dans un fichier blanc.txt les mvts
- * du joueur blanc et doit LIRE dans un fichier noir.txt, ou le joueur 
- * noir écrira (via un autre terminal) ses mouvements.
- */
 
 FilePlayer::FilePlayer(Plateau* platee, Vue* vuee, string player_name): Player(platee, vuee){
 	name = player_name; //Get and Set name à faire ?
@@ -206,7 +173,8 @@ string FilePlayer::Play(int turn, string last_move){
 	ok = false;
 	//soit c est ici qu on print le plateau soit dans le main, pareil pour la ligne suivante avec les scores
 	vue->Print_state(plate->Get_Noirs(), plate->Get_Blancs(), turn);
-	saveLastMove(last_move);
+	if(turn != 1)
+		saveLastMove(last_move);
 	string input = "";
 	while(!ok){
 		vue->Ask_pos(name);
@@ -237,14 +205,10 @@ string FilePlayer::Play(int turn, string last_move){
 	
 	
 }
-/*
-bool FilePlayer::Check_input(string input){
-	Player::Check_input(input);
-}*/
 
 
 void FilePlayer::saveLastMove(string last_move){
-	if( fichier_ecr.is_open()){
+	if(fichier_ecr.is_open()){
 		fichier_ecr << last_move << endl;
 		cout << "L'adversaire a joué : "<< last_move << endl;
 	}
@@ -262,4 +226,99 @@ string FilePlayer::getMove(){
 		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	}
 	return move;
+}
+
+
+///////////////////////// IAPLAYER //////////////////////////////////
+
+IAPlayer::IAPlayer(Plateau* platee, Vue* vuee) : Player(platee, vuee){
+	cout << "Creation d'un IAPlayer" << endl;
+}
+
+IAPlayer::~IAPlayer(){
+	cout << "Destruction d'un IAPlayer" << endl;
+}
+
+string IAPlayer::Play(int turn, string last_move){ //Inutile de lui donner param mais pas d'autres solutions..
+	vue->Print_state(plate->Get_Noirs(), plate->Get_Blancs(), turn);
+	plate->Set_Turn(turn);
+    int count = 1;
+    float value = 0;
+    float temp = 0;
+    int pos[2] ={};
+    vector<int> pos_to_check = plate->Pos_Play(); 	// pos_to_check, contient toutes les positions ou le pion peut se placer
+    for(int i = 0; i < pos_to_check.size(); i+=2){ 	// pos_to_check, de la forme (ax, ay, bx, by) on prend donc coord 2 par 2
+        imaginaire = *plate; 						// copie du plateau que l'on va manipuler
+        if(imaginaire.Check_eat(pos_to_check[i], pos_to_check[i+1])){
+            imaginaire.Eat();
+            imaginaire.Set_Turn(imaginaire.Get_Turn() + 1); // on rajoute un tour de jeu --> chgt de joueur
+            cout << count << endl;
+            temp = Heuristic(imaginaire ,plate->Get_Turn(),plate->Get_Turn()%2) +  A(imaginaire,count,plate->Get_Turn()%2);
+            if( temp > value){
+                value =temp;					// Cette condition permet de garder en mémoire le meilleur scénario
+                pos[0] = pos_to_check[i];		// et a l'IA de jouer ce coup là
+                pos[1] = pos_to_check[i+1];
+            }
+        }
+    }
+    if(pos_to_check[0] == 9 && pos_to_check[1] == 9){	// Dans ans le cas ou le vecteur pos_to_check est de taille nulle,
+		vue->Skip_turn();								// la fonction Pos_Play() initialise ses 2 premières valeurs à 9
+		plate->Not_play();								// ce qui est scénario ou l'IA doit passer son tour car rien à manger
+		return "00";
+	}
+	else if(plate->Check_eat(pos[0],pos[1])){
+		plate->Eat();
+		char xc = (pos[0]+'a');
+		char yc = (pos[1]+'1');
+		char char_move[2] = {xc,yc};
+		string string_move = char_move;
+		return string_move;
+	}
+	
+}
+
+
+float IAPlayer::A(Plateau board, int count, int realColor){	// Reprends le meme fonctionnement que la fonction Play
+    float value = 0;										// on va partir du plateau imaginaire pour imaginer plusieurs
+    float temp = 0;											// tours à l'avance, mais on est limité par count
+    if(count <= 15){										// car l'IA ne peut répondre en plus de 20 secondes
+        vector<int> pos_to_check = board.Pos_Play();
+        for(int i = 0; i < pos_to_check.size(); i+=2){
+            imaginaire = board;
+            if(imaginaire.Check_eat(pos_to_check[i], pos_to_check[i+1])){
+                imaginaire.Eat();
+                imaginaire.Set_Turn(imaginaire.Get_Turn() + 1); //A chaque appel de A(...) on simule un tour de plus
+                count++;
+                temp = Heuristic(imaginaire, (count+realColor)-1, realColor) + A(imaginaire,count,realColor);
+                if(temp>value){
+                    value = temp; 	// Parmis les différentes pos à jouer pour les tours [count], on vérifie que
+                }					// cela va nous rapporter. De cette manière on sait si la pos examinée dans Play()
+            }						// place bien l'IA pour la suite
+        }
+    return value;
+	}
+}
+
+
+float IAPlayer::Heuristic(Plateau board, int color, int realColor){ // realColor est la couleur du pion que l'IA incarne,
+    float score; 													// color est la couleur de l'adversaire
+    if(realColor == 0){ //blancs
+        if(color%2 == 0){	//blancs		// Ces lignes permettent de prendre en compte,
+            score = board.Get_Blancs();		// dans le choix de l'IA, le nombre de pions mangés.
+        }
+    
+        else{ // noirs
+            score = -board.Get_Noirs();
+        }   
+    }
+    else{ // noirs
+        if(color%2 == 0){ //blancs
+            score = -board.Get_Blancs();
+        }
+    
+        else{ //noirs
+            score = board.Get_Noirs();
+        } 
+    }
+    return score;
 }

@@ -35,6 +35,17 @@ public:
 	//bool Check_input(string);
 };
 
+class IAPlayer : public Player{
+private:
+	Plateau imaginaire;
+public:	
+	IAPlayer(Plateau*, Vue*);
+	~IAPlayer();
+    string Play(int, string);
+    float Heuristic(Plateau,int,int);
+	float A(Plateau,int,int);
+};
+
 class FilePlayer : public Player{
 private:
 	fstream fichier_ecr;

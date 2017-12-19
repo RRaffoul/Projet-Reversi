@@ -10,11 +10,12 @@ using namespace std;
 #include "Plateau.h"
 #include "Player.h"
 
+
 string Turn(int turn, Vue* vue, Player* playerW, Player* playerB, string last_move){
-    int color = (turn + 1)%2 + 1;
+    int color = turn %2;
     /*int x;
     int y;*/
-    if(color == 1){
+    if(color == 0){
         vue->White_turn();
         last_move = playerW->Play(turn, last_move);
     }
@@ -37,6 +38,10 @@ Player* choice(Plateau* plate, Vue* vue, string player_name){
 		}
 		else if(*(uresp.c_str()) == 'f'){
 			FilePlayer* player = new FilePlayer(plate, vue, player_name);
+	        return player;
+		}
+		else if(*(uresp.c_str()) == 'i'){
+			IAPlayer* player = new IAPlayer(plate, vue);
 	        return player;
 		}
 	}
