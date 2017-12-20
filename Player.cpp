@@ -10,7 +10,7 @@ Player::~Player(){
 	cout << "Destruction d'un Player" << endl;
 }
 
-string Player::Play(int turn, string last_move){
+string Player::Play(int turn){
 	//Voir ce qui est commun aux 2(3) types de player
 }
 
@@ -38,6 +38,9 @@ bool Player::Check_input(string input){ //méthode commune aux 3 types d'objets 
 	}
 }
 
+void Player::saveMove(string last_move){
+}
+
 ///////////////////////// HUMANPLAYER ///////////////////////////////
 
 HumanPlayer::HumanPlayer(Plateau* platee, Vue* vuee) : Player(platee, vuee){
@@ -48,7 +51,7 @@ HumanPlayer::~HumanPlayer(){
 	cout << "Destruction d'un HumanPlayer" << endl;
 }
 
-string HumanPlayer::Play(int turn, string last_move){
+string HumanPlayer::Play(int turn){
 	ok = false;
 	//soit c est ici qu on print le plateau soit dans le main, pareil pour la ligne suivante avec les scores
 	vue->Print_state(plate->Get_Noirs(), plate->Get_Blancs(), turn);
@@ -107,7 +110,7 @@ FilePlayer::FilePlayer(Plateau* platee, Vue* vuee, string player_name): Player(p
 	while (!fichier_lect.is_open()){
 			cout << "Attente du joueur "<< names[1] <<" (fichier "<< names[1] <<".txt indisponible)" << endl;
 			// Ajout d'une temporisation avant de réessayer
-			std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+			std::this_thread::sleep_for(std::chrono::milliseconds(3000));
 			fichier_lect.open(nom_fichier_lect);
 	}
 }
@@ -167,14 +170,14 @@ string FilePlayer::init(){
 	return pathname;
 }
 
-string FilePlayer::Play(int turn, string last_move){
+string FilePlayer::Play(int turn){
 	//Player::Play(turn);
 	ok = false;
 	//soit c est ici qu on print le plateau soit dans le main, pareil pour la ligne suivante avec les scores
 	vue->Print_state(plate->Get_Noirs(), plate->Get_Blancs(), turn);
-	if(turn != 1){
+	/*if(turn != 1){
 		saveLastMove(last_move); //éventuellement rajouter condition pour obliger la validation de la bonne réception des infos
-	}
+	}*/
 	string input = "";
 	while(!ok){
 		vue->Ask_pos(name);
@@ -207,10 +210,9 @@ string FilePlayer::Play(int turn, string last_move){
 }
 
 
-void FilePlayer::saveLastMove(string last_move){
+void FilePlayer::saveMove(string move){
 	if(fichier_ecr.is_open()){
-		fichier_ecr << last_move << endl;
-		cout << "L'adversaire a joué : "<< last_move << endl;
+		fichier_ecr << move << endl;
 	}
 	else
 		cout << "problem" <<endl;
@@ -223,7 +225,7 @@ string FilePlayer::getMove(){
 		fichier_lect.clear();
 		// Ajout d'une temporisation avant de réessayer
 		//cout << "En attente du joueur fichier" <<endl; //impression non nécessaire, mais aide
-		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+		std::this_thread::sleep_for(std::chrono::milliseconds(500));
 	}
 	return move;
 }
@@ -239,11 +241,11 @@ IAPlayer::~IAPlayer(){
 	cout << "Destruction d'un IAPlayer" << endl;
 }
 
-string IAPlayer::Play(int turn, string last_move){ //Inutile de lui donner param mais pas d'autres solutions..
-	vue->Print_state(plate->Get_Noirs(), plate->Get_Blancs(), turn);
+string IAPlayer::Play(int turn){ //Inutile de lui donner param mais pas d'autres solutions..
+	vue->Print_state(plate->Get_Noirs(), plate->Get_Blancs(), turn); //RMQ : ne devrait pas de être ici ...
 	plate->Set_Turn(turn);
     int count = 1;
-    float value = 0;
+    float value = -1000000;
     float temp = 0;
     int pos[2] ={};
     vector<int> pos_to_check = plate->Pos_Play(); 	// pos_to_check, contient toutes les positions ou le pion peut se placer
@@ -255,18 +257,21 @@ string IAPlayer::Play(int turn, string last_move){ //Inutile de lui donner param
             cout << count << endl;
             temp = Heuristic(imaginaire ,plate->Get_Turn(),plate->Get_Turn()%2) +  A(imaginaire,count,plate->Get_Turn()%2);
             if( temp > value){
-                value =temp;					// Cette condition permet de garder en mémoire le meilleur scénario
+                value =temp;
+                cout << "test value : " << value << endl; //RMQ : à enlever					// Cette condition permet de garder en mémoire le meilleur scénario
                 pos[0] = pos_to_check[i];		// et a l'IA de jouer ce coup là
                 pos[1] = pos_to_check[i+1];
             }
         }
     }
-    if(pos_to_check[0] == 9 && pos_to_check[1] == 9){	// Dans ans le cas ou le vecteur pos_to_check est de taille nulle,
+    if(pos_to_check[0] == 9 && pos_to_check[1] == 9){	// Dans le cas ou le vecteur pos_to_check est de taille nulle,
+		cout << "test1 before return" << endl; //RMQ : à enlever
 		vue->Skip_turn();								// la fonction Pos_Play() initialise ses 2 premières valeurs à 9
 		plate->Not_play();								// ce qui est scénario ou l'IA doit passer son tour car rien à manger
 		return "00";
 	}
 	else if(plate->Check_eat(pos[0],pos[1])){
+		cout << "test2 before return" << endl; //RMQ : à enlever
 		plate->Eat();
 		char xc = (pos[1]+'a');
 		char yc = (pos[0]+'1');

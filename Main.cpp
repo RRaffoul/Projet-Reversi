@@ -15,14 +15,16 @@ string Turn(int turn, Vue* vue, Player* playerW, Player* playerB, string last_mo
     int color = turn %2;
     /*int x;
     int y;*/
-    if(color == 0){
+    if(color == 0){ //Tour du blanc
         vue->White_turn();
-        last_move = playerW->Play(turn, last_move);
-    }
+		vue->Print_lastMove(last_move);
+        playerB->saveMove(last_move = playerW->Play(turn)); // saveMove permet au programme d'écrire le coup joué
+    }											// dans le fichier correspondant (blanc ou noir.txt)
 
-    else{
+    else{ //Tour du noir
 	    vue->Black_turn();
-        last_move = playerB->Play(turn, last_move);
+		vue->Print_lastMove(last_move);
+        playerW->saveMove(last_move = playerB->Play(turn)); // lors fin du game, attention aux delete
     }
     return last_move;
 }
@@ -57,13 +59,12 @@ int main(){
 	playerW = choice(plate, vue, "blanc");
 	playerB = choice(plate, vue, "noir");
 	int turn = 0;
-	string last_move = "";
-	cout << "Début de la partie" << endl;
+	string last_move ="";
 	while(!plate->Game_over()){
 		turn++;
 	    vue->Print_board(plate->Get_Plate());
 		last_move = Turn(turn, vue, playerW, playerB, last_move);
-	}
+	}										// ajout d'une temporisation pour laisser les objets se supprimés correctement ?
 	vue->Print_board(plate->Get_Plate());
 	vue->Print_winner(plate->Get_Noirs(), plate->Get_Blancs());
 	delete playerW;

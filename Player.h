@@ -23,15 +23,16 @@ class Player
  public:
 	Player(Plateau*, Vue*);
 	virtual ~Player();
-	virtual string Play(int, string);
+	virtual string Play(int);
 	bool Check_input(string);
+	virtual void saveMove(string);
 };
 
 class HumanPlayer : public Player{
 public:	
 	HumanPlayer(Plateau*, Vue*);
 	~HumanPlayer();
-	string Play(int, string);
+	string Play(int);
 	//bool Check_input(string);
 };
 
@@ -41,7 +42,7 @@ private:
 public:	
 	IAPlayer(Plateau*, Vue*);
 	~IAPlayer();
-    string Play(int, string);
+    string Play(int);
     float Heuristic(Plateau,int,int);
 	float A(Plateau,int,int);
 };
@@ -56,9 +57,9 @@ public:
 	~FilePlayer();
 	void explore(char *);
 	string init();
-	string Play(int, string);
+	string Play(int);
 	//bool Check_input(string);
-	void saveLastMove(string);
+	void saveMove(string);
 	string getMove();
 };
 

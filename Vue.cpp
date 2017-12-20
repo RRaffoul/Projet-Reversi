@@ -42,6 +42,18 @@ void Vue::Print_state(int noirs, int blancs, int turn){
 	cout << "Number of white pawns (X) : " << blancs << endl;
 }
 
+void Vue::Print_lastMove(string last_move){
+	if(last_move == ""){
+		cout << "\nDébut de la partie\n" << endl;
+	}
+	else if(last_move == "00"){
+		cout << "L'adversaire a passé son tour" << endl;
+	}
+	else{
+		cout << "L'adversaire a joué : " << last_move <<endl;
+	}
+}
+
 void Vue::White_turn(){
 	cout << "White player turn (X)" << endl;
 }
