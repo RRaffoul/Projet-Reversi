@@ -61,7 +61,6 @@ bool Plateau::Check_direction(int x, int y, int direction[2]){
 bool Plateau::Check_eat(int x, int y){
 
 	color = turn %2 + 1;
-	int count = 0; //RMQ: ne sert plus à rien non ?
 	int direction[2];
 	bool eat = false;
 	pos_to_eat.clear();
@@ -70,11 +69,8 @@ bool Plateau::Check_eat(int x, int y){
 			for (int j = -1; j <= 1; j++){//je sais que ca checke aussi la position meme du pion mais bon ca evite qlq lignes de codes pour une bete test
 				if(y != 0 || j !=-1){
 					if (plateau[x + i][y + j] != 0 && plateau[x + i][y + j] != color){
-						/* alors la soit on bosse avec des vectors --> taille dimensionnable, comme pour checker qu'une direction apres
-						* soit on bosse en tableau toujours avec d'office une taille de 8 fois 2 element pour avoir les 8 directions
-						* avec des 0 quand il ne faut pas checker par la */
 						direction [0]= i;
-						direction [1]= j; //trouver un moyen d ecrire " direction = {i, j}; "
+						direction [1]= j;
 						if (Check_direction (x, y, direction)){
 							passe = 0;
 							eat = true; //le if c'est pour que si une fois true reste true tout en continuant de checker les autres directions
@@ -325,4 +321,60 @@ float Plateau::Corner(){
 	 * on réitere ca sur le coin "devant" le coin qu on vient de faire (en direction du centre par la diagonale) de la meme facon,
 	 * c est tout aussi stable sauf qu on rentre plus encore au coeur du plateau, donc plus de points !
 	 */ 
+}
+
+//Ca c est la 2e version de Check_eat qui ne fais pas les push backs et autres choses useless pour la mobilité
+bool Plateau::Playable(int x, int y){
+	color = turn % 2 + 1;
+	int count = 0;
+	int direction[2];
+	bool eat = false;
+	for (int i = -1; i <=1; i++){
+		if(x != 0 || i !=-1){ //Pour eviter qu'on ne sorte du plateau en regardant ce qu il y a derriere
+			for (int j = -1; j <= 1; j++){
+				if(y != 0 || j !=-1){
+					if (plateau[x + i][y + j] != 0 && plateau[x + i][y + j] != color){
+						direction [0]= i;
+						direction [1]= j;
+						if (Check_direction2 (x, y, direction)){ 
+							return eat = true;
+						}
+					}
+				}
+			}
+		}
+	}
+	return eat;
+}
+
+//C est la 2e version de Check_direction qui ne fais pas de push back et autres trucs inutiles pour la mobilité
+bool Plateau::Check_direction2(int x, int y, int direction[2]){
+    int dx = direction[0];
+    int dy = direction[1]; //donne la direction en X et en Y dans laquelle on cherche
+    color = turn % 2 + 1;
+    for(int dist = 2; dist < 8; dist++){
+		if(((x + dist*dx) > 7) || ((x + dist*dx) <0) || ((y + dist*dy) > 7) || ((y + dist*dy) <0) || (plateau[x + dist*dx][y + dist*dy] == 0)) {
+			//check si on sort pas du plateau ou si on arrive pas sur une case vide
+			return false;
+		}
+		else if (plateau[x + dist*dx][y + dist*dy] == color){
+			return true;
+		}
+	}
+	return false;
+}
+
+//Check la mobilité = nombres de choix de cases dans lequelles on peut jouer
+int Plateau::Mobility(){
+	int mob = 0;
+	for(int i=0; i<8; i++){
+		for (int j = 0; j< 8; j++){
+			if(plateau[i][j] == 0){
+				if(Playable(i, j)){
+				    mob++;
+				}
+			}
+		}
+	}
+	return mob;
 }
