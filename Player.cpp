@@ -213,10 +213,10 @@ void FilePlayer::saveMove(string move){
 }
 
 bool FilePlayer::confirmation(){
-	string uresp;
-	if(*(uresp.c_str()) != '\n'){
+	char uresp;
+	if(uresp != '\n'){
 		vue->Ask_confirmation();
-		getline(cin, uresp);
+		cin.get(uresp);
 	}
 }
 
