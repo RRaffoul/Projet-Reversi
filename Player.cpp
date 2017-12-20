@@ -305,20 +305,20 @@ float IAPlayer::Heuristic(Plateau board, int color, int realColor){ // realColor
     float score; 													// color est la couleur de l'adversaire
     if(realColor == 0){ //blancs
         if(color%2 == 0){	//blancs		// Ces lignes permettent de prendre en compte,
-            score = board.Get_Blancs();		// dans le choix de l'IA, le nombre de pions mangés.
+            score = board.Get_Blancs() + board.Corner();		// dans le choix de l'IA, le nombre de pions mangés.
         }
     
         else{ // noirs
-            score = -board.Get_Noirs();
+            score = -(board.Get_Noirs() + board.Corner());
         }   
     }
     else{ // noirs
         if(color%2 == 0){ //blancs
-            score = -board.Get_Blancs();
+            score = -(board.Get_Blancs() + board.Corner());
         }
     
         else{ //noirs
-            score = board.Get_Noirs();
+            score = board.Get_Noirs() + board.Corner();
         } 
     }
     return score;
