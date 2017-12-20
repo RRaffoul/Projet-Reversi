@@ -62,6 +62,10 @@ void Vue::Black_turn(){
 	cout << "Black player turn (O)" << endl;
 }
 
+void Vue::Ask_confirmation(){
+	cout << "Information bien reçue ? [Presser ENTER pour valider]" << endl;
+}
+
 void Vue::Ask_pos(){
 		cout << "enter a position : ";
 }

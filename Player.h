@@ -26,6 +26,7 @@ class Player
 	virtual string Play(int);
 	bool Check_input(string);
 	virtual void saveMove(string);
+	virtual bool confirmation();
 };
 
 class HumanPlayer : public Player{
@@ -33,7 +34,6 @@ public:
 	HumanPlayer(Plateau*, Vue*);
 	~HumanPlayer();
 	string Play(int);
-	//bool Check_input(string);
 };
 
 class IAPlayer : public Player{
@@ -58,9 +58,9 @@ public:
 	void explore(char *);
 	string init();
 	string Play(int);
-	//bool Check_input(string);
 	void saveMove(string);
 	string getMove();
+	bool confirmation();
 };
 
 #endif // PLAYER_H

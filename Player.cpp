@@ -41,6 +41,10 @@ bool Player::Check_input(string input){ //méthode commune aux 3 types d'objets 
 void Player::saveMove(string last_move){
 }
 
+bool Player::confirmation(){
+	return true;
+}
+
 ///////////////////////// HUMANPLAYER ///////////////////////////////
 
 HumanPlayer::HumanPlayer(Plateau* platee, Vue* vuee) : Player(platee, vuee){
@@ -209,13 +213,20 @@ string FilePlayer::Play(int turn){
 	
 }
 
-
 void FilePlayer::saveMove(string move){
 	if(fichier_ecr.is_open()){
 		fichier_ecr << move << endl;
 	}
 	else
 		cout << "problem" <<endl;
+}
+
+bool FilePlayer::confirmation(){
+	string uresp;
+	if(*(uresp.c_str()) != '\n'){
+		vue->Ask_confirmation();
+		getline(cin, uresp);
+	}
 }
 
 string FilePlayer::getMove(){
@@ -242,7 +253,7 @@ IAPlayer::~IAPlayer(){
 }
 
 string IAPlayer::Play(int turn){ //Inutile de lui donner param mais pas d'autres solutions..
-	vue->Print_state(plate->Get_Noirs(), plate->Get_Blancs(), turn); //RMQ : ne devrait pas de être ici ...
+	vue->Print_state(plate->Get_Noirs(), plate->Get_Blancs(), turn);
 	plate->Set_Turn(turn);
     int count = 1;
     float value = -1000000;

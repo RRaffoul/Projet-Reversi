@@ -18,13 +18,15 @@ string Turn(int turn, Vue* vue, Player* playerW, Player* playerB, string last_mo
     if(color == 0){ //Tour du blanc
         vue->White_turn();
 		vue->Print_lastMove(last_move);
-        playerB->saveMove(last_move = playerW->Play(turn)); // saveMove permet au programme d'écrire le coup joué
+		if(playerW->confirmation());
+			playerB->saveMove(last_move = playerW->Play(turn)); // saveMove permet au programme d'écrire le coup joué
     }											// dans le fichier correspondant (blanc ou noir.txt)
 
     else{ //Tour du noir
 	    vue->Black_turn();
 		vue->Print_lastMove(last_move);
-        playerW->saveMove(last_move = playerB->Play(turn)); // lors fin du game, attention aux delete
+		if(playerB->confirmation());
+			playerW->saveMove(last_move = playerB->Play(turn)); // lors fin du game, attention aux delete
     }
     return last_move;
 }
