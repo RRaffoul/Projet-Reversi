@@ -17,6 +17,7 @@ class Vue
 	void Print_board(int*);
 	void Print_winner(int, int);
     void Print_state(int, int, int);
+    void Game_start();
 	void White_turn();
 	void Black_turn();
 	void Ask_pos();

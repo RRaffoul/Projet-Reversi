@@ -14,12 +14,11 @@ string Player::Play(int turn, string last_move){
 	//Voir ce qui est commun aux 2(3) types de player
 }
 
-bool Player::Check_input(string input){
+bool Player::Check_input(string input){ //méthode commune aux 3 types d'objets enfants
 	if(input.length() == 2){
 		int y = input[0] - 'a';
         int x = input[1] - '1';
         if(x ==('0'-'1') && y ==('0'-'a')){
-			cout<< "lol" << endl;
 			return true;
 		}
         else if(x > 8 || x < 0 || y > 8 || y < 0){ //check si dans le plateau
@@ -120,10 +119,11 @@ void FilePlayer::explore(char * dir_name){
 /*
  * Méthode permettant d'indiquer le contenu du répertoire pris en param.
  * Permet au joueur console de vérifier ou placer les fichiers.
+ * Programme rédigé par SolidusCode dans un tutoriel disponible sur :
+ * https://www.youtube.com/watch?v=w9l8kLPQ39c
  */ 
 	DIR *dir; //pointer to open directory
 	struct dirent *entry; //stuff inside the direct
-	struct stat info; //information about each entry
 
  
 	//1 open
@@ -140,7 +140,6 @@ void FilePlayer::explore(char * dir_name){
 		if (entry->d_name[0] != '.'){
 			string path = /*string(dir_name) +*/ string(entry->d_name);
 			cout << "- " << path << endl;
-			stat(path.c_str(), &info);
 		}
 	}
 	

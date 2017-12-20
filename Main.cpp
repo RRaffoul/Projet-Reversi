@@ -29,7 +29,7 @@ string Turn(int turn, Vue* vue, Player* playerW, Player* playerB, string last_mo
 
 Player* choice(Plateau* plate, Vue* vue, string player_name){
 	string uresp; //string contenant la réponse de l'utilisateur
-	while(*(uresp.c_str()) != 'h' || *(uresp.c_str()) != 'f'){
+	while(*(uresp.c_str()) != 'h' || *(uresp.c_str()) != 'f' || *(uresp.c_str()) != 'i'){
 		cout << "Joueur " << player_name << " : IA (i) ou Humain (h) ou Fichier (f) ?" << endl;
 		getline(cin, uresp);
 		if(*(uresp.c_str()) == 'h'){

@@ -80,3 +80,7 @@ void Vue::Inv_entry_3(){
 void Vue::Inv_entry_4(){
 	cout << "Invalid position, no play on this position" <<endl;
 }
+
+void Vue::Game_start(){
+	cout << "Start of the game" << endl;
+}
