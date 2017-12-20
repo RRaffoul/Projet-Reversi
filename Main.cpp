@@ -19,14 +19,19 @@ string Turn(int turn, Vue* vue, Player* playerW, Player* playerB, string last_mo
         vue->White_turn();
 		vue->Print_lastMove(last_move);
 		if(playerW->confirmation());
-			playerB->saveMove(last_move = playerW->Play(turn)); // saveMove permet au programme d'écrire le coup joué
-    }											// dans le fichier correspondant (blanc ou noir.txt)
-
+			playerB->saveMove(last_move = playerW->Play(turn)); 
+			/* 
+			 * saveMove permet au programme d'écrire le coup joué
+    		 * dans le fichier correspondant (blanc ou noir.txt)
+    		 * /!\ c'est playerB(lack) qui a accès en écriture au
+    		 * fichier blanc.txt
+    		 */ 
+	}
     else{ //Tour du noir
 	    vue->Black_turn();
 		vue->Print_lastMove(last_move);
 		if(playerB->confirmation());
-			playerW->saveMove(last_move = playerB->Play(turn)); // lors fin du game, attention aux delete
+			playerW->saveMove(last_move = playerB->Play(turn));
     }
     return last_move;
 }
@@ -61,12 +66,13 @@ int main(){
 	playerW = choice(plate, vue, "blanc");
 	playerB = choice(plate, vue, "noir");
 	int turn = 0;
-	string last_move ="";
+	string last_move =""; 	// Nécessaire pour afficher la position du 
+							// dernier pion placé
 	while(!plate->Game_over()){
 		turn++;
 	    vue->Print_board(plate->Get_Plate());
 		last_move = Turn(turn, vue, playerW, playerB, last_move);
-	}										// ajout d'une temporisation pour laisser les objets se supprimés correctement ?
+	}
 	vue->Print_board(plate->Get_Plate());
 	vue->Print_winner(plate->Get_Noirs(), plate->Get_Blancs());
 	delete playerW;

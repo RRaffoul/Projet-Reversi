@@ -7,7 +7,7 @@ Player::Player(Plateau* platee, Vue* vuee){
 }
 
 Player::~Player(){
-	cout << "Destruction d'un Player" << endl;
+	cout << "Destruction d'un Player" << endl; //RMQ: Ca devrait théoriquement être dans la vue, est-ce vrmt mieux ?
 }
 
 string Player::Play(int turn){
@@ -48,11 +48,11 @@ bool Player::confirmation(){
 ///////////////////////// HUMANPLAYER ///////////////////////////////
 
 HumanPlayer::HumanPlayer(Plateau* platee, Vue* vuee) : Player(platee, vuee){
-	cout << "Creation d'un HumanPlayer" << endl;
+	cout << "Creation d'un HumanPlayer" << endl; //RMQ: Ca devrait théoriquement être dans la vue, est-ce vrmt mieux ?
 }
 
 HumanPlayer::~HumanPlayer(){
-	cout << "Destruction d'un HumanPlayer" << endl;
+	cout << "Destruction d'un HumanPlayer" << endl; //RMQ: Ca devrait théoriquement être dans la vue, est-ce vrmt mieux ?
 }
 
 string HumanPlayer::Play(int turn){
@@ -105,14 +105,9 @@ FilePlayer::FilePlayer(Plateau* platee, Vue* vuee, string player_name): Player(p
 	string nom_fichier_ecr = dir_name+names[0]+".txt";
 	string nom_fichier_lect = dir_name+names[1]+".txt";
 	fichier_ecr.open(nom_fichier_ecr, fstream::in | fstream::out | fstream::trunc);
-	fichier_lect.open(nom_fichier_lect, fstream::in /*| fstream::out | fstream::trunc*/); 	/* 	idéalement ce fichier devrait être ouvert en
-																						*	écriture uniquement mais pour cela il faut
-																						* 	que le fichie blanc/noir.txt existe déjà
-																						* 	dans le bon répertoire
-																						*/
-										
+	fichier_lect.open(nom_fichier_lect, fstream::in); 											
 	while (!fichier_lect.is_open()){
-			cout << "Attente du joueur "<< names[1] <<" (fichier "<< names[1] <<".txt indisponible)" << endl;
+			cout << "Attente du joueur "<< names[1] <<" (fichier "<< names[1] <<".txt indisponible)" << endl; //RMQ: Ca devrait théoriquement être dans la vue, est-ce vrmt mieux ? (on pourrait choper le nom du player avec un getteur
 			// Ajout d'une temporisation avant de réessayer
 			std::this_thread::sleep_for(std::chrono::milliseconds(3000));
 			fichier_lect.open(nom_fichier_lect);
@@ -120,7 +115,7 @@ FilePlayer::FilePlayer(Plateau* platee, Vue* vuee, string player_name): Player(p
 }
 
 FilePlayer::~FilePlayer(){
-	cout << "Destruction d'un FilePlayer" << endl;
+	cout << "Destruction d'un FilePlayer" << endl;//RMQ: Ca devrait théoriquement être dans la vue, est-ce vrmt mieux ?
 }
 void FilePlayer::explore(char * dir_name){
 /*
@@ -136,17 +131,17 @@ void FilePlayer::explore(char * dir_name){
 	//1 open
 	dir = opendir(dir_name);
 	if (!dir) {
-		cout << "Directory was not found \n";
+		cout << "Directory was not found \n";//RMQ: Ca devrait théoriquement être dans la vue, est-ce vrmt mieux ?
 		return;
 	}
 
 	//2read
-	cout << "\nThis folder contains : \n" << endl;
+	cout << "\nThis folder contains : \n" << endl;//RMQ: Ca devrait théoriquement être dans la vue, est-ce vrmt mieux ?
 	while ((entry = readdir(dir)) != NULL)
 	{
 		if (entry->d_name[0] != '.'){
-			string path = /*string(dir_name) +*/ string(entry->d_name);
-			cout << "- " << path << endl;
+			string path = string(entry->d_name);
+			cout << "- " << path << endl;//RMQ: Ca devrait théoriquement être dans la vue, est-ce vrmt mieux ?
 		}
 	}
 	
@@ -160,7 +155,7 @@ string FilePlayer::init(){
 	string uresponse = "";
 	string y = "y";
 	while(uresponse != y){
-		cout << "Where would you save the files ?" << endl;
+		cout << "Where would you save the files ?" << endl; //RMQ: Ca devrait théoriquement être dans la vue, est-ce vrmt mieux ?
 		getline(cin, pathname);
 		// EXAMPLE : /mnt/c/Users/Louis Vande Perre/Documents/Polytech/BA3(Biomed)/Informatique/Projet/test/
 		explore((char*) pathname.c_str()); /* c_str converti un string 
@@ -168,7 +163,7 @@ string FilePlayer::init(){
 											*  à la bonne exécution de 
 											* la fonction explore())
 											*/
-		cout << "Is it a good directory ? (y/n)" << endl;
+		cout << "Is it a good directory ? (y/n)" << endl; //RMQ: Ca devrait théoriquement être dans la vue, est-ce vrmt mieux ?
 		getline(cin, uresponse);
 	}
 	return pathname;
@@ -177,11 +172,8 @@ string FilePlayer::init(){
 string FilePlayer::Play(int turn){
 	//Player::Play(turn);
 	ok = false;
-	//soit c est ici qu on print le plateau soit dans le main, pareil pour la ligne suivante avec les scores
+	//RMQ: soit c est ici qu on print le plateau soit dans le main, pareil pour la ligne suivante avec les scores
 	vue->Print_state(plate->Get_Noirs(), plate->Get_Blancs(), turn);
-	/*if(turn != 1){
-		saveLastMove(last_move); //éventuellement rajouter condition pour obliger la validation de la bonne réception des infos
-	}*/
 	string input = "";
 	while(!ok){
 		vue->Ask_pos(name);
@@ -190,14 +182,13 @@ string FilePlayer::Play(int turn){
 			int y = input[0] - 'a';
 			int x = input[1] - '1';
 			plate->Set_Turn(turn);
-			if(x ==('0'-'1') && y ==('0'-'a')){  //On ferait pas une fonction pour ce if ?
+			if(x ==('0'-'1') && y ==('0'-'a')){  //RMQ: On ferait pas une fonction pour ce if ?
 				if(plate->Check_notplay()){
 					vue->Skip_turn();
 					ok = true;
 				}
 				else {
 					vue->Cant_skip();
-					//ok = false;
 				}
 			}
 			else if(plate->Check_eat(x,y)){
@@ -252,7 +243,7 @@ IAPlayer::~IAPlayer(){
 	cout << "Destruction d'un IAPlayer" << endl;
 }
 
-string IAPlayer::Play(int turn){ //Inutile de lui donner param mais pas d'autres solutions..
+string IAPlayer::Play(int turn){
 	vue->Print_state(plate->Get_Noirs(), plate->Get_Blancs(), turn);
 	plate->Set_Turn(turn);
     int count = 1;
@@ -265,24 +256,20 @@ string IAPlayer::Play(int turn){ //Inutile de lui donner param mais pas d'autres
         if(imaginaire.Check_eat(pos_to_check[i], pos_to_check[i+1])){
             imaginaire.Eat();
             imaginaire.Set_Turn(imaginaire.Get_Turn() + 1); // on rajoute un tour de jeu --> chgt de joueur
-            cout << count << endl;
             temp = Heuristic(imaginaire ,plate->Get_Turn(),plate->Get_Turn()%2) +  A(imaginaire,count,plate->Get_Turn()%2);
             if( temp > value){
-                value =temp;
-                cout << "test value : " << value << endl; //RMQ : à enlever					// Cette condition permet de garder en mémoire le meilleur scénario
+                value =temp;				// Cette condition permet de garder en mémoire le meilleur scénario
                 pos[0] = pos_to_check[i];		// et a l'IA de jouer ce coup là
                 pos[1] = pos_to_check[i+1];
             }
         }
     }
     if(pos_to_check[0] == 9 && pos_to_check[1] == 9){	// Dans le cas ou le vecteur pos_to_check est de taille nulle,
-		cout << "test1 before return" << endl; //RMQ : à enlever
 		vue->Skip_turn();								// la fonction Pos_Play() initialise ses 2 premières valeurs à 9
 		plate->Not_play();								// ce qui est scénario ou l'IA doit passer son tour car rien à manger
 		return "00";
 	}
 	else if(plate->Check_eat(pos[0],pos[1])){
-		cout << "test2 before return" << endl; //RMQ : à enlever
 		plate->Eat();
 		char xc = (pos[1]+'a');
 		char yc = (pos[0]+'1');
@@ -320,7 +307,7 @@ float IAPlayer::A(Plateau board, int count, int realColor){	// Reprends le meme 
 float IAPlayer::Heuristic(Plateau board, int color, int realColor){ // realColor est la couleur du pion que l'IA incarne,
     float score; 													// color est la couleur de l'adversaire
     if(realColor == 0){ //blancs
-        if(color%2 == 0){	//blancs		// Ces lignes permettent de prendre en compte,
+        if(color%2 == 0){	//blancs							// Ces lignes permettent de prendre en compte,
             score = board.Get_Blancs() + board.Corner();		// dans le choix de l'IA, le nombre de pions mangés.
         }
     

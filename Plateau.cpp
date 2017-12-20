@@ -58,14 +58,13 @@ bool Plateau::Check_direction(int x, int y, int direction[2]){
 	return false;
 }
 
-bool Plateau::Check_eat(int x, int y){//corriger cette fct sinon il y aura une erreur dans les coins et sur les bords quand x + 1 <0 par ex
+bool Plateau::Check_eat(int x, int y){
 
 	color = turn %2 + 1;
-	int count = 0;
+	int count = 0; //RMQ: ne sert plus à rien non ?
 	int direction[2];
 	bool eat = false;
 	pos_to_eat.clear();
-	//int direction[8][2]={0};    Devenu useless si on combien les fcts check_eat et check_direction
 	for (int i = -1; i <=1; i++){
 		if(x != 0 || i !=-1){ //Pour eviter qu'on ne sorte du plateau en regardant ce qu il y a derriere
 			for (int j = -1; j <= 1; j++){//je sais que ca checke aussi la position meme du pion mais bon ca evite qlq lignes de codes pour une bete test
@@ -78,10 +77,8 @@ bool Plateau::Check_eat(int x, int y){//corriger cette fct sinon il y aura une e
 						direction [1]= j; //trouver un moyen d ecrire " direction = {i, j}; "
 						if (Check_direction (x, y, direction)){
 							passe = 0;
-							eat = true; //le if c'est pour que si une fois true reste true tout en continuant de cheker les autres directions
+							eat = true; //le if c'est pour que si une fois true reste true tout en continuant de checker les autres directions
 						}
-						/*direction[count][0] = i;
-						direction[count][1] = j;  //Devenu useless */
 					}
 				}
 			}
@@ -91,13 +88,8 @@ bool Plateau::Check_eat(int x, int y){//corriger cette fct sinon il y aura une e
 		pos_to_eat.push_back (x);
 		pos_to_eat.push_back (y);
 	}
-	/*
-	if (count == 0){
-		direction[0][0] = 5; /*le marqueur en question, on pourrait eventuellement commencer a le deplacer pour faire lire des moities de tableau etc
-	}  // devenu useless */
 	return eat;
-}/*maintenant encore faire une fonction qui goupille celle ci et check_direction en utilisant cette derniere
- que si la rangée de la matrice direction est != {0,0}*/
+}
 
 void Plateau::Eat(){
 	color = turn %2 + 1;
@@ -128,6 +120,9 @@ int Plateau::Get_Turn(){
 }
 
 bool Plateau::Game_over(){
+	/*
+	 * Vérifie si les conditions d'arrêt sont satisfaites ou non
+	 */
 	if (passe == 2)
 		return true;
 	else if (noirs + blancs == 64)
@@ -136,9 +131,9 @@ bool Plateau::Game_over(){
 }
 
 bool Plateau::Check_notplay(){
-/*
- * Vérifie si le joueur peut en effet passer son tour
- */
+	/*
+	 * Vérifie si le joueur peut en effet passer son tour
+	 */
 	for(int i=0; i<8; i++){
 		for (int j = 0; j< 8; j++){
 			if(plateau[i][j] == 0){
@@ -153,10 +148,19 @@ bool Plateau::Check_notplay(){
 }
 
 void Plateau::Not_play(){
+	/*
+	 * Version simplifiée du Check_notplay(), appelée par un IAPlayer 
+	 * uniquement car ceux ci ont déjà verifier les coups possibles en
+	 * entamant leur tour de jeu
+	 */
 	passe++;
 }
 
 vector<int> Plateau::Pos_Play(){
+	/*
+	 * Méthode appelée par un IAPlayer pour donner
+	 * toutes les positions ou le pion peut se placer
+	 */
     vector<int> posPlay;
     posPlay.clear();
 	for(int i=0; i<8; i++){
@@ -180,7 +184,7 @@ vector<int> Plateau::Pos_Play(){
 //////////////////////////////////////////Partie sur l'heuristique qui suit///////////////////////////////////////////
 
 
-float Plateau::Corner(){  //FUCK THAT SHIT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+float Plateau::Corner(){
 	int myColor = turn % 2 + 1; 
 	int advColor = color % 2 + 1; //couleur de l adversaire, + simple que de la recalculer dans chaque if
 	int moi1 = 0; //points pour les coins avec l indice 1
@@ -315,9 +319,9 @@ float Plateau::Corner(){  //FUCK THAT SHIT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			}
 		}
 	}
-	float corner = 50*(moi1 - adv1) + 60* (moi2 - adv2); //Coef a modif
+	float corner = 50*(moi1 - adv1) + 60* (moi2 - adv2); //RMQ: Coef a modif
 	return corner;
-	/* On pourrait eventuellement faire en une fonction itérative pour que si on possède le coin et les 2 pions juste a coté,
+	/* //RMQ: On pourrait eventuellement faire en une fonction itérative pour que si on possède le coin et les 2 pions juste a coté,
 	 * on réitere ca sur le coin "devant" le coin qu on vient de faire (en direction du centre par la diagonale) de la meme facon,
 	 * c est tout aussi stable sauf qu on rentre plus encore au coeur du plateau, donc plus de points !
 	 */ 

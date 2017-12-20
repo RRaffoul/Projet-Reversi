@@ -5,7 +5,7 @@ Vue::Vue(){
 
 Vue::~Vue(){}
 
-void Vue::Print_board(int* plate){ //a modif, la vue ne doit recevoir que le plateau a print et c est le controleur qui fait la conversion
+void Vue::Print_board(int* plate){
 	cout << "  a b c d e f g h  " << endl;
     for(int i = 0; i < 8; i++){
         cout << i + 1;
@@ -24,8 +24,6 @@ void Vue::Print_board(int* plate){ //a modif, la vue ne doit recevoir que le pla
 }
 
 void Vue::Print_winner(int noirs, int blancs){
-	/*cout << "\n \n \nFinal plate \n \n \n" << endl;
-	print_board(Plate);*/ // A mettre ailleurs, dans le main
 	cout << "Number of black pawns (O) : " << noirs << endl;
 	cout << "Number of white pawns (X) : " << blancs << endl;
 	if(noirs < blancs)
