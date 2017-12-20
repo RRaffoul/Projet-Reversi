@@ -7,6 +7,7 @@
 #include <chrono>
 #include <thread>
 #include "Vue.h"
+#include "cmath"
 
 using namespace std;
 

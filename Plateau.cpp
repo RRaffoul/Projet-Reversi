@@ -326,7 +326,6 @@ float Plateau::Corner(){
 //Ca c est la 2e version de Check_eat qui ne fais pas les push backs et autres choses useless pour la mobilité
 bool Plateau::Playable(int x, int y){
 	color = turn % 2 + 1;
-	int count = 0;
 	int direction[2];
 	bool eat = false;
 	for (int i = -1; i <=1; i++){
@@ -376,5 +375,54 @@ int Plateau::Mobility(){
 			}
 		}
 	}
-	return mob;
+	return 10*mob;
+}
+
+//Check la stabilité = nombres de pions qui ne peuvent plus être mangés
+int Plateau::Stability(int color){
+    int stab = 0;
+    for(int i=0; i<8; i++){
+        for(int j=0; j<8; j++){
+            if(plateau[i][j] == color){
+                if(Check_Stability(i,j)){
+                    stab++;
+                }
+            }
+        }
+    }
+    return stab;
+}
+
+bool Plateau::Check_Stability(int x, int y){
+	color = turn % 2 + 1;
+	int direction[2];
+	bool stable = true;
+    if(!Check_Direction3(x,y,1,-1) && !Check_Direction3(x,y,-1,1)){
+        stable = false;
+    }
+    if(!Check_Direction3(x,y,1,0) && !Check_Direction3(x,y,-1,0)){
+        stable = false;
+    }
+    if(!Check_Direction3(x,y,1,1) && !Check_Direction3(x,y,-1,-1)){
+        stable = false;
+    }
+    if(!Check_Direction3(x,y,0,-1) && !Check_Direction3(x,y,0,1)){
+        stable = false;
+    }
+	return stable;
+}
+
+//C est la 2e version de Check_direction qui ne fais pas de push back et autres trucs inutiles pour la mobilité
+bool Plateau::Check_Direction3(int x, int y, int dx, int dy){
+    color = turn % 2 + 1;
+    for(int dist = 2; dist < 8; dist++){
+		if((((x + dist*dx) > 7) || ((x + dist*dx) <0) || ((y + dist*dy) > 7) || ((y + dist*dy) <0)) && (plateau[x + dist*dx][y + dist*dy] == 0)) {
+			//check si on sort pas du plateau ou si on arrive pas sur une case vide
+			return true;
+		}
+		else if (plateau[x + dist*dx][y + dist*dy] != color){
+			return false;
+		}
+	}
+	return false;
 }

@@ -25,6 +25,7 @@ class Plateau
 	~Plateau();
 	bool Check_direction(int x, int y, int direction[2]);
 	bool Check_direction2(int x, int y, int direction[2]);
+	bool Check_Direction3(int x, int y, int, int);
 	bool Check_eat(int x, int y);
 	bool Playable(int x, int y);
 	int* Get_Plate();
@@ -39,6 +40,8 @@ class Plateau
     bool Game_over();
     float Corner();
     int Mobility();
+    int Stability(int);
+    bool Check_Stability(int,int);
 };
 
 #endif // PLATEAU_H

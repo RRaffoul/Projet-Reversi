@@ -285,7 +285,7 @@ string IAPlayer::Play(int turn){
 float IAPlayer::A(Plateau board, int count, int realColor){	// Reprends le meme fonctionnement que la fonction Play
     float value = 0;										// on va partir du plateau imaginaire pour imaginer plusieurs
     float temp = 0;											// tours à l'avance, mais on est limité par count
-    if(count <= 15){										// car l'IA ne peut répondre en plus de 20 secondes
+    if(count <= 3){										// car l'IA ne peut répondre en plus de 20 secondes
         vector<int> pos_to_check = board.Pos_Play();
         for(int i = 0; i < pos_to_check.size(); i+=2){
             imaginaire = board;
@@ -294,7 +294,7 @@ float IAPlayer::A(Plateau board, int count, int realColor){	// Reprends le meme 
                 imaginaire.Set_Turn(imaginaire.Get_Turn() + 1); //A chaque appel de A(...) on simule un tour de plus
                 count++;
                 temp = Heuristic(imaginaire, (count+realColor)-1, realColor) + A(imaginaire,count,realColor);
-                if(temp>value){
+                if(abs(temp) > abs(value)){
                     value = temp; 	// Parmis les différentes pos à jouer pour les tours [count], on vérifie que
                 }					// cela va nous rapporter. De cette manière on sait si la pos examinée dans Play()
             }						// place bien l'IA pour la suite
@@ -308,20 +308,20 @@ float IAPlayer::Heuristic(Plateau board, int color, int realColor){ // realColor
     float score; 													// color est la couleur de l'adversaire
     if(realColor == 0){ //blancs
         if(color%2 == 0){	//blancs							// Ces lignes permettent de prendre en compte,
-            score = board.Get_Blancs() + board.Corner();		// dans le choix de l'IA, le nombre de pions mangés.
+            score = board.Get_Blancs() + board.Corner() + board.Mobility() + board.Stability(realColor+1);		// dans le choix de l'IA, le nombre de pions mangés.
         }
     
         else{ // noirs
-            score = -(board.Get_Noirs() + board.Corner());
+            score = -(board.Get_Noirs() + board.Corner() + board.Mobility() + board.Stability(realColor+1));
         }   
     }
     else{ // noirs
         if(color%2 == 0){ //blancs
-            score = -(board.Get_Blancs() + board.Corner());
+            score = -(board.Get_Blancs() + board.Corner() + board.Mobility() + board.Stability(realColor+1));
         }
     
         else{ //noirs
-            score = board.Get_Noirs() + board.Corner();
+            score = board.Get_Noirs() + board.Corner() + board.Mobility() + board.Stability(realColor+1);
         } 
     }
     return score;
