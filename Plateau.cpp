@@ -175,3 +175,150 @@ vector<int> Plateau::Pos_Play(){
     }
 	return posPlay;
 }
+
+
+//////////////////////////////////////////Partie sur l'heuristique qui suit///////////////////////////////////////////
+
+
+float Plateau::Corner(){  //FUCK THAT SHIT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	int myColor = turn % 2 + 1; 
+	int advColor = color % 2 + 1; //couleur de l adversaire, + simple que de la recalculer dans chaque if
+	int moi1 = 0; //points pour les coins avec l indice 1
+	int adv1 = 0;
+	int moi2 = 0; //points pour la proximité des coins indice 2
+	int adv2 = 0; 
+	if(plateau[0][0] != 0){ //meilleur moyen de construire les if en faisant le moins de checks possibles
+		if(plateau[0][0] == myColor){
+			moi1++;
+			for(int k = 1; k <= 7; k++){ //la on va regarder si plus loin il y a d'autres pions qui prolongent et sont donc stables
+				if(plateau[k][0] == myColor){ //et tant pis pour les repetitions entre coins, si on a des repet c est qu on a joint 2 coins, d autant + stable
+					moi2++;
+				} 
+				else break;
+			}
+			for(int k = 1; k <= 7; k++){ //same same dans la 2 e direct
+				if(plateau[0][k] == myColor){ 
+					moi2++; 
+				}
+				else break;
+			}
+		}
+		else{
+			adv1++;
+			for(int k = 1; k <= 7; k++){ 
+				if(plateau[k][0] == advColor){ 
+					adv2++; 
+				}
+				else break;
+			}
+			for(int k = 1; k <= 7; k++){ 
+				if(plateau[0][k] == advColor){ 
+					adv2++;
+				} 
+				else break;
+			}
+		}
+	}
+	if(plateau[0][7] != 0){
+		if(plateau[0][7] == myColor){
+			moi1++;
+			for(int k = 1; k <= 7; k++){
+				if(plateau[k][7] == myColor){
+					moi2++;
+				} 
+				else break;
+			}
+			for(int k = 7; k >= 1; k--){
+				if(plateau[0][k] == myColor){ 
+					moi2++; 
+				}
+				else break;
+			}
+		}
+		else{
+			adv1++;
+			for(int k = 1; k <= 7; k++){ 
+				if(plateau[k][7] == advColor){ 
+					adv2++; 
+				}
+				else break;
+			}
+			for(int k = 7; k >= 1; k--){ 
+				if(plateau[0][k] == advColor){ 
+					adv2++;
+				} 
+				else break;
+			}
+		}
+	}
+	if(plateau[7][7] != 0){
+		if(plateau[7][7] == myColor){
+			moi1++;
+			for(int k = 7; k >= 1; k--){ 
+				if(plateau[k][7] == myColor){
+					moi2++;
+				} 
+				else break;
+			}
+			for(int k = 7; k >= 1; k--){ 
+				if(plateau[7][k] == myColor){ 
+					moi2++; 
+				}
+				else break;
+			}
+		}
+		else{
+			adv1++;
+			for(int k = 7; k >= 1; k--){ 
+				if(plateau[k][7] == advColor){ 
+					adv2++; 
+				}
+				else break;
+			}
+			for(int k = 7; k >= 1; k--){ 
+				if(plateau[7][k] == advColor){ 
+					adv2++;
+				} 
+				else break;
+			}
+		}
+	}
+	if(plateau[7][0] != 0){
+		if(plateau[7][0] == myColor){
+			moi1++;
+			for(int k = 7; k >= 1; k--){ 
+				if(plateau[k][0] == myColor){ 
+					moi2++;
+				} 
+				else break;
+			}
+			for(int k = 1; k <= 7; k++){ 
+				if(plateau[7][k] == myColor){ 
+					moi2++; 
+				}
+				else break;
+			}
+		}
+		else{
+			adv1++;
+			for(int k = 7; k >= 1; k--){ 
+				if(plateau[k][0] == advColor){ 
+					adv2++; 
+				}
+				else break;
+			}
+			for(int k = 1; k <= 7; k++){ 
+				if(plateau[7][k] == advColor){ 
+					adv2++;
+				} 
+				else break;
+			}
+		}
+	}
+	float corner = 50*(moi1 - adv1) + 60* (moi2 - adv2); //Coef a modif
+	return corner;
+	/* On pourrait eventuellement faire en une fonction itérative pour que si on possède le coin et les 2 pions juste a coté,
+	 * on réitere ca sur le coin "devant" le coin qu on vient de faire (en direction du centre par la diagonale) de la meme facon,
+	 * c est tout aussi stable sauf qu on rentre plus encore au coeur du plateau, donc plus de points !
+	 */ 
+}

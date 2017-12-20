@@ -35,6 +35,7 @@ class Plateau
 	void Not_play();
     vector<int> Pos_Play();
     bool Game_over();
+    float Corner();
 };
 
 #endif // PLATEAU_H
