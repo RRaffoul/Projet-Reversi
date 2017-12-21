@@ -10,10 +10,16 @@ Player::~Player(){
 }
 
 string Player::Play(int turn){
-	//Voir ce qui est commun aux 2(3) types de player
+	//Fonction virtuelle pure, doit être instanciée par ses classes enfants
 }
 
-bool Player::Check_input(string input){ //méthode commune aux 3 types d'objets enfants
+bool Player::Check_input(string input){
+	/*
+	 * Méthode commune aux enfants de la classe Player, se charge
+	 * de vérifier que les entrées réceptionnées sont bien valides.
+	 * NB : non utilisées dans la classe IAPlayer car on suppose
+	 * que l'IA ne renvoit que des positions valides
+	 */
 	if(input.length() == 2){
 		int y = input[0] - 'a';
         int x = input[1] - '1';
@@ -37,6 +43,13 @@ bool Player::Check_input(string input){ //méthode commune aux 3 types d'objets 
 	}
 }
 
+/*
+ * Les 2 fonctions suivantes sont uniquement essentielles au fonctionnement
+ * d'un FilePlayer, mais comme celui-ce sera considéré comme un Player tout
+ * au long de la partie, il faut que ces méthodes soient des méthodes 
+ * virtuelles de Player
+ */
+
 void Player::saveMove(string last_move){
 }
 
@@ -54,29 +67,27 @@ HumanPlayer::~HumanPlayer(){
 
 string HumanPlayer::Play(int turn){
 	ok = false;
-	//soit c est ici qu on print le plateau soit dans le main, pareil pour la ligne suivante avec les scores
 	vue->Print_state(plate->Get_Noirs(), plate->Get_Blancs(), turn);
 	string input = "";
-	while(!ok){
-		vue->Ask_pos();
+	while(!ok){ 				//Tant que l'entrée n'est pas valide on demandera
+		vue->Ask_pos();			//à l'utilisateur d'entrer une position
 		getline(cin, input);
 			if(Check_input(input)){
-				int y = input[0] - 'a';
-				int x = input[1] - '1';
+				int y = input[0] - 'a'; //Converti l'entrée (lettre min + chiffre)
+				int x = input[1] - '1';	//en int qui serviront de coordonnées
                 plate->Set_Turn(turn);
-				if(x ==('0'-'1') && y ==('0'-'a')){  //On ferait pas une fonction pour ce if ?
-					if(plate->Check_notplay()){
-						vue->Skip_turn();
+				if(x ==('0'-'1') && y ==('0'-'a')){	//Si le joueur entre "00",
+					if(plate->Check_notplay()){		//vérificaton qu'il y a 
+						vue->Skip_turn();			// aucune position à jouer
 						ok = true;
 					}
 					else {
 						vue->Cant_skip();
-						//ok = false;
 					}
 				}
-				else if(plate->Check_eat(x,y)){
-					plate->Eat();
-					ok = true;
+				else if(plate->Check_eat(x,y)){	//Si l'entrée du joueur est
+					plate->Eat();				//correct, alors son coup est
+					ok = true;					//effectué et les pions sont mangés
 				}
                 else
                     vue->Inv_entry_4();
@@ -88,7 +99,7 @@ string HumanPlayer::Play(int turn){
 ///////////////////////// FILEPLAYER ///////////////////////////////
 
 FilePlayer::FilePlayer(Plateau* platee, Vue* vuee, string player_name): Player(platee, vuee){
-	name = player_name; //Get and Set name à faire ?
+	name = player_name;
 	string dir_name = init();
 	string names[2];
 	if(player_name == "blanc"){ // Permet de désigner le fichier qui sera ouvert en lecture ou

@@ -24,7 +24,7 @@ class Player
  public:
 	Player(Plateau*, Vue*);
 	virtual ~Player();
-	virtual string Play(int);
+	virtual string Play(int)=0;
 	bool Check_input(string);
 	virtual void saveMove(string);
 	virtual bool confirmation();
