@@ -308,21 +308,22 @@ float IAPlayer::Heuristic(Plateau board, int color, int realColor){ // realColor
     float score; 													// color est la couleur de l'adversaire
     if(realColor == 0){ //blancs
         if(color%2 == 0){	//blancs							// Ces lignes permettent de prendre en compte,
-            score = board.Get_Blancs() + board.Corner() + board.Mobility() + board.Stability(realColor+1);		// dans le choix de l'IA, le nombre de pions mangés.
-        }
-    
+            score = /*board.Get_Blancs()*/ + board.Corner() + board.Mobility() + board.Stability(realColor+1);		// dans le choix de l'IA, le nombre de pions mangés.
+        }														//RMQ: ça ne sert à rien de prendre en compte le nombre de pions mangés...
+																// éventuellement dans les derniers tours mais pas avant
         else{ // noirs
-            score = -(board.Get_Noirs() + board.Corner() + board.Mobility() + board.Stability(realColor+1));
+            score = /*-(board.Get_Noirs() +*/ -(board.Corner() + board.Mobility() + board.Stability(realColor+1));
         }   
     }
     else{ // noirs
         if(color%2 == 0){ //blancs
-            score = -(board.Get_Blancs() + board.Corner() + board.Mobility() + board.Stability(realColor+1));
+            score = /*-(board.Get_Blancs() +*/ -(board.Corner() + board.Mobility() + board.Stability(realColor+1));
         }
     
         else{ //noirs
-            score = board.Get_Noirs() + board.Corner() + board.Mobility() + board.Stability(realColor+1);
+            score = /*board.Get_Noirs()*/ + board.Corner() + board.Mobility() + board.Stability(realColor+1);
         } 
     }
+    cout << "score : " << score << endl; //RMQ: à supprimer
     return score;
 }
