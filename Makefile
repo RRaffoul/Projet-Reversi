@@ -14,4 +14,4 @@ projet.o : projet.cpp
 	g++ -c projet.cpp
 
 clean:
-	rm *.o projet *.txt
+	rm -f *.o projet *.txt

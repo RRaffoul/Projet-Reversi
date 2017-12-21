@@ -18,7 +18,7 @@ string Turn(int turn, Vue* vue, Player* playerW, Player* playerB, string last_mo
     if(color == 0){ //Tour du blanc
         vue->White_turn();
 		vue->Print_lastMove(last_move);
-		if(playerW->confirmation());
+		//if(playerW->confirmation());
 			playerB->saveMove(last_move = playerW->Play(turn)); 
 			/* 
 			 * saveMove permet au programme d'écrire le coup joué
@@ -30,7 +30,7 @@ string Turn(int turn, Vue* vue, Player* playerW, Player* playerB, string last_mo
     else{ //Tour du noir
 	    vue->Black_turn();
 		vue->Print_lastMove(last_move);
-		if(playerB->confirmation());
+		//if(playerB->confirmation());
 			playerW->saveMove(last_move = playerB->Play(turn));
     }
     return last_move;

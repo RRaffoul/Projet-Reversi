@@ -115,6 +115,8 @@ FilePlayer::FilePlayer(Plateau* platee, Vue* vuee, string player_name): Player(p
 }
 
 FilePlayer::~FilePlayer(){
+	fichier_ecr.close();
+	fichier_lect.close();
 	cout << "Destruction d'un FilePlayer" << endl;//RMQ: Ca devrait théoriquement être dans la vue, est-ce vrmt mieux ?
 }
 void FilePlayer::explore(char * dir_name){

@@ -7,12 +7,12 @@ Plateau::Plateau(){
 	for(int i = 0; i<8; i++){
 		for (int j = 0; j < 8; j++){
 			if((i == 3 && j == 3) ||(i == 4 && j == 4)){
-				plateau[i][j] = 2;
-				noirs++;
-			}
-			else if ((i == 4 && j == 3) || (i == 3 && j == 4)){
 				plateau[i][j] = 1;
 				blancs++;
+			}
+			else if ((i == 4 && j == 3) || (i == 3 && j == 4)){
+				plateau[i][j] = 2;
+				noirs++;
 			}
 			else
 				plateau[i][j] = 0;
@@ -397,20 +397,20 @@ bool Plateau::Check_Stability(int x, int y){
 	color = turn % 2 + 1;
 	bool stable = false;
     if(Check_Direction3(x,y,1,-1) || Check_Direction3(x,y,-1,1)){
-        cout << "a" << endl;
+        //cout << "a" << endl; //RMQ: A supprimer
         stable = true;
     }
     if(Check_Direction3(x,y,1,0) || Check_Direction3(x,y,-1,0)){
-        cout << "b" << endl;
+        //cout << "b" << endl; //RMQ: A supprimer
         stable = true;
     }
     if(Check_Direction3(x,y,1,1) || Check_Direction3(x,y,-1,-1)){
         cout << "c" << endl;
-        stable = true;
+        //stable = true; //RMQ: A supprimer
     }
     if(Check_Direction3(x,y,0,-1) || Check_Direction3(x,y,0,1)){
         cout << "d" << endl;
-        stable = true;
+        //stable = true; //RMQ: A supprimer
     }
 	return stable;
 }
