@@ -405,12 +405,12 @@ bool Plateau::Check_Stability(int x, int y){
         stable = true;
     }
     if(Check_Direction3(x,y,1,1) || Check_Direction3(x,y,-1,-1)){
-        cout << "c" << endl;
-        //stable = true; //RMQ: A supprimer
+        //cout << "c" << endl;
+        stable = true; //RMQ: A supprimer
     }
     if(Check_Direction3(x,y,0,-1) || Check_Direction3(x,y,0,1)){
-        cout << "d" << endl;
-        //stable = true; //RMQ: A supprimer
+        //cout << "d" << endl;
+        stable = true; //RMQ: A supprimer
     }
 	return stable;
 }

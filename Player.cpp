@@ -7,7 +7,6 @@ Player::Player(Plateau* platee, Vue* vuee){
 }
 
 Player::~Player(){
-	cout << "Destruction d'un Player" << endl; //RMQ: Ca devrait théoriquement être dans la vue, est-ce vrmt mieux ?
 }
 
 string Player::Play(int turn){
@@ -48,11 +47,9 @@ bool Player::confirmation(){
 ///////////////////////// HUMANPLAYER ///////////////////////////////
 
 HumanPlayer::HumanPlayer(Plateau* platee, Vue* vuee) : Player(platee, vuee){
-	cout << "Creation d'un HumanPlayer" << endl; //RMQ: Ca devrait théoriquement être dans la vue, est-ce vrmt mieux ?
 }
 
 HumanPlayer::~HumanPlayer(){
-	cout << "Destruction d'un HumanPlayer" << endl; //RMQ: Ca devrait théoriquement être dans la vue, est-ce vrmt mieux ?
 }
 
 string HumanPlayer::Play(int turn){
@@ -117,7 +114,6 @@ FilePlayer::FilePlayer(Plateau* platee, Vue* vuee, string player_name): Player(p
 FilePlayer::~FilePlayer(){
 	fichier_ecr.close();
 	fichier_lect.close();
-	cout << "Destruction d'un FilePlayer" << endl;//RMQ: Ca devrait théoriquement être dans la vue, est-ce vrmt mieux ?
 }
 void FilePlayer::explore(char * dir_name){
 /*
@@ -238,11 +234,9 @@ string FilePlayer::getMove(){
 ///////////////////////// IAPLAYER //////////////////////////////////
 
 IAPlayer::IAPlayer(Plateau* platee, Vue* vuee) : Player(platee, vuee){
-	cout << "Creation d'un IAPlayer" << endl;
 }
 
 IAPlayer::~IAPlayer(){
-	cout << "Destruction d'un IAPlayer" << endl;
 }
 
 string IAPlayer::Play(int turn){
