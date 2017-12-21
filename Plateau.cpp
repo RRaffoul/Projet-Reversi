@@ -398,19 +398,22 @@ int Plateau::Stability(int color){
 
 bool Plateau::Check_Stability(int x, int y){
 	color = turn % 2 + 1;
-	int direction[2];
-	bool stable = true;
-    if(!Check_Direction3(x,y,1,-1) && !Check_Direction3(x,y,-1,1)){
-        stable = false;
+	bool stable = false;
+    if(Check_Direction3(x,y,1,-1) || Check_Direction3(x,y,-1,1)){
+        cout << "a" << endl;
+        stable = true;
     }
-    if(!Check_Direction3(x,y,1,0) && !Check_Direction3(x,y,-1,0)){
-        stable = false;
+    if(Check_Direction3(x,y,1,0) || Check_Direction3(x,y,-1,0)){
+        cout << "b" << endl;
+        stable = true;
     }
-    if(!Check_Direction3(x,y,1,1) && !Check_Direction3(x,y,-1,-1)){
-        stable = false;
+    if(Check_Direction3(x,y,1,1) || Check_Direction3(x,y,-1,-1)){
+        cout << "c" << endl;
+        stable = true;
     }
-    if(!Check_Direction3(x,y,0,-1) && !Check_Direction3(x,y,0,1)){
-        stable = false;
+    if(Check_Direction3(x,y,0,-1) || Check_Direction3(x,y,0,1)){
+        cout << "d" << endl;
+        stable = true;
     }
 	return stable;
 }
@@ -418,8 +421,8 @@ bool Plateau::Check_Stability(int x, int y){
 //C est la 2e version de Check_direction qui ne fais pas de push back et autres trucs inutiles pour la mobilité
 bool Plateau::Check_Direction3(int x, int y, int dx, int dy){
     color = turn % 2 + 1;
-    for(int dist = 2; dist < 8; dist++){
-		if((((x + dist*dx) > 7) || ((x + dist*dx) <0) || ((y + dist*dy) > 7) || ((y + dist*dy) <0)) && (plateau[x + dist*dx][y + dist*dy] == 0)) {
+    for(int dist = 1; dist < 8; dist++){
+		if((((x + dist*dx) > 7) || ((x + dist*dx) <0) || ((y + dist*dy) > 7) || ((y + dist*dy) <0)) && (plateau[x + dist*dx][y + dist*dy] == color)) {
 			//check si on sort pas du plateau ou si on arrive pas sur une case vide
 			return true;
 		}
