@@ -94,9 +94,9 @@ FilePlayer::FilePlayer(Plateau* platee, Vue* vuee, string player_name): Player(p
 	name = player_name; //Get and Set name à faire ?
 	string dir_name = init();
 	string names[2];
-	if(player_name == "blanc"){ // voir Precision_Joueur_Fichier.md si incompréhension
-		names[0] = "noir";
-		names[1] = "blanc";
+	if(player_name == "blanc"){ // Permet de désigner le fichier qui sera ouvert en lecture ou
+		names[0] = "noir";		// en écriture
+		names[1] = "blanc"; 	// voir Precision_Joueur_Fichier.md si incompréhension
 	}
 	else{
 		names[0] = "blanc";
@@ -106,7 +106,7 @@ FilePlayer::FilePlayer(Plateau* platee, Vue* vuee, string player_name): Player(p
 	string nom_fichier_lect = dir_name+names[1]+".txt";
 	fichier_ecr.open(nom_fichier_ecr, fstream::in | fstream::out | fstream::trunc);
 	fichier_lect.open(nom_fichier_lect, fstream::in); 											
-	while (!fichier_lect.is_open()){
+	while (!fichier_lect.is_open()){ //RMQ: close les fichiers dans le destructeur
 			cout << "Attente du joueur "<< names[1] <<" (fichier "<< names[1] <<".txt indisponible)" << endl; //RMQ: Ca devrait théoriquement être dans la vue, est-ce vrmt mieux ? (on pourrait choper le nom du player avec un getteur
 			// Ajout d'une temporisation avant de réessayer
 			std::this_thread::sleep_for(std::chrono::milliseconds(3000));
@@ -136,7 +136,7 @@ void FilePlayer::explore(char * dir_name){
 	}
 
 	//2read
-	cout << "\nThis folder contains : \n" << endl;//RMQ: Ca devrait théoriquement être dans la vue, est-ce vrmt mieux ?
+	cout << "\nThis directory contains : \n" << endl;//RMQ: Ca devrait théoriquement être dans la vue, est-ce vrmt mieux ?
 	while ((entry = readdir(dir)) != NULL)
 	{
 		if (entry->d_name[0] != '.'){
