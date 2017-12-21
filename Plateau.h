@@ -38,7 +38,11 @@ class Plateau
 	void Not_play();
     vector<int> Pos_Play();
     bool Game_over();
-    float Corner();
+    int Corner();
+    int Corner1(int it, int larg, int haut, int Color);
+    int Corner2(int it, int larg, int haut, int Color);
+    int Corner3(int it, int larg, int haut, int Color);
+    int Corner4(int it, int larg, int haut, int Color);
     int Mobility();
     int Stability(int);
     bool Check_Stability(int,int);

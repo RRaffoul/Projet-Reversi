@@ -257,147 +257,325 @@ bool Plateau::Check_Direction3(int x, int y, int dx, int dy){
  * par un coéfficent.
  */
 
-float Plateau::Corner(){
+int Plateau::Corner(){ //ATTENTION c est une valeur par defaut a 0, on peut appeler la fonction initialement avec Corner() (= Corner(0))
 	int myColor = turn % 2 + 1; 
 	int advColor = color % 2 + 1; //couleur de l adversaire, + simple que de la recalculer dans chaque if
-	int moi1 = 0; //points pour les coins avec l indice 1
-	int adv1 = 0;
-	int moi2 = 0; //points pour la proximité des coins indice 2
-	int adv2 = 0; 
+	int moi= 0;
+	/*
+	 * Ici j ai simplifié et on mets tous les pions tout a fait stables dans le meme sac, sans distinction
+	 */
+	int adv = 0;
+	int hauteur = 0; //Pour que si on a les 2 cotés couvers en prolongement du coins s il nous appartient, pour eventuellement reiterer dans le coin interieur a ce coin
+	int largeur = 0;
 	if(plateau[0][0] != 0){ //meilleur moyen de construire les if en faisant le moins de checks possibles
 		if(plateau[0][0] == myColor){
-			moi1++;
-			for(int k = 1; k <= 7; k++){ //la on va regarder si plus loin il y a d'autres pions qui prolongent et sont donc stables
+			moi++;
+			for(int k = 1; k <= 6; k++){ //la on va regarder si plus loin il y a d'autres pions qui prolongent et sont donc stables
 				if(plateau[k][0] == myColor){ //et tant pis pour les repetitions entre coins, si on a des repet c est qu on a joint 2 coins, d autant + stable
-					moi2++;
+					moi++;
+					hauteur++;
 				} 
 				else break;
 			}
-			for(int k = 1; k <= 7; k++){ //same same dans la 2 e direct
+			for(int k = 1; k <= 6; k++){ //same same dans la 2 e direct
 				if(plateau[0][k] == myColor){ 
-					moi2++; 
+					moi++;
+					largeur++;
 				}
 				else break;
 			}
+			if(largeur != 0 && hauteur != 0){
+				moi += Corner1(1, largeur, hauteur, myColor);
+			}			
+			largeur = 0;
+			hauteur = 0;
 		}
 		else{
-			adv1++;
-			for(int k = 1; k <= 7; k++){ 
+			adv++;
+			for(int k = 1; k <= 6; k++){ 
 				if(plateau[k][0] == advColor){ 
-					adv2++; 
+					adv++; 
 				}
 				else break;
 			}
-			for(int k = 1; k <= 7; k++){ 
+			for(int k = 0; k <= 6; k++){ 
 				if(plateau[0][k] == advColor){ 
-					adv2++;
+					adv++;
 				} 
 				else break;
 			}
+			if(largeur != 0 && hauteur != 0){
+				adv += Corner1(1, largeur, hauteur, advColor);
+			}
+			largeur = 0;
+			hauteur = 0;
 		}
 	}
 	if(plateau[0][7] != 0){
 		if(plateau[0][7] == myColor){
-			moi1++;
-			for(int k = 1; k <= 7; k++){
+			moi++;
+			for(int k = 1; k <= 6; k++){
 				if(plateau[k][7] == myColor){
-					moi2++;
+					moi++;
+					hauteur++;
 				} 
 				else break;
 			}
-			for(int k = 7; k >= 1; k--){
+			for(int k = 6; k >= 1; k--){
 				if(plateau[0][k] == myColor){ 
-					moi2++; 
+					moi++; 
+					largeur++;
 				}
 				else break;
 			}
+			if(largeur != 0 && hauteur != 0){
+				moi += Corner2(1, largeur, hauteur, myColor);	
+			}
+			largeur = 0;
+			hauteur = 0;
 		}
 		else{
-			adv1++;
-			for(int k = 1; k <= 7; k++){ 
+			adv++;
+			for(int k = 1; k <= 6; k++){ 
 				if(plateau[k][7] == advColor){ 
-					adv2++; 
+					adv++; 
+					hauteur++;
 				}
 				else break;
 			}
-			for(int k = 7; k >= 1; k--){ 
+			for(int k = 6; k >= 1; k--){ 
 				if(plateau[0][k] == advColor){ 
-					adv2++;
+					adv++;
+					largeur++;
 				} 
 				else break;
 			}
+			if(largeur != 0 && hauteur != 0){
+				adv += Corner2(1, largeur, hauteur, advColor);
+			}						
+			largeur = 0;
+			hauteur = 0;
 		}
 	}
 	if(plateau[7][7] != 0){
 		if(plateau[7][7] == myColor){
-			moi1++;
-			for(int k = 7; k >= 1; k--){ 
+			moi++;
+			for(int k = 6; k >= 1; k--){ 
 				if(plateau[k][7] == myColor){
-					moi2++;
+					moi++;
+					hauteur++;
 				} 
 				else break;
 			}
-			for(int k = 7; k >= 1; k--){ 
+			for(int k = 6; k >= 1; k--){ 
 				if(plateau[7][k] == myColor){ 
-					moi2++; 
+					moi++;
+					largeur++; 
 				}
 				else break;
 			}
+			if(largeur != 0 && hauteur != 0){
+				moi += Corner2(1, largeur, hauteur, myColor);
+			}
+			largeur = 0;
+			hauteur = 0;
 		}
 		else{
-			adv1++;
-			for(int k = 7; k >= 1; k--){ 
+			adv++;
+			for(int k = 6; k >= 1; k--){ 
 				if(plateau[k][7] == advColor){ 
-					adv2++; 
+					adv++; 
+					hauteur++;
 				}
 				else break;
 			}
-			for(int k = 7; k >= 1; k--){ 
+			for(int k = 6; k >= 1; k--){ 
 				if(plateau[7][k] == advColor){ 
-					adv2++;
+					adv++;
+					largeur++;
 				} 
 				else break;
 			}
+			if(largeur != 0 && hauteur != 0){
+				adv += Corner2(1, largeur, hauteur, advColor);
+			}						
+			largeur = 0;
+			hauteur = 0;
 		}
 	}
 	if(plateau[7][0] != 0){
 		if(plateau[7][0] == myColor){
-			moi1++;
-			for(int k = 7; k >= 1; k--){ 
+			moi++;
+			for(int k = 6; k >= 1; k--){ 
 				if(plateau[k][0] == myColor){ 
-					moi2++;
+					moi++;
+					hauteur++;
 				} 
 				else break;
 			}
-			for(int k = 1; k <= 7; k++){ 
+			for(int k = 1; k <= 6; k++){ 
 				if(plateau[7][k] == myColor){ 
-					moi2++; 
+					moi++;
+					largeur++; 
 				}
 				else break;
 			}
+			if(largeur != 0 && hauteur != 0){
+				moi += Corner2(1, largeur, hauteur, myColor);
+			}
+			largeur = 0;
+			hauteur = 0;
 		}
 		else{
-			adv1++;
-			for(int k = 7; k >= 1; k--){ 
+			adv++;
+			for(int k = 6; k >= 1; k--){ 
 				if(plateau[k][0] == advColor){ 
-					adv2++; 
+					adv++; 
+					hauteur++;
 				}
 				else break;
 			}
-			for(int k = 1; k <= 7; k++){ 
+			for(int k = 1; k <= 6; k++){ 
 				if(plateau[7][k] == advColor){ 
-					adv2++;
+					adv++;
+					largeur++;
 				} 
 				else break;
+			}
+			if(largeur != 0 && hauteur != 0){
+				adv += Corner2(1, largeur, hauteur, advColor);
+			}						
+			largeur = 0;
+			hauteur = 0;
+		}
+	}
+	return 50*(moi - adv); //RMQ : Coef a modif
+}
+
+//"it" iteration
+//coin haut gauche
+int Plateau::Corner1(int it, int larg, int haut, int Color){ //corner1 c est le coté en haut a gauche, 2 cest en haut a droite, 3 en bas a droite et 4 en bas a gauche
+	int moi = 0;
+	int hauteur = 0; 
+	int largeur = 0;
+	if(plateau[it][it] != 0){
+		if(plateau[it][it] == Color){
+			moi++;
+			for(int k = it+1; k <= it+haut; k++){ //la on va regarder si plus loin il y a d'autres pions qui prolongent et sont donc stables
+				if(plateau[k][it] == Color){ 
+					moi++;
+					hauteur++;
+				} 
+				else break;
+			}
+			for(int k = it+1; k <= it+larg; k++){
+				if(plateau[it][k] == Color){ 
+					moi++;
+					largeur++;
+				}
+				else break;
+			}
+			if(largeur != 0 && hauteur != 0){
+				int iteration = it + 1;
+				moi += Corner1(iteration, largeur, hauteur, Color);
 			}
 		}
 	}
-	float corner = 50*(moi1 - adv1) + 60* (moi2 - adv2); //RMQ: Coef a modif
-	return 100*corner;
-	/* //RMQ: On pourrait eventuellement faire en une fonction itérative pour que si on possède le coin et les 2 pions juste a coté,
-	 * on réitere ca sur le coin "devant" le coin qu on vient de faire (en direction du centre par la diagonale) de la meme facon,
-	 * c est tout aussi stable sauf qu on rentre plus encore au coeur du plateau, donc plus de points !
-	 */ 
+	return moi;
+}
+
+//coin haut droit
+int Plateau::Corner2(int it, int larg, int haut, int Color){ 
+	int moi = 0; 
+	int hauteur = 0; 
+	int largeur = 0;
+	if(plateau[it][7-it] != 0){ 
+		if(plateau[it][7-it] == Color){
+			moi++;
+			for(int k = it+1; k <= it+haut; k++){ 
+				if(plateau[k][7-it] == Color){ 
+					moi++;
+					hauteur++;
+				} 
+				else break;
+			}
+			for(int k = 6-it; k >= 6-it-larg; k--){ //on part d en haut a droite et on va regarder sur la meme rangée ce qu il se passe a gauche
+				if(plateau[it][k] == Color){ 
+					moi++;
+					largeur++;
+				}
+				else break;
+			}
+			if(largeur != 0 && hauteur != 0){
+				int iteration = it + 1;
+				moi += Corner2(iteration, largeur, hauteur, Color);
+			}
+		}
+	}
+	return moi;
+}
+
+//coin bas droit
+int Plateau::Corner3(int it, int larg, int haut, int Color){
+	int moi = 0;
+	int hauteur = 0; 
+	int largeur = 0;
+	if(plateau[7-it][7-it] != 0){ 
+		if(plateau[7-it][7-it] == Color){
+			moi++;
+			for(int k = 6-it; k >= 6-it-haut; k--){ 
+				if(plateau[k][7-it] == Color){ 
+					moi++;
+					hauteur++;
+				} 
+				else break;
+			}
+			for(int k = 6-it; k >= 6-it-larg; k--){
+				if(plateau[7-it][k] == Color){ 
+					moi++;
+					largeur++;
+				}
+				else break;
+			}
+			if(largeur != 0 && hauteur != 0){
+				int iteration = it + 1;
+				moi += Corner3(iteration, largeur, hauteur, Color);
+			}
+		}
+	}
+	return moi;
+}
+
+
+//coin bas gauche
+int Plateau::Corner4(int it, int larg, int haut, int Color){
+	int moi = 0;
+	int hauteur = 0; 
+	int largeur = 0;
+	if(plateau[7-it][it] != 0){ 
+		if(plateau[7-it][it] == Color){
+			moi++;
+			for(int k = 6-it; k >= 6-it-haut; k--){
+				if(plateau[k][it] == Color){ 
+					moi++;
+					hauteur++;
+				} 
+				else break;
+			}
+			for(int k = it+1; k <= it+larg; k++){
+				if(plateau[it][k] == Color){ 
+					moi++;
+					largeur++;
+				}
+				else break;
+			}
+			if(largeur != 0 && hauteur != 0){
+				int iteration = it + 1;
+				moi += Corner4(iteration, largeur, hauteur, Color);
+			}
+		}
+	}
+	return moi;
 }
 
 //Check la mobilité = nombres de choix de cases dans lequelles on peut jouer
