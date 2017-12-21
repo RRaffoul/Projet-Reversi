@@ -6,6 +6,9 @@ Vue::Vue(){
 Vue::~Vue(){}
 
 void Vue::Print_board(int* plate){
+	/*
+	 * Imprime le plateau de jeu dans le terminal
+	 */
 	cout << "  a b c d e f g h  " << endl;
     for(int i = 0; i < 8; i++){
         cout << i + 1;
@@ -14,9 +17,9 @@ void Vue::Print_board(int* plate){
 		    if(*(plate + (8*i) + j) == 0)
 		    	cout << ". ";
 		    else if(*(plate + (8*i) + j) == 1)
-		    	cout << "X ";
+		    	cout << "X ";				//Représente le joueur blanc
 		    else if(*(plate + (8*i) + j) == 2)
-		    	cout << "O ";
+		    	cout << "O ";				//Représente le joueur noir
 	    }
         cout << i+1 << endl;
     }
@@ -24,6 +27,9 @@ void Vue::Print_board(int* plate){
 }
 
 void Vue::Print_winner(int noirs, int blancs){
+	/*
+	 * Impression des scores et du gagnant à la fin de la partie
+	 */
 	cout << "Number of black pawns (O) : " << noirs << endl;
 	cout << "Number of white pawns (X) : " << blancs << endl;
 	if(noirs < blancs)
@@ -35,20 +41,26 @@ void Vue::Print_winner(int noirs, int blancs){
 }
 
 void Vue::Print_state(int noirs, int blancs, int turn){
+	/*
+	 * Impression, à chaque tour de jeu, des scores ainsi que du tour actuel
+	 */
 	cout << "Turn " << turn << endl;
 	cout << "Number of black pawns (O) : " << noirs << endl;
 	cout << "Number of white pawns (X) : " << blancs << endl;
 }
 
 void Vue::Print_lastMove(string last_move){
+	/*
+	 * Imprime le dernier mouvement joué.
+	 */
 	if(last_move == ""){
-		cout << "\nDébut de la partie\n" << endl;
+		cout << "\nBeginning of the game\n" << endl;
 	}
 	else if(last_move == "00"){
-		cout << "L'adversaire a passé son tour" << endl;
+		cout << "The opponent has skip his turn" << endl;
 	}
 	else{
-		cout << "L'adversaire a joué : " << last_move <<endl;
+		cout << "The opponent plays : " << last_move <<endl;
 	}
 }
 
@@ -61,11 +73,11 @@ void Vue::Black_turn(){
 }
 
 void Vue::Ask_confirmation(){
-	cout << "Information bien reçue ? [Presser ENTER pour valider]" << endl;
+	cout << "Information received ? [Press ENTER to validate]" << endl;
 }
 
 void Vue::Ask_pos(){
-		cout << "enter a position : ";
+		cout << "Enter a position : ";
 }
 
 void Vue::Ask_pos(string player){
@@ -93,8 +105,4 @@ void Vue::Inv_entry_3(){
 }
 void Vue::Inv_entry_4(){
 	cout << "Invalid position, no play on this position" <<endl;
-}
-
-void Vue::Game_start(){
-	cout << "Start of the game" << endl;
 }
