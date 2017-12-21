@@ -1,6 +1,10 @@
 #include "Plateau.h"
 
 Plateau::Plateau(){
+	/*
+	 * Initialisation du plateau en plaçant les 4 pions de
+	 * départ au centre du plateau
+	 */
 	int passe = 0;
 	noirs = 0;
 	blancs = 0;
@@ -34,20 +38,29 @@ int Plateau::Get_Noirs(){
     return noirs;
 }
 
-/*check si il y a un pion de la meme couleur plus loin dans cette direction, le 2e check pour manger quoi*/
+
 
 bool Plateau::Check_direction(int x, int y, int direction[2]){
+	/*
+	 * Prends en arguments la position du pion que l'on veut poser 
+	 * ainsi qu'une direction, donnée sous la forme d'un tuple (1x,1y) 
+	 * Cette méthode vérifie la quantité de pions que l'on peut capturer 
+	 * dans la direction donnée, tout en ajoutant ces pions 
+	 * à une liste de pions à manger.
+	 */
     int dx = direction[0];
-    int dy = direction[1]; //donne la direction en X et en Y dans laquelle on cherche
-    color = turn % 2 + 1; //pour savoir si on est au tour du joueur 1 ou 2 sans avoir modulo d'un nombre paire = 0 mais = 2
-
+    int dy = direction[1]; 	//Donne la direction en X et en Y dans laquelle on cherche.
+    color = turn % 2 + 1; 	//Pour savoir si on est au tour du joueur 1 ou 2 sans 
+							//avoir modulo d'un nombre paire = 0 mais = 2.
     for(int dist = 2; dist < 8; dist++){
 		if(((x + dist*dx) > 7) || ((x + dist*dx) <0) || ((y + dist*dy) > 7) || ((y + dist*dy) <0) || (plateau[x + dist*dx][y + dist*dy] == 0)) {
 			//check si on sort pas du plateau ou si on arrive pas sur une case vide
 			return false;
 		}
-		else if (plateau[x + dist*dx][y + dist*dy] == color){ /*si effectivement il y a des pions a manger,
-																on vient les mettre tous dans le vector d un coup */
+		else if (plateau[x + dist*dx][y + dist*dy] == color){ 
+			/* Si effectivement il y a des pions a manger,
+			 * on vient les mettre tous dans le vector d'un coup
+			 * NB : le pion en (x,y) n'est pas ajouté ici */
 			for (int i = 1; i < dist; i ++){
 				pos_to_eat.push_back (x + i*dx);
 				pos_to_eat.push_back (y + i*dy);
@@ -67,7 +80,7 @@ bool Plateau::Check_eat(int x, int y){
 	for (int i = -1; i <=1; i++){
 		if(x != 0 || i !=-1){ //Pour eviter qu'on ne sorte du plateau en regardant ce qu il y a derriere
 			for (int j = -1; j <= 1; j++){//je sais que ca checke aussi la position meme du pion mais bon ca evite qlq lignes de codes pour une bete test
-				if(y != 0 || j !=-1){
+				if(y != 0 || j !=-1){		//RMQ: effacer le comm de la ligne supérieure ?
 					if (plateau[x + i][y + j] != 0 && plateau[x + i][y + j] != color){
 						direction [0]= i;
 						direction [1]= j;
@@ -81,6 +94,8 @@ bool Plateau::Check_eat(int x, int y){
 		}
 	}
 	if (eat){
+		/* Si le pion mange effectivement un autre pion, il peut être placer 
+		 * sur le damier, il est donc ajouter à pos_to_eat*/
 		pos_to_eat.push_back (x);
 		pos_to_eat.push_back (y);
 	}
@@ -88,13 +103,16 @@ bool Plateau::Check_eat(int x, int y){
 }
 
 void Plateau::Eat(){
+	/*
+	 * Permet de manger les pions contenus dans le vecteur pos_to_eat.
+	 */
 	color = turn %2 + 1;
     for(int i =0; i < pos_to_eat.size() - 1;i += 2){
         plateau[pos_to_eat[i]][pos_to_eat[i + 1]] = color;
         if (color == 1){
 			blancs++;
-			if (i!=0){ //sinon va compter qu on mange un de trop chaque fois vu qu'ajoute aussi le pion qu'on a ajouté
-				noirs--;
+			if (i!=0){ 		//Empeche de compter le pions ajouté comme
+				noirs--;	//un pion adverse mangé.
 			}
 		}
 		else if (color == 2){
