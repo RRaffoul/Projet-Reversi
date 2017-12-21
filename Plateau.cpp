@@ -316,8 +316,7 @@ float Plateau::Corner(){
 		}
 	}
 	float corner = 50*(moi1 - adv1) + 60* (moi2 - adv2); //RMQ: Coef a modif
-	cout << "corner : " << corner << endl; //RMQ: à supprimer
-	return corner;
+	return 100*corner;
 	/* //RMQ: On pourrait eventuellement faire en une fonction itérative pour que si on possède le coin et les 2 pions juste a coté,
 	 * on réitere ca sur le coin "devant" le coin qu on vient de faire (en direction du centre par la diagonale) de la meme facon,
 	 * c est tout aussi stable sauf qu on rentre plus encore au coeur du plateau, donc plus de points !
@@ -376,8 +375,7 @@ int Plateau::Mobility(){
 			}
 		}
 	}
-	cout << "mobilité : "<< 10*mob << endl; //RMQ: à supprimer
-	return 10*mob;
+	return 20*(20-mob);
 }
 
 //Check la stabilité = nombres de pions qui ne peuvent plus être mangés
@@ -392,8 +390,7 @@ int Plateau::Stability(int color){
             }
         }
     }
-    cout << "stabilité : " << stab << endl; //RMQ: à supprimer
-    return stab;
+    return 30*stab;
 }
 
 bool Plateau::Check_Stability(int x, int y){
