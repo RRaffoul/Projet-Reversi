@@ -153,7 +153,7 @@ string FilePlayer::init(){
 	string uresponse = "";
 	string y = "y";
 	while(uresponse != y){
-		cout << "Where would you save the files ?" << endl; //RMQ: Ca devrait théoriquement être dans la vue, est-ce vrmt mieux ?
+		cout << "Where would you save the files ? [command './' save in the current directory]" << endl; //RMQ: Ca devrait théoriquement être dans la vue, est-ce vrmt mieux ?
 		getline(cin, pathname);
 		// EXAMPLE : /mnt/c/Users/Louis Vande Perre/Documents/Polytech/BA3(Biomed)/Informatique/Projet/test/
 		explore((char*) pathname.c_str()); /* c_str converti un string 
