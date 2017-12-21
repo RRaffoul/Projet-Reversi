@@ -137,10 +137,10 @@ bool Plateau::Game_over(){
 	/*
 	 * Vérifie si les conditions d'arrêt sont satisfaites ou non
 	 */
-	if (passe == 2)
-		return true;
+	if (passe == 2) 
+		return true; //Si les 2 joueurs ont passés leurs tours consécutivement
 	else if (noirs + blancs == 64)
-		return true;
+		return true; //Si toutes les cases du plateau sont occupées
 	return false;
 }
 
@@ -195,8 +195,67 @@ vector<int> Plateau::Pos_Play(){
 }
 
 
-//////////////////////////////////////////Partie sur l'heuristique qui suit///////////////////////////////////////////
+//Ca c est la 2e version de Check_eat qui ne fais pas les push backs et autres choses useless pour la mobilité
+bool Plateau::Playable(int x, int y){
+	color = turn % 2 + 1;
+	int direction[2];
+	bool eat = false;
+	for (int i = -1; i <=1; i++){
+		if(x != 0 || i !=-1){ //Pour eviter qu'on ne sorte du plateau en regardant ce qu il y a derriere
+			for (int j = -1; j <= 1; j++){
+				if(y != 0 || j !=-1){
+					if (plateau[x + i][y + j] != 0 && plateau[x + i][y + j] != color){
+						direction [0]= i;
+						direction [1]= j;
+						if (Check_direction2 (x, y, direction)){ 
+							return eat = true;
+						}
+					}
+				}
+			}
+		}
+	}
+	return eat;
+}
 
+//C est la 2e version de Check_direction qui ne fais pas de push back et autres trucs inutiles pour la mobilité
+bool Plateau::Check_direction2(int x, int y, int direction[2]){
+    int dx = direction[0];
+    int dy = direction[1]; //donne la direction en X et en Y dans laquelle on cherche
+    color = turn % 2 + 1;
+    for(int dist = 2; dist < 8; dist++){
+		if(((x + dist*dx) > 7) || ((x + dist*dx) <0) || ((y + dist*dy) > 7) || ((y + dist*dy) <0) || (plateau[x + dist*dx][y + dist*dy] == 0)) {
+			//check si on sort pas du plateau ou si on arrive pas sur une case vide
+			return false;
+		}
+		else if (plateau[x + dist*dx][y + dist*dy] == color){
+			return true;
+		}
+	}
+	return false;
+}
+
+//C est la 3e version de Check_direction qui ne fais pas de push back et autres trucs inutiles pour la mobilité
+bool Plateau::Check_Direction3(int x, int y, int dx, int dy){
+    color = turn % 2 + 1;
+    for(int dist = 1; dist < 8; dist++){
+		if((((x + dist*dx) > 7) || ((x + dist*dx) <0) || ((y + dist*dy) > 7) || ((y + dist*dy) <0)) && (plateau[x + dist*dx][y + dist*dy] == color)) {
+			//check si on sort pas du plateau ou si on arrive pas sur une case vide
+			return true;
+		}
+		else if (plateau[x + dist*dx][y + dist*dy] != color){
+			return false;
+		}
+	}
+	return false;
+}
+
+///////////////////////////////Partie sur l'heuristique////////////////////////////////////
+/*
+ * Dans cette partie sont regroupées toutes les fonctions qui influence le "choix" de l'IA.
+ * Plusieurs paramètres sont pris en compte et leur poids dans le choix final est modulée
+ * par un coéfficent.
+ */
 
 float Plateau::Corner(){
 	int myColor = turn % 2 + 1; 
@@ -341,46 +400,6 @@ float Plateau::Corner(){
 	 */ 
 }
 
-//Ca c est la 2e version de Check_eat qui ne fais pas les push backs et autres choses useless pour la mobilité
-bool Plateau::Playable(int x, int y){
-	color = turn % 2 + 1;
-	int direction[2];
-	bool eat = false;
-	for (int i = -1; i <=1; i++){
-		if(x != 0 || i !=-1){ //Pour eviter qu'on ne sorte du plateau en regardant ce qu il y a derriere
-			for (int j = -1; j <= 1; j++){
-				if(y != 0 || j !=-1){
-					if (plateau[x + i][y + j] != 0 && plateau[x + i][y + j] != color){
-						direction [0]= i;
-						direction [1]= j;
-						if (Check_direction2 (x, y, direction)){ 
-							return eat = true;
-						}
-					}
-				}
-			}
-		}
-	}
-	return eat;
-}
-
-//C est la 2e version de Check_direction qui ne fais pas de push back et autres trucs inutiles pour la mobilité
-bool Plateau::Check_direction2(int x, int y, int direction[2]){
-    int dx = direction[0];
-    int dy = direction[1]; //donne la direction en X et en Y dans laquelle on cherche
-    color = turn % 2 + 1;
-    for(int dist = 2; dist < 8; dist++){
-		if(((x + dist*dx) > 7) || ((x + dist*dx) <0) || ((y + dist*dy) > 7) || ((y + dist*dy) <0) || (plateau[x + dist*dx][y + dist*dy] == 0)) {
-			//check si on sort pas du plateau ou si on arrive pas sur une case vide
-			return false;
-		}
-		else if (plateau[x + dist*dx][y + dist*dy] == color){
-			return true;
-		}
-	}
-	return false;
-}
-
 //Check la mobilité = nombres de choix de cases dans lequelles on peut jouer
 int Plateau::Mobility(){
 	int mob = 0;
@@ -415,35 +434,16 @@ bool Plateau::Check_Stability(int x, int y){
 	color = turn % 2 + 1;
 	bool stable = false;
     if(Check_Direction3(x,y,1,-1) || Check_Direction3(x,y,-1,1)){
-        //cout << "a" << endl; //RMQ: A supprimer
         stable = true;
     }
     if(Check_Direction3(x,y,1,0) || Check_Direction3(x,y,-1,0)){
-        //cout << "b" << endl; //RMQ: A supprimer
         stable = true;
     }
     if(Check_Direction3(x,y,1,1) || Check_Direction3(x,y,-1,-1)){
-        //cout << "c" << endl;
-        stable = true; //RMQ: A supprimer
+        stable = true;
     }
     if(Check_Direction3(x,y,0,-1) || Check_Direction3(x,y,0,1)){
-        //cout << "d" << endl;
-        stable = true; //RMQ: A supprimer
+        stable = true;
     }
 	return stable;
-}
-
-//C est la 2e version de Check_direction qui ne fais pas de push back et autres trucs inutiles pour la mobilité
-bool Plateau::Check_Direction3(int x, int y, int dx, int dy){
-    color = turn % 2 + 1;
-    for(int dist = 1; dist < 8; dist++){
-		if((((x + dist*dx) > 7) || ((x + dist*dx) <0) || ((y + dist*dy) > 7) || ((y + dist*dy) <0)) && (plateau[x + dist*dx][y + dist*dy] == color)) {
-			//check si on sort pas du plateau ou si on arrive pas sur une case vide
-			return true;
-		}
-		else if (plateau[x + dist*dx][y + dist*dy] != color){
-			return false;
-		}
-	}
-	return false;
 }
