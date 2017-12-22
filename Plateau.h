@@ -2,6 +2,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <cmath>
 
 using namespace std;
 
@@ -39,6 +40,7 @@ class Plateau
     vector<int> Pos_Play();
     bool Game_over();
     int Corner();
+    int Corner_It(int it, int larg, int haut, int Color,int,int);
     int Corner1(int it, int larg, int haut, int Color);
     int Corner2(int it, int larg, int haut, int Color);
     int Corner3(int it, int larg, int haut, int Color);

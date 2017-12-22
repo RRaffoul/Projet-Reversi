@@ -285,7 +285,7 @@ int Plateau::Corner(){ //ATTENTION c est une valeur par defaut a 0, on peut appe
 				else break;
 			}
 			if(largeur != 0 && hauteur != 0){
-				moi += Corner1(1, largeur, hauteur, myColor);
+				moi += Corner_It(1, largeur, hauteur, myColor, 0, 0);
 			}			
 			largeur = 0;
 			hauteur = 0;
@@ -305,7 +305,7 @@ int Plateau::Corner(){ //ATTENTION c est une valeur par defaut a 0, on peut appe
 				else break;
 			}
 			if(largeur != 0 && hauteur != 0){
-				adv += Corner1(1, largeur, hauteur, advColor);
+				adv += Corner_It(1, largeur, hauteur, advColor, 0, 0);
 			}
 			largeur = 0;
 			hauteur = 0;
@@ -329,7 +329,7 @@ int Plateau::Corner(){ //ATTENTION c est une valeur par defaut a 0, on peut appe
 				else break;
 			}
 			if(largeur != 0 && hauteur != 0){
-				moi += Corner2(1, largeur, hauteur, myColor);	
+				moi += Corner_It(1, largeur, hauteur, myColor, 0, 7);	
 			}
 			largeur = 0;
 			hauteur = 0;
@@ -351,7 +351,7 @@ int Plateau::Corner(){ //ATTENTION c est une valeur par defaut a 0, on peut appe
 				else break;
 			}
 			if(largeur != 0 && hauteur != 0){
-				adv += Corner2(1, largeur, hauteur, advColor);
+				adv += Corner_It(1, largeur, hauteur, advColor, 0, 7);
 			}						
 			largeur = 0;
 			hauteur = 0;
@@ -375,7 +375,7 @@ int Plateau::Corner(){ //ATTENTION c est une valeur par defaut a 0, on peut appe
 				else break;
 			}
 			if(largeur != 0 && hauteur != 0){
-				moi += Corner3(1, largeur, hauteur, myColor);
+				moi += Corner_It(1, largeur, hauteur, myColor, 7, 7);
 			}
 			largeur = 0;
 			hauteur = 0;
@@ -397,7 +397,7 @@ int Plateau::Corner(){ //ATTENTION c est une valeur par defaut a 0, on peut appe
 				else break;
 			}
 			if(largeur != 0 && hauteur != 0){
-				adv += Corner3(1, largeur, hauteur, advColor);
+				adv += Corner_It(1, largeur, hauteur, advColor, 7, 7);
 			}						
 			largeur = 0;
 			hauteur = 0;
@@ -421,7 +421,7 @@ int Plateau::Corner(){ //ATTENTION c est une valeur par defaut a 0, on peut appe
 				else break;
 			}
 			if(largeur != 0 && hauteur != 0){
-				moi += Corner4(1, largeur, hauteur, myColor);
+				moi += Corner_It(1, largeur, hauteur, myColor, 7, 0);
 			}
 			largeur = 0;
 			hauteur = 0;
@@ -443,7 +443,7 @@ int Plateau::Corner(){ //ATTENTION c est une valeur par defaut a 0, on peut appe
 				else break;
 			}
 			if(largeur != 0 && hauteur != 0){
-				adv += Corner4(1, largeur, hauteur, advColor);
+				adv += Corner_It(1, largeur, hauteur, advColor, 7, 0);
 			}						
 			largeur = 0;
 			hauteur = 0;
@@ -552,14 +552,16 @@ int Plateau::Corner4(int it, int larg, int haut, int Color){
 	if(plateau[7-it][it] != 0){ 
 		if(plateau[7-it][it] == Color){
 			moi++;
-			for(int k = 6-it; k >= 6-it-haut; k--){
-				if(plateau[k][it] == Color){ 
+			for(int k = it+1; k <= it+haut; k++){
+                int t = abs(-k);
+				if(plateau[t][it] == Color){ 
 					moi++;
 					hauteur++;
 				} 
 				else break;
 			}
 			for(int k = it+1; k <= it+larg; k++){
+        
 				if(plateau[it][k] == Color){ 
 					moi++;
 					largeur++;
@@ -568,6 +570,39 @@ int Plateau::Corner4(int it, int larg, int haut, int Color){
 			}
 			if(largeur != 0 && hauteur != 0){
 				moi += Corner4(it+1, largeur, hauteur, Color);
+			}
+		}
+	}
+	return moi;
+}
+
+int Plateau::Corner_It(int it, int larg, int haut, int color,int x, int y){
+	int moi = 0;
+	int hauteur = 0; 
+	int largeur = 0;
+    x = abs(x - it);
+    y = abs(y - it);
+	if(plateau[x][y] != 0){ 
+		if(plateau[x][y] == color){
+			moi++;
+			for(int k = it+1; k <= it+haut; k++){
+                int t = abs(x-k);
+				if(plateau[t][y] == color){ 
+					moi++;
+					hauteur++;
+				} 
+				else break;
+			}
+			for(int k = it+1; k <= it+larg; k++){
+                int t = abs(y-k);
+				if(plateau[x][t] == color){ 
+					moi++;
+					largeur++;
+				}
+				else break;
+			}
+			if(largeur != 0 && hauteur != 0){
+				moi += Corner_It(it+1, largeur, hauteur, color,x,y);
 			}
 		}
 	}
