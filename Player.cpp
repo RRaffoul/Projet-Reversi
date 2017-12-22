@@ -259,16 +259,19 @@ string IAPlayer::Play(int turn){
     int pos[2] ={};
     vector<int> pos_to_check = plate->Pos_Play(); 	// pos_to_check, contient toutes les positions ou le pion peut se placer
     for(int i = 0; i < pos_to_check.size(); i+=2){ 	// pos_to_check, de la forme (ax, ay, bx, by) on prend donc coord 2 par 2
-        imaginaire = *plate; 						// copie du plateau que l'on va manipuler
+        imaginaire = *plate; 						// copie du plateau que l'on va manipuler   
+        cout << "COUP : " << pos_to_check[i+1]+1 << pos_to_check[i] + 1 << "    " ;
         if(imaginaire.Check_eat(pos_to_check[i], pos_to_check[i+1])){
             imaginaire.Eat();
             imaginaire.Set_Turn(imaginaire.Get_Turn() + 1); // on rajoute un tour de jeu --> chgt de joueur
             temp = Heuristic(imaginaire ,plate->Get_Turn(),plate->Get_Turn()%2) +  A(imaginaire,count,plate->Get_Turn()%2);
+            cout << "SCORE : " << temp << "   ";
             if( temp > value){
                 value =temp;				// Cette condition permet de garder en mémoire le meilleur scénario
                 pos[0] = pos_to_check[i];		// et a l'IA de jouer ce coup là
                 pos[1] = pos_to_check[i+1];
             }
+                cout << "BEST SCORE : " << value << endl;
         }
     }
     if(pos_to_check[0] == 9 && pos_to_check[1] == 9){	// Dans le cas ou le vecteur pos_to_check est de taille nulle,
