@@ -20,7 +20,7 @@ class Plateau
 	int passe;
 	int noirs;
 	int blancs;
-	int valeurs[8][8];
+	int valeurs [8][8];
  public :
 	Plateau ();
 	~Plateau();
@@ -44,7 +44,7 @@ class Plateau
     int Mobility();
     int Stability(int);
     bool Check_Stability(int,int);
-    int Heurist();
+    int Heurist(int);
 };
 
 #endif // PLATEAU_H

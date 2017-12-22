@@ -22,8 +22,8 @@ Plateau::Plateau(){
 				plateau[i][j] = 0;
 		}
 	}
-    int temp[8][8] = {{20, -3, 11, 8, 8, 11, -3, 20},{-3, -7, -4, 1, 1, -4, -7, -3},{11, -4, 2, 2, 2, 2, -4, 11},{8, 1, 2, -3, -3, 2, 1, 8},
-{8, 1, 2, -3, -3, 2, 1, 8},{11, -4, 2, 2, 2, 2, -4, 11},{-3, -7, -4, 1, 1, -4, -7, -3},{20, -3, 11, 8, 8, 11, -3, 20}};
+	int temp[8][8] = {{20, 1, 11, 8, 8, 11, 1, 20},{1, 0, 2, 1, 1, 2, 0, 1},{11, 2, 2, 2, 2, 2, 2, 11},{8, 1, 2, 1, 1, 2, 1, 8},
+						{8, 1, 2, 1, 1, 2, 1, 8},{11, 2, 2, 2, 2, 2, 2, 11},{1, 0, 2, 1, 1, 2, 0, 1},{20, 1, 11, 8, 8, 11, 1, 20}};
     for(int i = 0; i <8; i++){
         for(int j = 0; j<8; j++){
             valeurs[i][j] = temp[i][j];
@@ -378,12 +378,19 @@ bool Plateau::Check_Stability(int x, int y){
 	return stable;
 }
 
-int Plateau::Heurist(){
+int Plateau::Heurist(int couleur){
 	Corner();
 	int heur = 0;
+	int ind = 0;
 	for(int i = 0; i <= 7; i++){
 		for(int j = 0; j <= 7; j++){
-			heur += valeurs[i][j];
+			if((ind = plateau[i][j]) != 0){
+				if(ind = couleur){
+					heur += valeurs[i][j];
+				}
+				else 
+					heur -= valeurs[i][j];
+			    }
 		}
 	}
 	return heur += Mobility();
