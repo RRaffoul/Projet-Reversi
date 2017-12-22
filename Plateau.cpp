@@ -288,7 +288,7 @@ void Plateau::Corner(){ //ATTENTION c est une valeur par defaut a 0, on peut app
 			    for(int k = 1; k <= 6; k++){ //same same dans la 2 e direct
 			    	if(plateau[i][k] == couleur){
 			    		largeur++;
-			    		valeur[i][k] = 30;
+			    		valeurs[i][k] = 30;
 			    	}
 			    	else break;
 			    }
@@ -383,7 +383,7 @@ int Plateau::Heurist(){
 	Corner();
 	int heur = 0;
 	for(int i = 0; i <= 7; i++){
-		for(int j = 0; j <= 7, j++){
+		for(int j = 0; j <= 7; j++){
 			heur += valeurs[i][j];
 		}
 	}
