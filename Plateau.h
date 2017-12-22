@@ -20,7 +20,7 @@ class Plateau
 	int passe;
 	int noirs;
 	int blancs;
-
+	int valeurs [8][8];
  public :
 	Plateau ();
 	~Plateau();
@@ -39,11 +39,12 @@ class Plateau
 	void Not_play();
     vector<int> Pos_Play();
     bool Game_over();
-    int Corner();
-    int Corner_It(int, int, int, int,int,int);
+    void Corner();
+    void Corner_It(int, int, int, int,int,int);
     int Mobility();
     int Stability(int);
     bool Check_Stability(int,int);
+    int Heurist();
 };
 
 #endif // PLATEAU_H

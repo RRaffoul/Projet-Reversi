@@ -22,6 +22,14 @@ Plateau::Plateau(){
 				plateau[i][j] = 0;
 		}
 	}
+	valeurs [0] = {20, -3, 11, 8, 8, 11, -3, 20};
+	valeurs [1] = {-3, -7, -4, 1, 1, -4, -7, -3};
+	valeurs [2] = {11, -4, 2, 2, 2, 2, -4, 11};
+	valeurs [3] = {8, 1, 2, -3, -3, 2, 1, 8};
+	valeurs [4] = {8, 1, 2, -3, -3, 2, 1, 8};
+	valeurs [5] = {11, -4, 2, 2, 2, 2, -4, 11};
+	valeurs [6] = {-3, -7, -4, 1, 1, -4, -7, -3};
+	valeurs [7] = {20, -3, 11, 8, 8, 11, -3, 20};
 }
 
 Plateau::~Plateau(){}
@@ -257,96 +265,70 @@ bool Plateau::Check_Direction3(int x, int y, int dx, int dy){
  * par un coéfficent.
  */
 
-int Plateau::Corner(){ //ATTENTION c est une valeur par defaut a 0, on peut appeler la fonction initialement avec Corner() (= Corner(0))
-	int advColor = turn % 2 + 1; 
-	int myColor = advColor % 2 + 1; //couleur de l adversaire, + simple que de la recalculer dans chaque if
-	int moi= 0;
+void Plateau::Corner(){ //ATTENTION c est une valeur par defaut a 0, on peut appeler la fonction initialement avec Corner() (= Corner(0))
+	int couleur = 0;
 	/*
 	 * Ici j ai simplifié et on mets tous les pions tout a fait stables dans le meme sac, sans distinction
 	 */
-	int adv = 0;
 	int hauteur = 0; //Pour que si on a les 2 cotés couvers en prolongement du coins s il nous appartient, pour eventuellement reiterer dans le coin interieur a ce coin
 	int largeur = 0;
     for(int i = 0; i <=7; i+=7){
         for(int j = 0; j <= 7; j+=7){
-            if(plateau[i][j] == myColor){
-			    moi++;
+            if((couleur = plateau[i][j]) != 0){
 			    for(int k = 1; k <= 6; k++){ //la on va regarder si plus loin il y a d'autres pions qui prolongent et sont donc stables
-				    if(plateau[k][j] == myColor){ //et tant pis pour les repetitions entre coins, si on a des repet c est qu on a joint 2 coins, d autant + stable
-				    	moi++;
+				    if(plateau[k][j] == couleur){ //et tant pis pour les repetitions entre coins, si on a des repet c est qu on a joint 2 coins, d autant + stable
+				    	/*
+				    	 * RMQ: soit on change les valeurs chaque fois ici, soit on le fait a la fin en fonction de hauteur et largeur mais en chaine, jsp si c est plus rapide pcq cote a cote ?
+				    	 */
 				    	hauteur++;
+				    	valeurs[k][j] = 30;
 				    } 
 				    else break;
 			    }
 			    for(int k = 1; k <= 6; k++){ //same same dans la 2 e direct
-			    	if(plateau[i][k] == myColor){
-			    		moi++;
+			    	if(plateau[i][k] == couleur){
 			    		largeur++;
+			    		valeur[i][k] = 30;
 			    	}
 			    	else break;
 			    }
 			    if(largeur != 0 && hauteur != 0){
-			    	moi += Corner_It(1, largeur, hauteur, myColor, i, j);
-			    }			
-			    largeur = 0;
-			    hauteur = 0;
-		    }
-		    else if(plateau[i][j] == advColor){
-			    adv++;
-			    for(int k = 1; k <= 6; k++){ 
-			    	if(plateau[k][j] == advColor){ 
-			    		adv++; 
-			    	}
-				    else break;
+					Corner_It(1, largeur, hauteur, couleur, i, j);
 			    }
-			    for(int k = 0; k <= 6; k++){ 
-			    	if(plateau[i][k] == advColor){ 
-			    		adv++;
-			    	} 
-			    	else break;
-			    }
-			    if(largeur != 0 && hauteur != 0){
-				    adv += Corner_It(1, largeur, hauteur, advColor, i, j);
-			    }
-			    largeur = 0;
-			    hauteur = 0;
+		    largeur = 0;
+			hauteur = 0;
 		    }
         }
     }
-	return 30*(moi - adv); //RMQ : Coef a modif
 }
 
-int Plateau::Corner_It(int it, int larg, int haut, int color,int x, int y){
-	int moi = 0;
+void Plateau::Corner_It(int it, int larg, int haut, int couleur,int x, int y){
 	int hauteur = 0; 
 	int largeur = 0;
     x = abs(x - it);
     y = abs(y - it);
-	if(plateau[x][y] != 0){ 
-		if(plateau[x][y] == color){
-			moi++;
-			for(int k = it+1; k <= it+haut; k++){
-                int t = abs(x-k);
-				if(plateau[t][y] == color){ 
-					moi++;
-					hauteur++;
-				} 
-				else break;
+	if(plateau[x][y] == couleur){
+		valeurs[x][y] = 30;
+		for(int k = it+1; k <= it+haut; k++){
+			int t = abs(x-k);
+			if(plateau[t][y] == couleur){ 
+				hauteur++;
+				valeurs[t][y] = 30;
+			} 
+			else break;
+		}
+		for(int k = it+1; k <= it+larg; k++){
+            int t = abs(y-k);
+			if(plateau[x][t] == couleur){ 
+				largeur++;
+				valeurs[y][t] = 30;
 			}
-			for(int k = it+1; k <= it+larg; k++){
-                int t = abs(y-k);
-				if(plateau[x][t] == color){ 
-					moi++;
-					largeur++;
-				}
-				else break;
-			}
-			if(largeur != 0 && hauteur != 0){
-				moi += Corner_It(it+1, largeur, hauteur, color,x,y);
-			}
+			else break;
+		}
+		if(largeur != 0 && hauteur != 0){
+			Corner_It(it+1, largeur, hauteur, couleur,x,y);
 		}
 	}
-	return moi;
 }
 
 //Check la mobilité = nombres de choix de cases dans lequelles on peut jouer
@@ -361,9 +343,9 @@ int Plateau::Mobility(){
 			}
 		}
 	}
-	return 20*(20-mob);
+	return 5*(20-mob);
 }
-
+///////////////////////////////////////////////////////////////////////////RMQ : avec les valeurs par cases, stabilité comprise non ? 
 //Check la stabilité = nombres de pions qui ne peuvent plus être mangés
 int Plateau::Stability(int color){
     int stab = 0;
@@ -395,4 +377,15 @@ bool Plateau::Check_Stability(int x, int y){
         stable = true;
     }
 	return stable;
+}
+
+int Plateau::Heurist(){
+	Corner();
+	int heur = 0;
+	for(int i = 0; i <= 7; i++){
+		for(int j = 0; j <= 7, j++){
+			heur += valeurs[i][j];
+		}
+	}
+	return heur += Mobility();
 }
