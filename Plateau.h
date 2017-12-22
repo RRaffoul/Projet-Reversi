@@ -20,7 +20,7 @@ class Plateau
 	int passe;
 	int noirs;
 	int blancs;
-	int valeurs [8][8];
+	int valeurs[8][8];
  public :
 	Plateau ();
 	~Plateau();
