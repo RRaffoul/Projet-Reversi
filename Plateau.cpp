@@ -22,8 +22,15 @@ Plateau::Plateau(){
 				plateau[i][j] = 0;
 		}
 	}
-	int temp[8][8] = {{20, 1, 11, 8, 8, 11, 1, 20},{1, 0, 2, 1, 1, 2, 0, 1},{11, 2, 2, 2, 2, 2, 2, 11},{8, 1, 2, 1, 1, 2, 1, 8},
-						{8, 1, 2, 1, 1, 2, 1, 8},{11, 2, 2, 2, 2, 2, 2, 11},{1, 0, 2, 1, 1, 2, 0, 1},{20, 1, 11, 8, 8, 11, 1, 20}};
+	int temp[8][8] = {
+		{50, -20, 10, 6, 6, 10, -20, 50},
+		{-20, -25, 11, 5, 5, 11, -25, -20},
+		{10, 11, 12, 4, 4, 12, 11, 10},
+		{6, 5, 4, 1, 1, 4, 5, 6},
+		{6, 5, 4, 1, 1, 4, 5, 6},
+		{10, 11, 12, 4, 4, 12, 11, 10},
+		{-20, -25, 11, 5, 5, 11, -25, -20},
+		{50, -20, 10, 6, 6, 10, -20, 50}};
     for(int i = 0; i <8; i++){
         for(int j = 0; j<8; j++){
             valeurs[i][j] = temp[i][j];
@@ -280,14 +287,14 @@ void Plateau::Corner(){ //ATTENTION c est une valeur par defaut a 0, on peut app
 				    	 * RMQ: soit on change les valeurs chaque fois ici, soit on le fait a la fin en fonction de hauteur et largeur mais en chaine, jsp si c est plus rapide pcq cote a cote ?
 				    	 */
 				    	hauteur++;
-				    	valeurs[k][j] = 30;
+				    	valeurs[k][j] = 50;
 				    } 
 				    else break;
 			    }
 			    for(int k = 1; k <= 6; k++){ //same same dans la 2 e direct
 			    	if(plateau[i][k] == couleur){
 			    		largeur++;
-			    		valeurs[i][k] = 30;
+			    		valeurs[i][k] = 50;
 			    	}
 			    	else break;
 			    }
@@ -307,12 +314,12 @@ void Plateau::Corner_It(int it, int larg, int haut, int couleur,int x, int y){
     x = abs(x - it);
     y = abs(y - it);
 	if(plateau[x][y] == couleur){
-		valeurs[x][y] = 30;
+		valeurs[x][y] = 50;
 		for(int k = it+1; k <= it+haut; k++){
 			int t = abs(x-k);
 			if(plateau[t][y] == couleur){ 
 				hauteur++;
-				valeurs[t][y] = 30;
+				valeurs[t][y] = 50;
 			} 
 			else break;
 		}
@@ -320,7 +327,7 @@ void Plateau::Corner_It(int it, int larg, int haut, int couleur,int x, int y){
             int t = abs(y-k);
 			if(plateau[x][t] == couleur){ 
 				largeur++;
-				valeurs[y][t] = 30;
+				valeurs[y][t] = 50;
 			}
 			else break;
 		}
@@ -393,5 +400,5 @@ int Plateau::Heurist(int couleur){
 			    }
 		}
 	}
-	return heur += Mobility();
+	return heur ;//+= Mobility();
 }

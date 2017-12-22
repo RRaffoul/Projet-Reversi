@@ -292,7 +292,7 @@ string IAPlayer::Play(int turn){
 float IAPlayer::A(Plateau board, int count, int realColor){	// Reprends le meme fonctionnement que la fonction Play
     float value = 0;										// on va partir du plateau imaginaire pour imaginer plusieurs
     float temp = 0;											// tours à l'avance, mais on est limité par count
-    if(count <= 13){										// car l'IA ne peut répondre en plus de 20 secondes
+    if(count <= 14){										// car l'IA ne peut répondre en plus de 20 secondes
         vector<int> pos_to_check = board.Pos_Play();
         for(int i = 0; i < pos_to_check.size(); i+=2){
             imaginaire = board;
@@ -315,20 +315,20 @@ float IAPlayer::Heuristic(Plateau board, int color, int realColor){ // realColor
     float score; 													// color est la couleur du joueur pour lequel on imagine le coup
     if(realColor == 1){ //blancs
         if(color == 1){	//blancs							// Ces lignes permettent de prendre en compte,
-            score = /*board.Get_Blancs()*/ board.Heurist(color);		// dans le choix de l'IA, le nombre de pions mangés.
+            score = /*board.Get_Blancs()*/ -board.Heurist(color);		// dans le choix de l'IA, le nombre de pions mangés.
         }														//RMQ: ça ne sert à rien de prendre en compte le nombre de pions mangés...
 																// éventuellement dans les derniers tours mais pas avant
         else{ // noirs
-            score = /*-(board.Get_Noirs() +*/ -board.Heurist(color);
+            score = /*-(board.Get_Noirs() +*/ +board.Heurist(color);
         }   
     }
     else{ // noirs
         if(color == 1){ //blancs
-            score = /*-(board.Get_Blancs() +*/ -board.Heurist(color);
+            score = /*-(board.Get_Blancs() +*/ +board.Heurist(color);
         }
     
         else{ //noirs
-            score = /*board.Get_Noirs()*/ board.Heurist(color);
+            score = /*board.Get_Noirs()*/ -board.Heurist(color);
         } 
     }
     return score;
