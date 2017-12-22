@@ -315,7 +315,7 @@ float IAPlayer::A(Plateau board, int count, int realColor){	// Reprends le meme 
 
 
 float IAPlayer::Heuristic(Plateau board, int color, int realColor){ // realColor est la couleur du pion que l'IA incarne,
-    float score; 													// color est la couleur de l'adversaire
+    float score;													// color est la couleur de l'adversaire
     if(realColor == 0){ //blancs
         if(color%2 == 0){	//blancs							// Ces lignes permettent de prendre en compte,
             score = /*board.Get_Blancs()*/ + board.Corner() + board.Mobility() + board.Stability(realColor+1);		// dans le choix de l'IA, le nombre de pions mangés.

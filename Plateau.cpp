@@ -268,17 +268,17 @@ int Plateau::Corner(){ //ATTENTION c est une valeur par defaut a 0, on peut appe
     for(int i = 0; i <=7; i+=7){
         for(int j = 0; j <= 7; j+=7){
             if(plateau[i][j] == myColor){
-			    moi++;
+			    moi+=5;
 			    for(int k = 1; k <= 6; k++){ //la on va regarder si plus loin il y a d'autres pions qui prolongent et sont donc stables
 				    if(plateau[k][j] == myColor){ //et tant pis pour les repetitions entre coins, si on a des repet c est qu on a joint 2 coins, d autant + stable
-				    	moi++;
+				    	moi+=5;
 				    	hauteur++;
 				    } 
 				    else break;
 			    }
 			    for(int k = 1; k <= 6; k++){ //same same dans la 2 e direct
 			    	if(plateau[i][k] == myColor){
-			    		moi++;
+			    		moi+=5;
 			    		largeur++;
 			    	}
 			    	else break;
@@ -289,51 +289,36 @@ int Plateau::Corner(){ //ATTENTION c est une valeur par defaut a 0, on peut appe
 			    largeur = 0;
 			    hauteur = 0;
 		    }
-		    else if(plateau[i][j] == advColor){
-			    adv++;
-			    for(int k = 1; k <= 6; k++){ 
-			    	if(plateau[k][j] == advColor){ 
-			    		adv++; 
-			    	}
-				    else break;
-			    }
-			    for(int k = 0; k <= 6; k++){ 
-			    	if(plateau[i][k] == advColor){ 
-			    		adv++;
-			    	} 
-			    	else break;
-			    }
-			    if(largeur != 0 && hauteur != 0){
-				    adv += Corner_It(1, largeur, hauteur, advColor, i, j);
-			    }
-			    largeur = 0;
-			    hauteur = 0;
-		    }
-            else{
+            else if(plateau[i][j]==0){
                 int s = abs(i-1);
                 int t = abs(j-1);
-                if(plateau[s][t] == myColor){
+                if(plateau[(int)abs(i-1)][(int)abs(i-1)] == myColor){
                     moi -= 2;
                 }
-                if(plateau[s][j] == myColor){
+                if(plateau[(int)abs(i-1)][j] == myColor){
                     moi --;
                 }
-                if(plateau[i][t] == myColor){
+                if(plateau[i][(int)abs(i-1)] == myColor){
                     moi --;
                 }
-                if(plateau[s][t] == advColor){
-                    adv -= 2;
+
+
+                if((plateau[(int)abs(i-2)][j] == myColor) && (plateau[(int)abs(i-3)][j] != advColor) && (plateau[(int)abs(i-1)][j] != advColor) ){
+                    moi += 3;
                 }
-                if(plateau[s][j] == advColor){
-                    adv --;
+                if((plateau[i][(int)abs(i-2)] == myColor) && (plateau[i][(int)abs(i-3)] != advColor) && (plateau[i][(int)abs(i-1)] != advColor)){
+                    moi +=3;
                 }
-                if(plateau[i][t] == advColor){
-                    adv --;
+                if((plateau[(int)abs(i-3)][j] == myColor) && (plateau[(int)abs(i-4)][j] != advColor) && (plateau[(int)abs(i-2)][j] != advColor)){
+                    moi+=2;
+                }
+                if((plateau[i][(int)abs(i-3)] == myColor) && (plateau[i][(int)abs(i-4)] != advColor) && (plateau[i][(int)abs(i-2)] != advColor)){
+                    moi+=2;
                 }
             }
         }
     }
-	return 5*(moi-adv); //RMQ : Coef a modif
+	return 5*(moi); //RMQ : Coef a modif
 }
 
 int Plateau::Corner_It(int it, int larg, int haut, int color,int x, int y){
@@ -381,7 +366,7 @@ int Plateau::Mobility(){
 			}
 		}
 	}
-	return (20-mob);
+	return 2*(10-mob);
 }
 
 //Check la stabilité = nombres de pions qui ne peuvent plus être mangés
@@ -396,7 +381,7 @@ int Plateau::Stability(int color){
             }
         }
     }
-    return 5*stab;
+    return 10*stab;
 }
 
 bool Plateau::Check_Stability(int x, int y){
