@@ -449,7 +449,7 @@ int Plateau::Corner(){ //ATTENTION c est une valeur par defaut a 0, on peut appe
 			hauteur = 0;
 		}
 	}
-	return 10000*(moi - adv); //RMQ : Coef a modif
+	return 50*(moi - adv); //RMQ : Coef a modif
 }
 
 //"it" iteration
@@ -506,8 +506,7 @@ int Plateau::Corner2(int it, int larg, int haut, int Color){
 				else break;
 			}
 			if(largeur != 0 && hauteur != 0){
-				int iteration = it + 1;
-				moi += Corner2(iteration, largeur, hauteur, Color);
+				moi += Corner2(it+1, largeur, hauteur, Color);
 			}
 		}
 	}
@@ -537,8 +536,7 @@ int Plateau::Corner3(int it, int larg, int haut, int Color){
 				else break;
 			}
 			if(largeur != 0 && hauteur != 0){
-				int iteration = it + 1;
-				moi += Corner3(iteration, largeur, hauteur, Color);
+				moi += Corner3(it+1, largeur, hauteur, Color);
 			}
 		}
 	}
@@ -569,8 +567,7 @@ int Plateau::Corner4(int it, int larg, int haut, int Color){
 				else break;
 			}
 			if(largeur != 0 && hauteur != 0){
-				int iteration = it + 1;
-				moi += Corner4(iteration, largeur, hauteur, Color);
+				moi += Corner4(it+1, largeur, hauteur, Color);
 			}
 		}
 	}
