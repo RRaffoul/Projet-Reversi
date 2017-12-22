@@ -267,189 +267,53 @@ int Plateau::Corner(){ //ATTENTION c est une valeur par defaut a 0, on peut appe
 	int adv = 0;
 	int hauteur = 0; //Pour que si on a les 2 cotés couvers en prolongement du coins s il nous appartient, pour eventuellement reiterer dans le coin interieur a ce coin
 	int largeur = 0;
-	if(plateau[0][0] != 0){ //meilleur moyen de construire les if en faisant le moins de checks possibles
-		if(plateau[0][0] == myColor){
-			moi++;
-			for(int k = 1; k <= 6; k++){ //la on va regarder si plus loin il y a d'autres pions qui prolongent et sont donc stables
-				if(plateau[k][0] == myColor){ //et tant pis pour les repetitions entre coins, si on a des repet c est qu on a joint 2 coins, d autant + stable
-					moi++;
-					hauteur++;
-				} 
-				else break;
-			}
-			for(int k = 1; k <= 6; k++){ //same same dans la 2 e direct
-				if(plateau[0][k] == myColor){
-					moi++;
-					largeur++;
-				}
-				else break;
-			}
-			if(largeur != 0 && hauteur != 0){
-				moi += Corner_It(1, largeur, hauteur, myColor, 0, 0);
-			}			
-			largeur = 0;
-			hauteur = 0;
-		}
-		else{
-			adv++;
-			for(int k = 1; k <= 6; k++){ 
-				if(plateau[k][0] == advColor){ 
-					adv++; 
-				}
-				else break;
-			}
-			for(int k = 0; k <= 6; k++){ 
-				if(plateau[0][k] == advColor){ 
-					adv++;
-				} 
-				else break;
-			}
-			if(largeur != 0 && hauteur != 0){
-				adv += Corner_It(1, largeur, hauteur, advColor, 0, 0);
-			}
-			largeur = 0;
-			hauteur = 0;
-		}
-	}
-	if(plateau[0][7] != 0){
-		if(plateau[0][7] == myColor){
-			moi++;
-			for(int k = 1; k <= 6; k++){
-				if(plateau[k][7] == myColor){
-					moi++;
-					hauteur++;
-				} 
-				else break;
-			}
-			for(int k = 6; k >= 1; k--){
-				if(plateau[0][k] == myColor){ 
-					moi++; 
-					largeur++;
-				}
-				else break;
-			}
-			if(largeur != 0 && hauteur != 0){
-				moi += Corner_It(1, largeur, hauteur, myColor, 0, 7);	
-			}
-			largeur = 0;
-			hauteur = 0;
-		}
-		else{
-			adv++;
-			for(int k = 1; k <= 6; k++){ 
-				if(plateau[k][7] == advColor){ 
-					adv++; 
-					hauteur++;
-				}
-				else break;
-			}
-			for(int k = 6; k >= 1; k--){ 
-				if(plateau[0][k] == advColor){ 
-					adv++;
-					largeur++;
-				} 
-				else break;
-			}
-			if(largeur != 0 && hauteur != 0){
-				adv += Corner_It(1, largeur, hauteur, advColor, 0, 7);
-			}						
-			largeur = 0;
-			hauteur = 0;
-		}
-	}
-	if(plateau[7][7] != 0){
-		if(plateau[7][7] == myColor){
-			moi++;
-			for(int k = 6; k >= 1; k--){ 
-				if(plateau[k][7] == myColor){
-					moi++;
-					hauteur++;
-				} 
-				else break;
-			}
-			for(int k = 6; k >= 1; k--){ 
-				if(plateau[7][k] == myColor){ 
-					moi++;
-					largeur++; 
-				}
-				else break;
-			}
-			if(largeur != 0 && hauteur != 0){
-				moi += Corner_It(1, largeur, hauteur, myColor, 7, 7);
-			}
-			largeur = 0;
-			hauteur = 0;
-		}
-		else{
-			adv++;
-			for(int k = 6; k >= 1; k--){ 
-				if(plateau[k][7] == advColor){ 
-					adv++; 
-					hauteur++;
-				}
-				else break;
-			}
-			for(int k = 6; k >= 1; k--){ 
-				if(plateau[7][k] == advColor){ 
-					adv++;
-					largeur++;
-				} 
-				else break;
-			}
-			if(largeur != 0 && hauteur != 0){
-				adv += Corner_It(1, largeur, hauteur, advColor, 7, 7);
-			}						
-			largeur = 0;
-			hauteur = 0;
-		}
-	}
-	if(plateau[7][0] != 0){
-		if(plateau[7][0] == myColor){
-			moi++;
-			for(int k = 6; k >= 1; k--){ 
-				if(plateau[k][0] == myColor){ 
-					moi++;
-					hauteur++;
-				} 
-				else break;
-			}
-			for(int k = 1; k <= 6; k++){ 
-				if(plateau[7][k] == myColor){ 
-					moi++;
-					largeur++; 
-				}
-				else break;
-			}
-			if(largeur != 0 && hauteur != 0){
-				moi += Corner_It(1, largeur, hauteur, myColor, 7, 0);
-			}
-			largeur = 0;
-			hauteur = 0;
-		}
-		else{
-			adv++;
-			for(int k = 6; k >= 1; k--){ 
-				if(plateau[k][0] == advColor){ 
-					adv++; 
-					hauteur++;
-				}
-				else break;
-			}
-			for(int k = 1; k <= 6; k++){ 
-				if(plateau[7][k] == advColor){ 
-					adv++;
-					largeur++;
-				} 
-				else break;
-			}
-			if(largeur != 0 && hauteur != 0){
-				adv += Corner_It(1, largeur, hauteur, advColor, 7, 0);
-			}						
-			largeur = 0;
-			hauteur = 0;
-		}
-	}
-	return 50*(moi - adv); //RMQ : Coef a modif
+    for(int i = 0; i <=7; i+=7){
+        for(int j = 0; j <= 7; j+=7){
+            if(plateau[i][j] == myColor){
+			    moi++;
+			    for(int k = 1; k <= 6; k++){ //la on va regarder si plus loin il y a d'autres pions qui prolongent et sont donc stables
+				    if(plateau[k][j] == myColor){ //et tant pis pour les repetitions entre coins, si on a des repet c est qu on a joint 2 coins, d autant + stable
+				    	moi++;
+				    	hauteur++;
+				    } 
+				    else break;
+			    }
+			    for(int k = 1; k <= 6; k++){ //same same dans la 2 e direct
+			    	if(plateau[i][k] == myColor){
+			    		moi++;
+			    		largeur++;
+			    	}
+			    	else break;
+			    }
+			    if(largeur != 0 && hauteur != 0){
+			    	moi += Corner_It(1, largeur, hauteur, myColor, i, j);
+			    }			
+			    largeur = 0;
+			    hauteur = 0;
+		    }
+		    else if(plateau[i][j] == advColor){
+			    adv++;
+			    for(int k = 1; k <= 6; k++){ 
+			    	if(plateau[k][j] == advColor){ 
+			    		adv++; 
+			    	}
+				    else break;
+			    }
+			    for(int k = 0; k <= 6; k++){ 
+			    	if(plateau[i][k] == advColor){ 
+			    		adv++;
+			    	} 
+			    	else break;
+			    }
+			    if(largeur != 0 && hauteur != 0){
+				    adv += Corner_It(1, largeur, hauteur, advColor, i, j);
+			    }
+			    largeur = 0;
+			    hauteur = 0;
+		    }
+        }
+    }
+	return 30*(moi - adv); //RMQ : Coef a modif
 }
 
 int Plateau::Corner_It(int it, int larg, int haut, int color,int x, int y){

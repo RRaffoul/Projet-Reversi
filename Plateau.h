@@ -24,11 +24,11 @@ class Plateau
  public :
 	Plateau ();
 	~Plateau();
-	bool Check_direction(int x, int y, int direction[2]);
-	bool Check_direction2(int x, int y, int direction[2]);
-	bool Check_Direction3(int x, int y, int, int);
-	bool Check_eat(int x, int y);
-	bool Playable(int x, int y);
+	bool Check_direction(int, int, int direction[2]);
+	bool Check_direction2(int, int, int direction[2]);
+	bool Check_Direction3(int, int, int, int);
+	bool Check_eat(int, int);
+	bool Playable(int, int);
 	int* Get_Plate();
     int Get_Blancs();
     int Get_Noirs();
@@ -40,11 +40,7 @@ class Plateau
     vector<int> Pos_Play();
     bool Game_over();
     int Corner();
-    int Corner_It(int it, int larg, int haut, int Color,int,int);
-    int Corner1(int it, int larg, int haut, int Color);
-    int Corner2(int it, int larg, int haut, int Color);
-    int Corner3(int it, int larg, int haut, int Color);
-    int Corner4(int it, int larg, int haut, int Color);
+    int Corner_It(int, int, int, int,int,int);
     int Mobility();
     int Stability(int);
     bool Check_Stability(int,int);
