@@ -258,8 +258,8 @@ bool Plateau::Check_Direction3(int x, int y, int dx, int dy){
  */
 
 int Plateau::Corner(){ //ATTENTION c est une valeur par defaut a 0, on peut appeler la fonction initialement avec Corner() (= Corner(0))
-	int myColor = turn % 2 + 1; 
-	int advColor = color % 2 + 1; //couleur de l adversaire, + simple que de la recalculer dans chaque if
+	int advColor = turn % 2 + 1; 
+	int myColor = advColor % 2 + 1; //couleur de l adversaire, + simple que de la recalculer dans chaque if
 	int moi= 0;
 	/*
 	 * Ici j ai simplifié et on mets tous les pions tout a fait stables dans le meme sac, sans distinction
@@ -278,7 +278,7 @@ int Plateau::Corner(){ //ATTENTION c est une valeur par defaut a 0, on peut appe
 				else break;
 			}
 			for(int k = 1; k <= 6; k++){ //same same dans la 2 e direct
-				if(plateau[0][k] == myColor){ 
+				if(plateau[0][k] == myColor){
 					moi++;
 					largeur++;
 				}
@@ -449,7 +449,7 @@ int Plateau::Corner(){ //ATTENTION c est une valeur par defaut a 0, on peut appe
 			hauteur = 0;
 		}
 	}
-	return 50*(moi - adv); //RMQ : Coef a modif
+	return 10000*(moi - adv); //RMQ : Coef a modif
 }
 
 //"it" iteration
@@ -476,8 +476,7 @@ int Plateau::Corner1(int it, int larg, int haut, int Color){ //corner1 c est le 
 				else break;
 			}
 			if(largeur != 0 && hauteur != 0){
-				int iteration = it + 1;
-				moi += Corner1(iteration, largeur, hauteur, Color);
+				moi += Corner1(it+1, largeur, hauteur, Color);
 			}
 		}
 	}
