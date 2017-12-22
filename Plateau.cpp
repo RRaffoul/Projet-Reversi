@@ -38,8 +38,6 @@ int Plateau::Get_Noirs(){
     return noirs;
 }
 
-
-
 bool Plateau::Check_direction(int x, int y, int direction[2]){
 	/*
 	 * Prends en arguments la position du pion que l'on veut poser 
@@ -311,9 +309,31 @@ int Plateau::Corner(){ //ATTENTION c est une valeur par defaut a 0, on peut appe
 			    largeur = 0;
 			    hauteur = 0;
 		    }
+            else{
+                int s = abs(i-1);
+                int t = abs(j-1);
+                if(plateau[s][t] == myColor){
+                    moi -= 2;
+                }
+                if(plateau[s][j] == myColor){
+                    moi --;
+                }
+                if(plateau[i][t] == myColor){
+                    moi --;
+                }
+                if(plateau[s][t] == advColor){
+                    adv -= 2;
+                }
+                if(plateau[s][j] == advColor){
+                    adv --;
+                }
+                if(plateau[i][t] == advColor){
+                    adv --;
+                }
+            }
         }
     }
-	return 30*(moi - adv); //RMQ : Coef a modif
+	return 5*(moi-adv); //RMQ : Coef a modif
 }
 
 int Plateau::Corner_It(int it, int larg, int haut, int color,int x, int y){
@@ -361,7 +381,7 @@ int Plateau::Mobility(){
 			}
 		}
 	}
-	return 20*(20-mob);
+	return (20-mob);
 }
 
 //Check la stabilité = nombres de pions qui ne peuvent plus être mangés
@@ -376,7 +396,7 @@ int Plateau::Stability(int color){
             }
         }
     }
-    return 30*stab;
+    return 5*stab;
 }
 
 bool Plateau::Check_Stability(int x, int y){
