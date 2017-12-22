@@ -41,9 +41,6 @@ class Plateau
     bool Game_over();
     void Corner();
     void Corner_It(int, int, int, int,int,int);
-    int Mobility();
-    int Stability(int);
-    bool Check_Stability(int,int);
     int Heurist(int);
 };
 

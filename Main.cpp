@@ -53,7 +53,6 @@ Player* choice(Plateau* plate, Vue* vue, string player_name){
 	        return player;
 		}
 	}
-
 }
 
 
@@ -80,4 +79,3 @@ int main(){
 	delete plate;
 	return 0;
 }
-

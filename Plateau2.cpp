@@ -22,7 +22,7 @@ Plateau::Plateau(){
 				plateau[i][j] = 0;
 		}
 	}
-	int temp[8][8] = {
+	int temp[8][8] = { //tableau de coefficients de valeur pour chaque case
 		{50, -20, 10, 6, 6, 10, -20, 50},
 		{-20, -25, 11, 5, 5, 11, -25, -20},
 		{10, 11, 12, 4, 4, 12, 11, 10},
@@ -337,54 +337,6 @@ void Plateau::Corner_It(int it, int larg, int haut, int couleur,int x, int y){
 	}
 }
 
-//Check la mobilité = nombres de choix de cases dans lequelles on peut jouer
-int Plateau::Mobility(){
-	int mob = 0;
-	for(int i=0; i<8; i++){
-		for (int j = 0; j< 8; j++){
-			if(plateau[i][j] == 0){
-				if(Playable(i, j)){
-				    mob++;
-				}
-			}
-		}
-	}
-	return 5*(20-mob);
-}
-///////////////////////////////////////////////////////////////////////////RMQ : avec les valeurs par cases, stabilité comprise non ? 
-//Check la stabilité = nombres de pions qui ne peuvent plus être mangés
-int Plateau::Stability(int color){
-    int stab = 0;
-    for(int i=0; i<8; i++){
-        for(int j=0; j<8; j++){
-            if(plateau[i][j] == color){
-                if(Check_Stability(i,j)){
-                    stab++;
-                }
-            }
-        }
-    }
-    return 30*stab;
-}
-
-bool Plateau::Check_Stability(int x, int y){
-	color = turn % 2 + 1;
-	bool stable = false;
-    if(Check_Direction3(x,y,1,-1) || Check_Direction3(x,y,-1,1)){
-        stable = true;
-    }
-    if(Check_Direction3(x,y,1,0) || Check_Direction3(x,y,-1,0)){
-        stable = true;
-    }
-    if(Check_Direction3(x,y,1,1) || Check_Direction3(x,y,-1,-1)){
-        stable = true;
-    }
-    if(Check_Direction3(x,y,0,-1) || Check_Direction3(x,y,0,1)){
-        stable = true;
-    }
-	return stable;
-}
-
 int Plateau::Heurist(int couleur){
 	Corner();
 	int heur = 0;
@@ -400,5 +352,5 @@ int Plateau::Heurist(int couleur){
 			    }
 		}
 	}
-	return heur ;//+= Mobility();
+	return heur;
 }
