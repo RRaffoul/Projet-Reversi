@@ -53,7 +53,6 @@ Player* choice(Plateau* plate, Vue* vue, string player_name){
 	        return player;
 		}
 	}
-
 }
 
 

@@ -45,7 +45,7 @@ public:
 	~IAPlayer();
     string Play(int);
     float Heuristic(Plateau,int,int);
-	float A(Plateau,int,int);
+	float IA(Plateau,int,int);
 };
 
 class FilePlayer : public Player{

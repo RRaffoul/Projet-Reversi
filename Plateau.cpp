@@ -38,6 +38,14 @@ int Plateau::Get_Noirs(){
     return noirs;
 }
 
+void Plateau::Set_Turn(int newTurn){
+    turn = newTurn;
+}
+
+int Plateau::Get_Turn(){
+    return turn;
+}
+
 bool Plateau::Check_direction(int x, int y, int direction[2]){
 	/*
 	 * Prends en arguments la position du pion que l'on veut poser 
@@ -70,7 +78,9 @@ bool Plateau::Check_direction(int x, int y, int direction[2]){
 }
 
 bool Plateau::Check_eat(int x, int y){
-
+    /*Fonction qui, pour un pion donné, regarde s'il a la possibilité de mangé 
+    *des pions ennemis dans une direction quelconque    
+    */
 	color = turn %2 + 1;
 	int direction[2];
 	bool eat = false;
@@ -102,8 +112,8 @@ bool Plateau::Check_eat(int x, int y){
 
 void Plateau::Eat(){
 	/*
-	 * Permet de manger les pions contenus dans le vecteur pos_to_eat.
-	 */
+	* Permet de manger les pions contenus dans le vecteur pos_to_eat.
+	*/
 	color = turn %2 + 1;
     for(int i =0; i < pos_to_eat.size() - 1;i += 2){
         plateau[pos_to_eat[i]][pos_to_eat[i + 1]] = color;
@@ -120,15 +130,6 @@ void Plateau::Eat(){
 			}
 		}
     }
-
-}
-
-void Plateau::Set_Turn(int newTurn){
-    turn = newTurn;
-}
-
-int Plateau::Get_Turn(){
-    return turn;
 }
 
 bool Plateau::Game_over(){
@@ -185,7 +186,7 @@ vector<int> Plateau::Pos_Play(){
 			}
 		}
 	}
-    if(posPlay.size() == 0){
+    if(posPlay.size() == 0){ //si aucune position est disponible, renvoie le couple (9,9)
         posPlay.push_back(9);
         posPlay.push_back(9);
     }
@@ -193,7 +194,7 @@ vector<int> Plateau::Pos_Play(){
 }
 
 
-//Ca c est la 2e version de Check_eat qui ne fais pas les push backs et autres choses useless pour la mobilité
+//Même fonction que check_eat, mais ne mange pas les pions ennemis
 bool Plateau::Playable(int x, int y){
 	color = turn % 2 + 1;
 	int direction[2];
@@ -216,7 +217,7 @@ bool Plateau::Playable(int x, int y){
 	return eat;
 }
 
-//C est la 2e version de Check_direction qui ne fais pas de push back et autres trucs inutiles pour la mobilité
+//C est la 2e version de Check_direction qui ne fais pas de push back
 bool Plateau::Check_direction2(int x, int y, int direction[2]){
     int dx = direction[0];
     int dy = direction[1]; //donne la direction en X et en Y dans laquelle on cherche
@@ -233,7 +234,7 @@ bool Plateau::Check_direction2(int x, int y, int direction[2]){
 	return false;
 }
 
-//C est la 3e version de Check_direction qui ne fais pas de push back et autres trucs inutiles pour la mobilité
+//C est la 3e version de Check_direction qui est utile au calcul de stabilité
 bool Plateau::Check_Direction3(int x, int y, int dx, int dy){
     color = turn % 2 + 1;
     for(int dist = 1; dist < 8; dist++){
@@ -257,83 +258,79 @@ bool Plateau::Check_Direction3(int x, int y, int dx, int dy){
 
 int Plateau::Corner(){ //ATTENTION c est une valeur par defaut a 0, on peut appeler la fonction initialement avec Corner() (= Corner(0))
 	int advColor = turn % 2 + 1; 
-	int myColor = advColor % 2 + 1; //couleur de l adversaire, + simple que de la recalculer dans chaque if
-	int moi= 0;
-	/*
-	 * Ici j ai simplifié et on mets tous les pions tout a fait stables dans le meme sac, sans distinction
-	 */
-	int adv = 0;
+	int myColor = advColor % 2 + 1;
+	int score = 0;
 	int hauteur = 0; //Pour que si on a les 2 cotés couverts en prolongement du coins s il nous appartient, pour eventuellement reiterer dans le coin interieur a ce coin
 	int largeur = 0;
     for(int i = 0; i <=7; i+=7){
         for(int j = 0; j <= 7; j+=7){
             if(plateau[i][j] == myColor){
-			    moi+=5;
+			    score+=5;
 			    for(int k = 1; k <= 6; k++){ //la on va regarder si plus loin il y a d'autres pions qui prolongent et sont donc stables
-				    if(plateau[k][j] == myColor){ //et tant pis pour les repetitions entre coins, si on a des repet c est qu on a joint 2 coins, d autant + stable
-				    	moi+=5;
+				    if(plateau[k][j] == myColor){
+				    	score+=5;
 				    	hauteur++;
 				    } 
 				    else break;
 			    }
-			    for(int k = 1; k <= 6; k++){ //same same dans la 2 e direct
+			    for(int k = 1; k <= 6; k++){
 			    	if(plateau[i][k] == myColor){
-			    		moi+=5;
+			    		score+=5;
 			    		largeur++;
 			    	}
 			    	else break;
 			    }
 			    if(largeur != 0 && hauteur != 0){
-			    	moi += Corner_It(1, largeur, hauteur, myColor, i, j);
+			    	score += Corner_It(1, largeur, hauteur, myColor, i, j);
 			    }			
 			    largeur = 0;
 			    hauteur = 0;
 		    }
-            else if(plateau[i][j]==0){
-                int s = abs(i-1);
-                int t = abs(j-1);
+            else if(plateau[i][j]==0){ // donne des scores positifs ou negatifs aux cases à proximité d'un coin si celui-ci n'est pas encore pris
                 if(plateau[(int)abs(i-1)][(int)abs(i-1)] == myColor){
-                    moi -= 2;
+                    score-= 2;
                 }
                 if(plateau[(int)abs(i-1)][j] == myColor){
-                    moi --;
+                    score--;
                 }
                 if(plateau[i][(int)abs(i-1)] == myColor){
-                    moi --;
+                    score--;
                 }
-
 
                 if((plateau[(int)abs(i-2)][j] == myColor) && (plateau[(int)abs(i-3)][j] != advColor) && (plateau[(int)abs(i-1)][j] != advColor) ){
-                    moi += 3;
+                    score+= 3;
                 }
                 if((plateau[i][(int)abs(i-2)] == myColor) && (plateau[i][(int)abs(i-3)] != advColor) && (plateau[i][(int)abs(i-1)] != advColor)){
-                    moi +=3;
+                    score+=3;
                 }
                 if((plateau[(int)abs(i-3)][j] == myColor) && (plateau[(int)abs(i-4)][j] != advColor) && (plateau[(int)abs(i-2)][j] != advColor)){
-                    moi+=2;
+                    score+=2;
                 }
                 if((plateau[i][(int)abs(i-3)] == myColor) && (plateau[i][(int)abs(i-4)] != advColor) && (plateau[i][(int)abs(i-2)] != advColor)){
-                    moi+=2;
+                    score+=2;
                 }
             }
         }
     }
-	return 5*(moi); //RMQ : Coef a modif
+	return 5*(score);
 }
 
 int Plateau::Corner_It(int it, int larg, int haut, int color,int x, int y){
-	int moi = 0;
+    /*Fonction récursive qui, lorsqu'un coin extérieur est pris,
+    *donne un score au coin suivant
+    */
+	int score = 0;
 	int hauteur = 0; 
 	int largeur = 0;
     x = abs(x - it);
     y = abs(y - it);
 	if(plateau[x][y] != 0){ 
 		if(plateau[x][y] == color){
-			moi++;
+			score++;
 			for(int k = it+1; k <= it+haut; k++){
                 int t = abs(x-k);
 				if(plateau[t][y] == color){ 
-					moi++;
+					score++;
 					hauteur++;
 				} 
 				else break;
@@ -341,17 +338,17 @@ int Plateau::Corner_It(int it, int larg, int haut, int color,int x, int y){
 			for(int k = it+1; k <= it+larg; k++){
                 int t = abs(y-k);
 				if(plateau[x][t] == color){ 
-					moi++;
+					score++;
 					largeur++;
 				}
 				else break;
 			}
 			if(largeur != 0 && hauteur != 0){
-				moi += Corner_It(it+1, largeur, hauteur, color,x,y);
+				score += Corner_It(it+1, largeur, hauteur, color,x,y);
 			}
 		}
 	}
-	return moi;
+	return score;
 }
 
 //Check la mobilité = nombres de choix de cases dans lequelles on peut jouer
@@ -384,6 +381,7 @@ int Plateau::Stability(int color){
     return 10*stab;
 }
 
+//permet de calculer la stabilité
 bool Plateau::Check_Stability(int x, int y){
 	color = turn % 2 + 1;
 	bool stable = false;
