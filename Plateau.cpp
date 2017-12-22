@@ -265,7 +265,7 @@ int Plateau::Corner(){ //ATTENTION c est une valeur par defaut a 0, on peut appe
 	 * Ici j ai simplifié et on mets tous les pions tout a fait stables dans le meme sac, sans distinction
 	 */
 	int adv = 0;
-	int hauteur = 0; //Pour que si on a les 2 cotés couvers en prolongement du coins s il nous appartient, pour eventuellement reiterer dans le coin interieur a ce coin
+	int hauteur = 0; //Pour que si on a les 2 cotés couverts en prolongement du coins s il nous appartient, pour eventuellement reiterer dans le coin interieur a ce coin
 	int largeur = 0;
 	if(plateau[0][0] != 0){ //meilleur moyen de construire les if en faisant le moins de checks possibles
 		if(plateau[0][0] == myColor){
